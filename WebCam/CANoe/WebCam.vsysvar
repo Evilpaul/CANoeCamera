@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<systemvariables version="4">
+  <namespace name="" comment="" interface="">
+    <namespace name="WebCamSysVar" comment="" interface="">
+      <variable anlyzLocal="2" readOnly="false" valueSequence="false" unit="" name="CurrentCamera" comment="" bitcount="80" isSigned="true" encoding="65001" type="string" startValue="" />
+      <variable anlyzLocal="2" readOnly="false" valueSequence="false" unit="" name="PreferredCamera" comment="" bitcount="80" isSigned="true" encoding="65001" type="string" startValue="PC Camera" />
+      <variable anlyzLocal="2" readOnly="false" valueSequence="false" unit="" name="PreferredHeight" comment="" bitcount="32" isSigned="true" encoding="65001" type="int" startValue="720" minValue="0" minValuePhys="0" maxValue="4000" maxValuePhys="4000" />
+      <variable anlyzLocal="2" readOnly="false" valueSequence="false" unit="" name="PreferredWidth" comment="" bitcount="32" isSigned="true" encoding="65001" type="int" startValue="1280" minValue="0" minValuePhys="0" maxValue="8000" maxValuePhys="8000" />
+      <variable anlyzLocal="2" readOnly="false" valueSequence="false" unit="" name="SnapShotFileName" comment="" bitcount="80" isSigned="true" encoding="65001" type="string" startValue="" />
+      <variable anlyzLocal="2" readOnly="false" valueSequence="false" unit="" name="VideoBitRate" comment="" bitcount="32" isSigned="true" encoding="65001" type="int" startValue="800000" minValue="200000" minValuePhys="200000" maxValue="10000000" maxValuePhys="10000000" />
+      <variable anlyzLocal="2" readOnly="false" valueSequence="false" unit="" name="VideoFileName" comment="" bitcount="80" isSigned="true" encoding="65001" type="string" startValue="" />
+      <variable anlyzLocal="2" readOnly="false" valueSequence="false" unit="" name="VideoState" comment="" bitcount="32" isSigned="true" encoding="65001" type="int" startValue="0" minValue="0" minValuePhys="0" maxValue="1" maxValuePhys="1">
+        <valuetable name="Custom" definesMinMax="true">
+          <valuetableentry value="0" lowerBound="0" upperBound="0" description="Stopped" displayString="Stopped" />
+          <valuetableentry value="1" lowerBound="1" upperBound="1" description="Recording" displayString="Recording" />
+        </valuetable>
+      </variable>
+    </namespace>
+  </namespace>
+</systemvariables>
