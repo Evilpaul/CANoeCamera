@@ -4,6 +4,7 @@ Compatible with any camera that interfaces with DirectShow on Microsoft Windows.
 
 Based upon the latest AForge.NET [code](https://github.com/andrewkirillov/AForge.NET) with the following modifications:
 
+ - Update projects to target .NET Framework 4 Client Profile
  - Integrated IAMVideoProcAmp change ([details](https://code.google.com/archive/p/aforge/issues/357))
  - Updated FFMPEG to release 3.4.2 ([build](https://ffmpeg.zeranoe.com/builds/))
  - Backported code from [Accord.NET](http://accord-framework.net/index.html) to allow AForge.Video.FFMPEG to integrate with newer versions of FFMPEG
