@@ -9,9 +9,6 @@ Based upon the latest AForge.NET [code](https://github.com/andrewkirillov/AForge
  - Removed parts of AForge.NET that are not required for just Image/Video capture
 
 Writing to the System Variables in the CANoe configuration allows for control of the camera interface:
-| System Variable | Description |
-| --- | --- |
-| CurrentCamera | The friendly name of the camera currently being used |
 
 | System Variable  | Description           |
 | ------- | ---------------- |
