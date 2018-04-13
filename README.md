@@ -1,5 +1,6 @@
 # CANoeCamera
 Vector CANoe configuration integrating Image/Video capture using [AForge.NET](http://aforgenet.com/).
+Compatible with any camera that interfaces with DirectShow on Microsoft Windows.
 
 Based upon the latest AForge.NET [code](https://github.com/andrewkirillov/AForge.NET) with the following modifications:
 
