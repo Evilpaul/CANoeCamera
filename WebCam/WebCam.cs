@@ -202,32 +202,32 @@ public class WebCam : MeasurementScript
 
             try
             {
-                Bitmap b = AddImageOverlay(frame, stillTime);
+                AddImageOverlay(frame, stillTime);
 
                 switch (Path.GetExtension(SnapShotName).ToUpper())
                 {
                     case ".JPG":
                     case ".JPEG":
-                        b.Save(SnapShotName, ImageFormat.Jpeg);
+                        frame.Save(SnapShotName, ImageFormat.Jpeg);
                         break;
                     case ".BMP":
-                        b.Save(SnapShotName, ImageFormat.Bmp);
+                        frame.Save(SnapShotName, ImageFormat.Bmp);
                         break;
                     case ".PNG":
-                        b.Save(SnapShotName, ImageFormat.Png);
+                        frame.Save(SnapShotName, ImageFormat.Png);
                         break;
                     case ".GIF":
-                        b.Save(SnapShotName, ImageFormat.Gif);
+                        frame.Save(SnapShotName, ImageFormat.Gif);
                         break;
                     case ".TIF":
                     case ".TIFF":
-                        b.Save(SnapShotName, ImageFormat.Tiff);
+                        frame.Save(SnapShotName, ImageFormat.Tiff);
                         break;
                     case ".EXIF":
-                        b.Save(SnapShotName, ImageFormat.Exif);
+                        frame.Save(SnapShotName, ImageFormat.Exif);
                         break;
                     default:
-                        b.Save(SnapShotName); // png format
+                        frame.Save(SnapShotName); // png format
                         break;
                 }
             }
@@ -248,9 +248,9 @@ public class WebCam : MeasurementScript
             {
                 try
                 {
-                    Bitmap b = AddImageOverlay(frame, videoTime);
+                    AddImageOverlay(frame, videoTime);
 
-                    vfw.WriteVideoFrame(b);
+                    vfw.WriteVideoFrame(frame);
                 }
                 catch (Exception ex)
                 {
@@ -294,11 +294,9 @@ public class WebCam : MeasurementScript
         }
     }
 
-    private Bitmap AddImageOverlay(Bitmap image, TimeSpan timeStamp)
+    private void AddImageOverlay(Bitmap image, TimeSpan timeStamp)
     {
-        Bitmap b = (Bitmap)image.Clone();
-
-        using (Graphics g = Graphics.FromImage(b))
+        using (Graphics g = Graphics.FromImage(image))
         {
             // add Triumph logo to the image
             g.DrawImage(logo, logoPoint);
@@ -309,8 +307,6 @@ public class WebCam : MeasurementScript
             // add measurement timestamp to the image
             g.DrawString(timeStamp.TotalSeconds.ToString("00000.000"), drawFont, sb_white, timePoint, sf);
         }
-
-        return b;
     }
 
     private void PrintCameraCapabilities()
