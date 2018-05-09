@@ -59,7 +59,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\Externals\ffmpeg\ffmpeg-3.4.2-$(FFmpegPlatform)-dev\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\Externals\ffmpeg\ffmpeg-4.0-$(FFmpegPlatform)-dev\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;__STDC_CONSTANT_MACROS;$(DefineConstants);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
@@ -69,7 +69,7 @@
     <Link>
       <AdditionalDependencies>avcodec.lib;avdevice.lib;avfilter.lib;avformat.lib;avutil.lib;postproc.lib;swresample.lib;swscale.lib</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName).dll</OutputFile>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\..\Externals\ffmpeg\ffmpeg-3.4.2-$(FFmpegPlatform)-dev\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\..\Externals\ffmpeg\ffmpeg-4.0-$(FFmpegPlatform)-dev\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <WarningLevel>Level3</WarningLevel>
       <ImageHasSafeExceptionHandlers />
       <PrecompiledHeader>NotUsing</PrecompiledHeader>

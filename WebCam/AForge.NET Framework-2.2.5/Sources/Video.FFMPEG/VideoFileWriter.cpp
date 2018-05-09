@@ -56,11 +56,6 @@ public:
             void write_video_frame(WriterPrivateData^ data)
             {
                 libffmpeg::AVCodecContext* codecContext = data->VideoStream->codec;
-                if (data->FormatContext->oformat->flags & AVFMT_RAWPICTURE)
-                {
-                    Console::WriteLine("Raw picture must be written");
-                    return;
-                }
 
                 libffmpeg::AVPacket packet;
                 libffmpeg::av_init_packet(&packet);
@@ -162,7 +157,7 @@ public:
                     codecContex->coder_type = FF_CODER_TYPE_AC;
                     codecContex->profile = FF_PROFILE_H264_BASELINE;
                     //codecContex->crf = 25;
-                    codecContex->me_method = 7;
+                    //codecContex->me_method = 7;
                     codecContex->me_subpel_quality = 4;
                     codecContex->delay = 0;
                     codecContex->max_b_frames = 0;
@@ -197,7 +192,7 @@ public:
 
                 // some formats want stream headers to be separate
                 if (data->FormatContext->oformat->flags & AVFMT_GLOBALHEADER)
-                    codecContex->flags |= CODEC_FLAG_GLOBAL_HEADER;
+                    codecContex->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
             }
 
             // Open video codec and prepare out buffer and picture
@@ -214,12 +209,10 @@ public:
                     throw gcnew VideoException("Cannot open video codec.");
 
                 data->VideoOutputBuffer = nullptr;
-                if (!(data->FormatContext->oformat->flags & AVFMT_RAWPICTURE))
-                {
-                    // allocate output buffer, more than enough even for raw video
-                    data->VideoOutputBufferSize = 6 * codecContext->width * codecContext->height;
-                    data->VideoOutputBuffer = (uint8_t*)libffmpeg::av_malloc(data->VideoOutputBufferSize);
-                }
+
+                // allocate output buffer, more than enough even for raw video
+                data->VideoOutputBufferSize = 6 * codecContext->width * codecContext->height;
+                data->VideoOutputBuffer = (uint8_t*)libffmpeg::av_malloc(data->VideoOutputBufferSize);
 
                 // allocate the encoded raw picture
                 data->VideoFrame = alloc_picture(codecContext->pix_fmt, codecContext->width, codecContext->height);
