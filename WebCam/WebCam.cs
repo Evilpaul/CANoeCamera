@@ -236,6 +236,8 @@ public class WebCam : MeasurementScript
                 Output.WriteLine(ex.ToString());
             }
         }
+
+        frame.Dispose();
     }
 
     private void saveVideo(Bitmap frame)
@@ -266,6 +268,8 @@ public class WebCam : MeasurementScript
             // increment frame timestmap by the average frame time
             videoTime += frameTime;
         }
+
+        frame.Dispose();
     }
 
     private void stopVideo()
