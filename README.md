@@ -22,3 +22,7 @@ Writing to the System Variables in the CANoe configuration allows for control of
 | VideoBitRate | The bitrate to be used when saving video data |
 | VideoFileName | The filename of a video to be saved. FFMPEG uses the default codec based upon the file extension |
 | VideoState | Toggle between Stopped (0) and Running (1) in order to begin or end video recording |
+
+**Note:** If WebCam is added to an existing CANoe configuration then the name of the sysvar dll referenced in WebCam/WebCam.csproj will need to be modified to reflect the name of the new CANoe configuration name.
+
+Sysvars can be added to an existing project by importing WebCam/Canoe/WebCam.vsysvar
