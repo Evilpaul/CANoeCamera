@@ -199,41 +199,44 @@ public class WebCam : MeasurementScript
         if (saveRequested)
         {
             saveRequested = false;
+            Bitmap b = AddImageOverlay(frame, stillTime);
 
             try
             {
-                AddImageOverlay(frame, stillTime);
-
                 switch (Path.GetExtension(SnapShotName).ToUpper())
                 {
                     case ".JPG":
                     case ".JPEG":
-                        frame.Save(SnapShotName, ImageFormat.Jpeg);
+                        b.Save(SnapShotName, ImageFormat.Jpeg);
                         break;
                     case ".BMP":
-                        frame.Save(SnapShotName, ImageFormat.Bmp);
+                        b.Save(SnapShotName, ImageFormat.Bmp);
                         break;
                     case ".PNG":
-                        frame.Save(SnapShotName, ImageFormat.Png);
+                        b.Save(SnapShotName, ImageFormat.Png);
                         break;
                     case ".GIF":
-                        frame.Save(SnapShotName, ImageFormat.Gif);
+                        b.Save(SnapShotName, ImageFormat.Gif);
                         break;
                     case ".TIF":
                     case ".TIFF":
-                        frame.Save(SnapShotName, ImageFormat.Tiff);
+                        b.Save(SnapShotName, ImageFormat.Tiff);
                         break;
                     case ".EXIF":
-                        frame.Save(SnapShotName, ImageFormat.Exif);
+                        b.Save(SnapShotName, ImageFormat.Exif);
                         break;
                     default:
-                        frame.Save(SnapShotName); // png format
+                        b.Save(SnapShotName); // png format
                         break;
                 }
             }
             catch (Exception ex)
             {
                 Output.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                b.Dispose();
             }
         }
 
@@ -248,10 +251,9 @@ public class WebCam : MeasurementScript
             // should only happen if a stop has been requested, or processing of previous frame takes too long
             if (Monitor.TryEnter(lockobj))
             {
+                Bitmap b = AddImageOverlay(frame, videoTime);
                 try
                 {
-                    AddImageOverlay(frame, videoTime);
-
                     vfw.WriteVideoFrame(frame);
                 }
                 catch (Exception ex)
@@ -260,6 +262,7 @@ public class WebCam : MeasurementScript
                 }
                 finally
                 {
+                    b.Dispose();
                     // release the lock
                     Monitor.Exit(lockobj);
                 }
@@ -298,9 +301,11 @@ public class WebCam : MeasurementScript
         }
     }
 
-    private void AddImageOverlay(Bitmap image, TimeSpan timeStamp)
+    private Bitmap AddImageOverlay(Bitmap image, TimeSpan timeStamp)
     {
-        using (Graphics g = Graphics.FromImage(image))
+        Bitmap b = (Bitmap)image.Clone();
+
+        using (Graphics g = Graphics.FromImage(b))
         {
             // add Triumph logo to the image
             g.DrawImage(logo, logoPoint);
@@ -311,6 +316,8 @@ public class WebCam : MeasurementScript
             // add measurement timestamp to the image
             g.DrawString(timeStamp.TotalSeconds.ToString("00000.000"), drawFont, sb_white, timePoint, sf);
         }
+
+        return b;
     }
 
     private void PrintCameraCapabilities()
