@@ -433,15 +433,15 @@ namespace AForge.Controls
                 {
                     // left arrow tracking
                     min = e.X - dx;
-                    min = Math.Max( min, 0 );
-                    min = Math.Min( min, max );
+                    min = System.Math.Max( min, 0 );
+                    min = System.Math.Min( min, max );
                 }
                 if ( trackMode == 2 )
                 {
                     // right arrow tracking
                     max = e.X - dx;
-                    max = Math.Max( max, min );
-                    max = Math.Min( max, 255 );
+                    max = System.Math.Max( max, min );
+                    max = System.Math.Min( max, 255 );
                 }
 
                 // repaint control

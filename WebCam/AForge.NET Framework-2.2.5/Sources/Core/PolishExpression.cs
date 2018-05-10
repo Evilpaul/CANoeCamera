@@ -105,23 +105,23 @@ namespace AForge
                             break;
 
                         case "sin":			// sine
-                            arguments.Push( Math.Sin( v ) );
+                            arguments.Push( System.Math.Sin( v ) );
                             break;
 
                         case "cos":			// cosine
-                            arguments.Push( Math.Cos( v ) );
+                            arguments.Push( System.Math.Cos( v ) );
                             break;
 
                         case "ln":			// natural logarithm
-                            arguments.Push( Math.Log( v ) );
+                            arguments.Push( System.Math.Log( v ) );
                             break;
 
                         case "exp":			// exponent
-                            arguments.Push( Math.Exp( v ) );
+                            arguments.Push( System.Math.Exp( v ) );
                             break;
 
                         case "sqrt":		// square root
-                            arguments.Push( Math.Sqrt( v ) );
+                            arguments.Push( System.Math.Sqrt( v ) );
                             break;
 
                         default:

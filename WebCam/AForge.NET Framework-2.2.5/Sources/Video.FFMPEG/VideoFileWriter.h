@@ -12,6 +12,7 @@ using namespace System;
 using namespace System::Drawing;
 using namespace System::Drawing::Imaging;
 using namespace AForge::Video;
+using namespace AForge::Math;
 
 #include "VideoCodec.h"
 
@@ -56,7 +57,7 @@ namespace AForge {
 			{
 				int m_width;
 				int m_height;
-				int m_frameRate;
+				Rational m_frameRate;
 				int m_bitRate;
 				VideoCodec m_codec;
 				unsigned long m_framesCount;
@@ -128,9 +129,9 @@ namespace AForge {
 				///
 				/// <exception cref="System::IO::IOException">Thrown if no video file was open.</exception>
 				///
-				property int FrameRate
+				property Rational FrameRate
 				{
-					int get()
+					Rational get()
 					{
 						CheckIfVideoFileIsOpen();
 						return m_frameRate;
@@ -230,7 +231,7 @@ namespace AForge {
 				/// codec.</note></para>
 				/// </remarks>
 				///
-				void Open(String^ fileName, int width, int height, int frameRate)
+				void Open(String^ fileName, int width, int height, Rational frameRate)
 				{
 					Open(fileName, width, height, frameRate, VideoCodec::Default);
 				}
@@ -257,7 +258,7 @@ namespace AForge {
 				/// <exception cref="VideoException">A error occurred while creating new video file. See exception message.</exception>
 				/// <exception cref="System::IO::IOException">Cannot open video file with the specified name.</exception>
 				/// 
-				void Open(String^ fileName, int width, int height, int frameRate, VideoCodec codec)
+				void Open(String^ fileName, int width, int height, Rational frameRate, VideoCodec codec)
 				{
 					Open(fileName, width, height, frameRate, codec, 400000);
 				}
@@ -289,7 +290,7 @@ namespace AForge {
 				/// <exception cref="VideoException">A error occurred while creating new video file. See exception message.</exception>
 				/// <exception cref="System::IO::IOException">Cannot open video file with the specified name.</exception>
 				/// 
-				void Open(String^ fileName, int width, int height, int frameRate, VideoCodec codec, int bitRate);
+				void Open(String^ fileName, int width, int height, Rational frameRate, VideoCodec codec, int bitRate);
 
 				/// <summary>
 				/// Write new video frame into currently opened video file.
@@ -382,7 +383,7 @@ namespace AForge {
 				/// 
 				void WriteVideoFrame(Bitmap^ frame, TimeSpan timestamp)
 				{
-					WriteVideoFrame(frame, (unsigned long)(timestamp.TotalSeconds * m_frameRate));
+					WriteVideoFrame(frame, timestamp.TotalSeconds * m_frameRate.Value);
 				}
 
 				/// <summary>

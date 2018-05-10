@@ -61,6 +61,8 @@
     <Compile Include="Point.cs" />
     <Compile Include="PolishExpression.cs" />
     <Compile Include="Range.cs" />
+    <Compile Include="Rational.cs" />
+    <Compile Include="RationalConverter.cs" />
     <Compile Include="SystemTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ThreadSafeRandom.cs" />
