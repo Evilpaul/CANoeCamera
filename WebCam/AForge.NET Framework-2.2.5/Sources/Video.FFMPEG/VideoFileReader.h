@@ -12,6 +12,7 @@ using namespace System;
 using namespace System::Drawing;
 using namespace System::Drawing::Imaging;
 using namespace AForge::Video;
+using namespace AForge::Math;
 
 namespace AForge {
 	namespace Video {
@@ -85,7 +86,7 @@ namespace AForge {
 	{
                 int m_width;
                 int m_height;
-				int m_frameRate;
+				Rational m_frameRate;
                 String^ m_codecName;
                 Int64 m_framesCount;
 				int m_bitRate;
@@ -160,9 +161,9 @@ namespace AForge {
 		///
         /// <exception cref="System::IO::IOException">Thrown if no video file was open.</exception>
 		///
-		property int FrameRate
+		property Rational FrameRate
 		{
-			int get( )
+			Rational get( )
 			{
 				CheckIfVideoFileIsOpen( );
 				return m_frameRate;

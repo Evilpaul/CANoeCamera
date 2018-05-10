@@ -364,7 +364,7 @@ namespace AForge
         /// 
         public IntPoint Round( )
         {
-            return new IntPoint( (int) Math.Round( X ), (int) Math.Round( Y ) );
+            return new IntPoint( (int)System.Math.Round( X ), (int)System.Math.Round( Y ) );
         }
 
         /// <summary>

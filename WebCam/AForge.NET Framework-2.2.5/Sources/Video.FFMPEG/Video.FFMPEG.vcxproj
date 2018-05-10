@@ -134,6 +134,9 @@
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{A177A90C-8207-466A-AF70-F2B8452A42AC}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\Math\Math.csproj">
+      <Project>{c0faf524-72e4-46f7-8c1b-a6b74dec5ebe}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Video\Video.csproj">
       <Project>{809725dc-6502-4732-a51c-deb7fea12975}</Project>
     </ProjectReference>

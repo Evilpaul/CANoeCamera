@@ -107,7 +107,7 @@ public:
             }
 
             // Create new video stream and configure it
-            void add_video_stream(WriterPrivateData^ data, int width, int height, int frameRate,
+            void add_video_stream(WriterPrivateData^ data, int width, int height, Rational frameRate,
                 int bitRate, libffmpeg::AVCodecID codecId, libffmpeg::AVPixelFormat pixelFormat)
             {
                 libffmpeg::AVCodec *codec = libffmpeg::avcodec_find_encoder(codecId);
@@ -131,10 +131,10 @@ public:
                 // of which frame timestamps are represented. for fixed-fps content,
                 // timebase should be 1/framerate and timestamp increments should be
                 // identically 1.
-                codecContex->time_base.num = 1;
-                codecContex->time_base.den = frameRate;
+                codecContex->time_base.num = frameRate.Denominator;
+                codecContex->time_base.den = frameRate.Numerator;
 
-                codecContex->framerate = { 1, frameRate };
+                //codecContex->framerate = { frameRate.Denominator, frameRate.Numerator };
                 //codecContex->ticks_per_frame = 1;
                 //data->VideoStream->time_base = codecContex->time_base;
 
@@ -249,7 +249,7 @@ public:
             }
 
             // Creates a video file with the specified name and properties
-            void VideoFileWriter::Open(String^ fileName, int width, int height, int frameRate,
+            void VideoFileWriter::Open(String^ fileName, int width, int height, Rational frameRate,
                 VideoCodec codec, int bitRate)
             {
                 CheckIfDisposed();
