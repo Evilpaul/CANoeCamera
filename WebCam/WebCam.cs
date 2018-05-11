@@ -17,21 +17,21 @@ public class WebCam : MeasurementScript
     private int height, width, fr;
     private bool saveRequested, videoRequested;
     private string SnapShotName = "";
-    private object lockobj = new object();
+    private readonly object lockobj = new object();
     private TimeSpan stillMeasurementTime, videoMeasurementTime;
     private DateTime stillTriggerTime, videoTriggerTime;
 
-    private Bitmap logo = Resources.logoNew;
+    private readonly Bitmap logo = Resources.logoNew;
     private PointF logoPoint;
-    private PointF timePoint = new PointF(160, 5);
-    private RectangleF rect = new RectangleF(0, 0, 165, 40);
-    private SolidBrush sb_black = new SolidBrush(Color.Black);
-    private SolidBrush sb_white = new SolidBrush(Color.White);
-    private Font drawFont = new Font("Courier New", 20);
-    private StringFormat sf = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Far };
+    private readonly PointF timePoint = new PointF(160, 5);
+    private readonly RectangleF rect = new RectangleF(0, 0, 165, 40);
+    private readonly SolidBrush sb_black = new SolidBrush(Color.Black);
+    private readonly SolidBrush sb_white = new SolidBrush(Color.White);
+    private readonly Font drawFont = new Font("Courier New", 20);
+    private readonly StringFormat sf = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Far };
 
-    public delegate void AsyncMethodCaller(Bitmap frame);
-    AsyncMethodCaller caller;
+    private delegate void AsyncMethodCaller(Bitmap frame);
+    private AsyncMethodCaller caller;
 
     public override void Initialize()
     {
@@ -95,7 +95,7 @@ public class WebCam : MeasurementScript
 
             Output.WriteLine("Selecting resolution : {0} x {1}", videoSource.VideoCapabilities[maxIdx].FrameSize.Width, videoSource.VideoCapabilities[maxIdx].FrameSize.Height);
             videoSource.VideoResolution = videoSource.VideoCapabilities[maxIdx];
-            videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
+            videoSource.NewFrame += new NewFrameEventHandler(Video_NewFrame);
 
             height = videoSource.VideoCapabilities[maxIdx].FrameSize.Height;
             width = videoSource.VideoCapabilities[maxIdx].FrameSize.Width;
@@ -103,8 +103,8 @@ public class WebCam : MeasurementScript
 
             logoPoint = new PointF(width - logo.Width, 0);
 
-            caller = saveSnapShot;
-            caller += saveVideo;
+            caller = SaveSnapShot;
+            caller += SaveVideo;
         }
     }
 
@@ -124,7 +124,7 @@ public class WebCam : MeasurementScript
         {
             WebCamSysVar.VideoState.Value = WebCamSysVar.VideoState.Stopped;
             saveRequested = false;
-            stopVideo();
+            StopVideo();
             videoSource.SignalToStop();
             WebCamSysVar.CurrentCamera.Value = "";
         }
@@ -136,7 +136,7 @@ public class WebCam : MeasurementScript
         {
             WebCamSysVar.VideoState.Value = WebCamSysVar.VideoState.Stopped;
             saveRequested = false;
-            stopVideo();
+            StopVideo();
             videoSource.SignalToStop();
             WebCamSysVar.CurrentCamera.Value = "";
         }
@@ -160,7 +160,7 @@ public class WebCam : MeasurementScript
     {
         if (WebCamSysVar.VideoState.Value == WebCamSysVar.VideoState.Recording)
         {
-            stopVideo();
+            StopVideo();
 
             try
             {
@@ -177,11 +177,11 @@ public class WebCam : MeasurementScript
         }
         else
         {
-            stopVideo();
+            StopVideo();
         }
     }
 
-    private void video_NewFrame(object sender, NewFrameEventArgs eventArgs)
+    private void Video_NewFrame(object sender, NewFrameEventArgs eventArgs)
     {
         try
         {
@@ -195,7 +195,7 @@ public class WebCam : MeasurementScript
         }
     }
 
-    private void saveSnapShot(Bitmap frame)
+    private void SaveSnapShot(Bitmap frame)
     {
         if (saveRequested)
         {
@@ -244,7 +244,7 @@ public class WebCam : MeasurementScript
         frame.Dispose();
     }
 
-    private void saveVideo(Bitmap frame)
+    private void SaveVideo(Bitmap frame)
     {
         if (videoRequested)
         {
@@ -274,7 +274,7 @@ public class WebCam : MeasurementScript
         frame.Dispose();
     }
 
-    private void stopVideo()
+    private void StopVideo()
     {
         videoRequested = false;
         if (vfw != null)
