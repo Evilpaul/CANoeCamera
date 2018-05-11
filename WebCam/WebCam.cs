@@ -17,21 +17,21 @@ public class WebCam : MeasurementScript
     private int height, width, fr;
     private bool saveRequested, videoRequested;
     private string SnapShotName = "";
-    private object lockobj = new object();
+    private readonly object lockobj = new object();
     private TimeSpan stillMeasurementTime, videoMeasurementTime;
     private DateTime stillTriggerTime, videoTriggerTime;
 
-    private Bitmap logo = Resources.logoNew;
+    private readonly Bitmap logo = Resources.logoNew;
     private PointF logoPoint;
-    private PointF timePoint = new PointF(160, 5);
-    private RectangleF rect = new RectangleF(0, 0, 165, 40);
-    private SolidBrush sb_black = new SolidBrush(Color.Black);
-    private SolidBrush sb_white = new SolidBrush(Color.White);
-    private Font drawFont = new Font("Courier New", 20);
-    private StringFormat sf = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Far };
+    private readonly PointF timePoint = new PointF(160, 5);
+    private readonly RectangleF rect = new RectangleF(0, 0, 165, 40);
+    private readonly SolidBrush sb_black = new SolidBrush(Color.Black);
+    private readonly SolidBrush sb_white = new SolidBrush(Color.White);
+    private readonly Font drawFont = new Font("Courier New", 20);
+    private readonly StringFormat sf = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Far };
 
-    public delegate void AsyncMethodCaller(Bitmap frame);
-    AsyncMethodCaller caller;
+    private delegate void AsyncMethodCaller(Bitmap frame);
+    private AsyncMethodCaller caller;
 
     public override void Initialize()
     {
