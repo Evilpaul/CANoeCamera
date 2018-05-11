@@ -57,7 +57,7 @@ public:
             // Writes video frame to opened video file
             void write_video_frame(WriterPrivateData^ data)
             {
-                libffmpeg::AVCodecContext* codecContext = data->VideoStream->codec;
+				libffmpeg::AVCodecContext* codecContext = data->VideoStream->codec;
 
                 libffmpeg::AVPacket packet;
                 libffmpeg::av_init_packet(&packet);
@@ -65,12 +65,11 @@ public:
                 packet.size = 0;
 
                 // encode the image
-                int got_packet;
-                if (libffmpeg::avcodec_encode_video2(codecContext, &packet, data->VideoFrame, &got_packet) < 0)
-                    throw gcnew VideoException("Error while encoding video frame");
+				if (libffmpeg::avcodec_send_frame(codecContext, data->VideoFrame) < 0)
+					throw gcnew VideoException("Error sending a frame for encoding");
 
-                if (!got_packet)
-                    return; // image was buffered
+				if (libffmpeg::avcodec_receive_packet(codecContext, &packet) < 0)
+					return;
 
                 if (packet.pts != AV_NOPTS_VALUE)
                     packet.pts = libffmpeg::av_rescale_q(packet.pts, codecContext->time_base, data->VideoStream->time_base);
@@ -391,7 +390,6 @@ public:
                 if (data == nullptr)
                     return;
 
-                int got_packet;
                 libffmpeg::AVCodecContext* codecContext = data->VideoStream->codec;
 
                 while (true) // while there are still delayed frames
@@ -402,11 +400,11 @@ public:
                     packet.size = 0;
 
                     // encode the image
-                    if (libffmpeg::avcodec_encode_video2(codecContext, &packet, nullptr, &got_packet) < 0)
-                        throw gcnew VideoException("Error while encoding (flush)video frame");
+					if (libffmpeg::avcodec_send_frame(codecContext, nullptr) < 0)
+						throw gcnew VideoException("Error sending a (flush)frame for encoding");
 
-                    if (!got_packet)
-                        break; // there are no more frames to be written
+					if (libffmpeg::avcodec_receive_packet(codecContext, &packet) < 0)
+						break;
 
                     // TODO: consider refactoring with write_video_frame?
                     if (packet.pts != AV_NOPTS_VALUE)
