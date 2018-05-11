@@ -95,7 +95,7 @@ public:
                 if (!picture)
                     return nullptr;
 
-                int size = libffmpeg::av_image_get_buffer_size(pix_fmt, width, height, 16);
+                int size = libffmpeg::av_image_get_buffer_size(pix_fmt, width, height, 1);
                 void* picture_buf = libffmpeg::av_malloc(size);
                 if (!picture_buf)
                 {
