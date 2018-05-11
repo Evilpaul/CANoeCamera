@@ -85,6 +85,7 @@
       <TargetMachine>MachineX86</TargetMachine>
       <ProgramDatabaseFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
       <GenerateDebugInformation Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</GenerateDebugInformation>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">/ignore:4248 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <ClCompile>
       <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">None</DebugInformationFormat>
@@ -96,6 +97,7 @@
       <TargetMachine>MachineX64</TargetMachine>
       <ProgramDatabaseFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
       <GenerateDebugInformation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</GenerateDebugInformation>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">/ignore:4248 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <ClCompile>
       <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='Release|x64'">None</DebugInformationFormat>
