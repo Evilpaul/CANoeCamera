@@ -57,7 +57,17 @@ public:
             // Writes video frame to opened video file
             void write_video_frame(WriterPrivateData^ data)
             {
-				libffmpeg::AVCodecContext* codecContext = data->VideoStream->codec;
+				libffmpeg::AVCodecContext* codecContext;
+				libffmpeg::AVCodec* codec;
+
+				if(!(codec = libffmpeg::avcodec_find_encoder(data->VideoStream->codecpar->codec_id)))
+					throw gcnew VideoException("Error finding the encoder");
+
+				if (!(codecContext = libffmpeg::avcodec_alloc_context3(codec)))
+					throw gcnew VideoException("Error allocating context");
+
+				if(libffmpeg::avcodec_parameters_to_context(codecContext, data->VideoStream->codecpar) < 0)
+					throw gcnew VideoException("Error getting context from parameters");
 
                 libffmpeg::AVPacket packet;
                 libffmpeg::av_init_packet(&packet);
@@ -116,7 +126,12 @@ public:
                 if (!data->VideoStream)
                     throw gcnew VideoException("Failed creating new video stream.");
 
-                codecContex = data->VideoStream->codec;
+				if (!(codecContex = libffmpeg::avcodec_alloc_context3(codec)))
+					throw gcnew VideoException("Error allocating context");
+
+				if (libffmpeg::avcodec_parameters_to_context(codecContex, data->VideoStream->codecpar) < 0)
+					throw gcnew VideoException("Error getting context from parameters");
+
                 codecContex->codec_id = codecId;
                 codecContex->codec_type = libffmpeg::AVMEDIA_TYPE_VIDEO;
 
@@ -196,11 +211,17 @@ public:
             // Open video codec and prepare out buffer and picture
             void open_video(WriterPrivateData^ data)
             {
-                libffmpeg::AVCodecContext* codecContext = data->VideoStream->codec;
-                libffmpeg::AVCodec* codec = avcodec_find_encoder(codecContext->codec_id);
+				libffmpeg::AVCodecContext* codecContext;
+				libffmpeg::AVCodec* codec;
 
-                if (!codec)
-                    throw gcnew VideoException("Cannot find video codec.");
+				if (!(codec = libffmpeg::avcodec_find_encoder(data->VideoStream->codecpar->codec_id)))
+					throw gcnew VideoException("Error finding the encoder");
+
+				if (!(codecContext = libffmpeg::avcodec_alloc_context3(codec)))
+					throw gcnew VideoException("Error allocating context");
+
+				if (libffmpeg::avcodec_parameters_to_context(codecContext, data->VideoStream->codecpar) < 0)
+					throw gcnew VideoException("Error getting context from parameters");
 
                 // open the codec 
                 if (avcodec_open2(codecContext, codec, nullptr) < 0)
@@ -352,8 +373,22 @@ public:
                     if (data->FormatContext->pb != nullptr)
                         libffmpeg::av_write_trailer(data->FormatContext);
 
-                    if (data->VideoStream)
-                        libffmpeg::avcodec_close(data->VideoStream->codec);
+					if (data->VideoStream)
+					{
+						libffmpeg::AVCodecContext* codecContext;
+						libffmpeg::AVCodec* codec;
+
+						if (!(codec = libffmpeg::avcodec_find_encoder(data->VideoStream->codecpar->codec_id)))
+							throw gcnew VideoException("Error finding the encoder");
+
+						if (!(codecContext = libffmpeg::avcodec_alloc_context3(codec)))
+							throw gcnew VideoException("Error allocating context");
+
+						if (libffmpeg::avcodec_parameters_to_context(codecContext, data->VideoStream->codecpar) < 0)
+							throw gcnew VideoException("Error getting context from parameters");
+
+						libffmpeg::avcodec_close(codecContext);
+					}
 
                     if (data->VideoFrame)
                     {
@@ -390,7 +425,17 @@ public:
                 if (data == nullptr)
                     return;
 
-                libffmpeg::AVCodecContext* codecContext = data->VideoStream->codec;
+				libffmpeg::AVCodecContext* codecContext;
+				libffmpeg::AVCodec* codec;
+
+				if (!(codec = libffmpeg::avcodec_find_encoder(data->VideoStream->codecpar->codec_id)))
+					throw gcnew VideoException("Error finding the encoder");
+
+				if (!(codecContext = libffmpeg::avcodec_alloc_context3(codec)))
+					throw gcnew VideoException("Error allocating context");
+
+				if (libffmpeg::avcodec_parameters_to_context(codecContext, data->VideoStream->codecpar) < 0)
+					throw gcnew VideoException("Error getting context from parameters");
 
                 while (true) // while there are still delayed frames
                 {
@@ -419,7 +464,7 @@ public:
                         throw gcnew VideoException("Error while writing video frame.");
                 }
 
-                libffmpeg::avcodec_flush_buffers(data->VideoStream->codec);
+				libffmpeg::avcodec_flush_buffers(codecContext);
             }
 
             // Writes new video frame to the opened video file
