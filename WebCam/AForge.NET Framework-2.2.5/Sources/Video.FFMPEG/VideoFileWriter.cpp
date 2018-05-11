@@ -15,6 +15,8 @@ namespace libffmpeg
 {
 	extern "C"
 	{
+		#include "libavutil\avutil.h"
+		#include "libavutil\imgutils.h"
 		#include "libavformat\avformat.h"
 		#include "libavformat\avio.h"
 		#include "libavcodec\avcodec.h"
@@ -93,7 +95,7 @@ public:
                 if (!picture)
                     return nullptr;
 
-                int size = libffmpeg::avpicture_get_size(pix_fmt, width, height);
+                int size = libffmpeg::av_image_get_buffer_size(pix_fmt, width, height, 16);
                 void* picture_buf = libffmpeg::av_malloc(size);
                 if (!picture_buf)
                 {
