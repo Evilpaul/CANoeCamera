@@ -18,8 +18,8 @@ public class WebCam : MeasurementScript
     private bool saveRequested, videoRequested;
     private string SnapShotName = "";
     private object lockobj = new object();
-    private TimeSpan stillTime, videoTime;
-    private TimeSpan frameTime;
+    private TimeSpan stillMeasurementTime, videoMeasurementTime;
+    private DateTime stillTriggerTime, videoTriggerTime;
 
     private Bitmap logo = Resources.logoNew;
     private PointF logoPoint;
@@ -101,7 +101,6 @@ public class WebCam : MeasurementScript
             width = videoSource.VideoCapabilities[maxIdx].FrameSize.Width;
             fr = videoSource.VideoCapabilities[maxIdx].AverageFrameRate;
 
-            frameTime = TimeSpan.FromSeconds(1 / (double)fr);
             logoPoint = new PointF(width - logo.Width, 0);
 
             caller = saveSnapShot;
@@ -149,8 +148,9 @@ public class WebCam : MeasurementScript
         if (!string.IsNullOrWhiteSpace(WebCamSysVar.SnapShotFileName.Value))
         {
             SnapShotName = WebCamSysVar.SnapShotFileName.Value;
-            stillTime = Measurement.CurrentTime;
-            
+            stillMeasurementTime = Measurement.CurrentTime;
+            stillTriggerTime = DateTime.Now;
+
             saveRequested = true;
         }
     }
@@ -158,7 +158,7 @@ public class WebCam : MeasurementScript
     [OnChange(typeof(WebCamSysVar.VideoState))]
     public void VideoStateHandler()
     {
-        if(WebCamSysVar.VideoState.Value == WebCamSysVar.VideoState.Recording)
+        if (WebCamSysVar.VideoState.Value == WebCamSysVar.VideoState.Recording)
         {
             stopVideo();
 
@@ -166,7 +166,8 @@ public class WebCam : MeasurementScript
             {
                 vfw = new VideoFileWriter();
                 vfw.Open(WebCamSysVar.VideoFileName.Value, width, height, fr, VideoCodec.Default, WebCamSysVar.VideoBitRate.Value);
-                videoTime = Measurement.CurrentTime;
+                videoMeasurementTime = Measurement.CurrentTime;
+                videoTriggerTime = DateTime.Now;
                 videoRequested = true;
             }
             catch (Exception ex)
@@ -199,7 +200,7 @@ public class WebCam : MeasurementScript
         if (saveRequested)
         {
             saveRequested = false;
-            Bitmap b = AddImageOverlay(frame, stillTime);
+            Bitmap b = AddImageOverlay(frame, stillTriggerTime, stillMeasurementTime);
 
             try
             {
@@ -251,7 +252,8 @@ public class WebCam : MeasurementScript
             // should only happen if a stop has been requested, or processing of previous frame takes too long
             if (Monitor.TryEnter(lockobj))
             {
-                Bitmap b = AddImageOverlay(frame, videoTime);
+                Bitmap b = AddImageOverlay(frame, videoTriggerTime, videoMeasurementTime);
+
                 try
                 {
                     vfw.WriteVideoFrame(b);
@@ -267,9 +269,6 @@ public class WebCam : MeasurementScript
                     Monitor.Exit(lockobj);
                 }
             }
-
-            // increment frame timestmap by the average frame time
-            videoTime += frameTime;
         }
 
         frame.Dispose();
@@ -301,9 +300,9 @@ public class WebCam : MeasurementScript
         }
     }
 
-    private Bitmap AddImageOverlay(Bitmap image, TimeSpan timeStamp)
+    private Bitmap AddImageOverlay(Bitmap image, DateTime triggerTime, TimeSpan offset)
     {
-        Bitmap b = (Bitmap)image.Clone();
+		Bitmap b = (Bitmap)image.Clone();
 
         using (Graphics g = Graphics.FromImage(b))
         {
@@ -314,7 +313,11 @@ public class WebCam : MeasurementScript
             g.FillRectangle(sb_black, rect);
 
             // add measurement timestamp to the image
-            g.DrawString(timeStamp.TotalSeconds.ToString("00000.000"), drawFont, sb_white, timePoint, sf);
+            // we cannot read Measurement.CurrentTime from here, so we calculate
+            // the time between trigger and current, and then add on the
+            // measurement time at the trigger point
+            TimeSpan diff = (DateTime.Now - triggerTime) + offset;
+            g.DrawString(diff.TotalSeconds.ToString("00000.000"), drawFont, sb_white, timePoint, sf);
         }
 
         return b;
