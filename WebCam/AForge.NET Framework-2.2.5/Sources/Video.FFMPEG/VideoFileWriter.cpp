@@ -77,9 +77,6 @@ public:
                 if (packet.dts != AV_NOPTS_VALUE)
                     packet.dts = libffmpeg::av_rescale_q(packet.dts, codecContext->time_base, data->VideoStream->time_base);
 
-                if (codecContext->coded_frame->key_frame)
-                    packet.flags |= AV_PKT_FLAG_KEY;
-
                 packet.stream_index = data->VideoStream->index;
                 Console::WriteLine("Stream: {0} PTS: {1} -> {1} bytes", packet.stream_index, packet.pts, packet.size);
 
@@ -416,9 +413,6 @@ public:
                         packet.pts = libffmpeg::av_rescale_q(packet.pts, codecContext->time_base, data->VideoStream->time_base);
                     if (packet.dts != AV_NOPTS_VALUE)
                         packet.dts = libffmpeg::av_rescale_q(packet.dts, codecContext->time_base, data->VideoStream->time_base);
-
-                    if (codecContext->coded_frame->key_frame)
-                        packet.flags |= AV_PKT_FLAG_KEY;
 
                     packet.stream_index = data->VideoStream->index;
 
