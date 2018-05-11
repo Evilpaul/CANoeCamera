@@ -144,7 +144,7 @@ namespace AForge {
 					// get some properties of the video file
 					m_width = data->CodecContext->width;
 					m_height = data->CodecContext->height;
-					libffmpeg::AVRational fps = libffmpeg::av_stream_get_r_frame_rate(data->VideoStream);
+					libffmpeg::AVRational fps = data->VideoStream->r_frame_rate;
 					m_frameRate = Rational(fps.num, fps.den);
 					m_codecName = gcnew String(data->CodecContext->codec->name);
 					m_framesCount = data->VideoStream->nb_frames;
