@@ -103,8 +103,8 @@ public:
                     return nullptr;
                 }
 
-                libffmpeg::avpicture_fill((libffmpeg::AVPicture *) picture, (uint8_t *)picture_buf,
-                    pix_fmt, width, height);
+                libffmpeg::av_image_fill_arrays(picture->data, picture->linesize, (uint8_t *)picture_buf,
+                    pix_fmt, width, height, 1);
                 return picture;
             }
 
