@@ -243,10 +243,7 @@ public:
 
             // Class constructor
             VideoFileWriter::VideoFileWriter()
-                : data(nullptr), disposed(false)
-            {
-                libffmpeg::av_register_all();
-            }
+                : data(nullptr), disposed(false) { }
 
             // Creates a video file with the specified name and properties
             void VideoFileWriter::Open(String^ fileName, int width, int height, Rational frameRate,

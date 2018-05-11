@@ -56,10 +56,7 @@ namespace AForge {
 
 			// Class constructor
 			VideoFileReader::VideoFileReader(void) :
-				data(nullptr), disposed(false)
-			{
-				libffmpeg::av_register_all();
-			}
+				data(nullptr), disposed(false) { }
 
 #pragma managed(push, off)
 			static libffmpeg::AVFormatContext* open_file(const char* fileName)
