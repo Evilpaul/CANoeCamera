@@ -156,7 +156,7 @@ public:
                 {
                     data->VideoStream->need_parsing = libffmpeg::AVSTREAM_PARSE_FULL_ONCE;
 
-                    codecContex->coder_type = FF_CODER_TYPE_AC;
+                    //codecContex->coder_type = FF_CODER_TYPE_AC;
                     codecContex->profile = FF_PROFILE_H264_BASELINE;
                     //codecContex->crf = 25;
                     //codecContex->me_method = 7;
