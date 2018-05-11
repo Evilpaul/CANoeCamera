@@ -254,7 +254,7 @@ public class WebCam : MeasurementScript
                 Bitmap b = AddImageOverlay(frame, videoTime);
                 try
                 {
-                    vfw.WriteVideoFrame(frame);
+                    vfw.WriteVideoFrame(b);
                 }
                 catch (Exception ex)
                 {
