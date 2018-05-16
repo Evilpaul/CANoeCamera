@@ -42,7 +42,10 @@
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.triggerButton = new System.Windows.Forms.Button();
             this.settingsButton = new System.Windows.Forms.Button();
+            this.videoButton = new System.Windows.Forms.Button();
+            this.videoState = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.videoState)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -62,7 +65,7 @@
             this.devicesCombo.Name = "devicesCombo";
             this.devicesCombo.Size = new System.Drawing.Size(315, 21);
             this.devicesCombo.TabIndex = 1;
-            this.devicesCombo.SelectedIndexChanged += new System.EventHandler(this.devicesCombo_SelectedIndexChanged);
+            this.devicesCombo.SelectedIndexChanged += new System.EventHandler(this.DevicesCombo_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -110,7 +113,7 @@
             this.connectButton.TabIndex = 6;
             this.connectButton.Text = "&Connect";
             this.connectButton.UseVisualStyleBackColor = true;
-            this.connectButton.Click += new System.EventHandler(this.connectButton_Click);
+            this.connectButton.Click += new System.EventHandler(this.ConnectButton_Click);
             // 
             // disconnectButton
             // 
@@ -120,7 +123,7 @@
             this.disconnectButton.TabIndex = 7;
             this.disconnectButton.Text = "&Disconnect";
             this.disconnectButton.UseVisualStyleBackColor = true;
-            this.disconnectButton.Click += new System.EventHandler(this.disconnectButton_Click);
+            this.disconnectButton.Click += new System.EventHandler(this.DisconnectButton_Click);
             // 
             // panel1
             // 
@@ -161,7 +164,7 @@
             this.triggerButton.TabIndex = 9;
             this.triggerButton.Text = "&Trigger";
             this.triggerButton.UseVisualStyleBackColor = true;
-            this.triggerButton.Click += new System.EventHandler(this.triggerButton_Click);
+            this.triggerButton.Click += new System.EventHandler(this.TriggerButton_Click);
             // 
             // settingsButton
             // 
@@ -171,13 +174,35 @@
             this.settingsButton.TabIndex = 10;
             this.settingsButton.Text = "&Settings";
             this.settingsButton.UseVisualStyleBackColor = true;
-            this.settingsButton.Click += new System.EventHandler(this.settingsButton_Click);
+            this.settingsButton.Click += new System.EventHandler(this.SettingsButton_Click);
+            // 
+            // videoButton
+            // 
+            this.videoButton.Location = new System.Drawing.Point(229, 76);
+            this.videoButton.Name = "videoButton";
+            this.videoButton.Size = new System.Drawing.Size(75, 23);
+            this.videoButton.TabIndex = 11;
+            this.videoButton.Text = "&Video";
+            this.videoButton.UseVisualStyleBackColor = true;
+            this.videoButton.Click += new System.EventHandler(this.VideoButton_Click);
+            // 
+            // videoState
+            // 
+            this.videoState.BackColor = System.Drawing.Color.Red;
+            this.videoState.Location = new System.Drawing.Point(198, 76);
+            this.videoState.Name = "videoState";
+            this.videoState.Size = new System.Drawing.Size(23, 23);
+            this.videoState.TabIndex = 12;
+            this.videoState.TabStop = false;
+            this.videoState.Visible = false;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(519, 404);
+            this.Controls.Add(this.videoState);
+            this.Controls.Add(this.videoButton);
             this.Controls.Add(this.settingsButton);
             this.Controls.Add(this.triggerButton);
             this.Controls.Add(this.panel1);
@@ -196,6 +221,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.videoState)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -216,6 +242,8 @@
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.Button triggerButton;
         private System.Windows.Forms.Button settingsButton;
+        private System.Windows.Forms.Button videoButton;
+        private System.Windows.Forms.PictureBox videoState;
     }
 }
 
