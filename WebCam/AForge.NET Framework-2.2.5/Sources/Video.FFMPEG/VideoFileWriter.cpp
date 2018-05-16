@@ -400,7 +400,8 @@ public:
                     packet.size = 0;
 
                     // encode the image
-					if (libffmpeg::avcodec_send_frame(codecContext, nullptr) < 0)
+					int ret = libffmpeg::avcodec_send_frame(codecContext, nullptr);
+					if ((ret < 0) && (ret != AVERROR_EOF))
 						throw gcnew VideoException("Error sending a (flush)frame for encoding");
 
 					if (libffmpeg::avcodec_receive_packet(codecContext, &packet) < 0)
