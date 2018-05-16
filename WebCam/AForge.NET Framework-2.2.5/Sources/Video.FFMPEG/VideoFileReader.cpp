@@ -179,7 +179,7 @@ namespace AForge {
 					libffmpeg::sws_freeContext(data->ConvertContext);
 
 				if (data->Packet->data != nullptr)
-					libffmpeg::av_free_packet(data->Packet);
+					libffmpeg::av_packet_unref(data->Packet);
 
 				data = nullptr;
 			}
@@ -247,7 +247,7 @@ namespace AForge {
 						// free old packet if any
 						if (data->Packet->data != nullptr)
 						{
-							libffmpeg::av_free_packet(data->Packet);
+							libffmpeg::av_packet_unref(data->Packet);
 							data->Packet->data = nullptr;
 						}
 
@@ -273,7 +273,7 @@ namespace AForge {
 				// free last packet
 				if (data->Packet->data != nullptr)
 				{
-					libffmpeg::av_free_packet(data->Packet);
+					libffmpeg::av_packet_unref(data->Packet);
 					data->Packet->data = nullptr;
 				}
 
