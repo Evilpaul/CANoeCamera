@@ -245,10 +245,22 @@ namespace Snapshot_Maker
                 {
                     StopVideo();
 
+                    string filename;
+                    SaveFileDialog sfd = new SaveFileDialog();
+                    sfd.Filter = "video files|*.mp4;*.mkv;*.avi;*.mpg|All files (*.*)|*.*";
+                    if(sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        filename = sfd.FileName;
+                    }
+                    else
+                    {
+                        return;
+                    }
+
                     try
                     {
                         vfw = new VideoFileWriter();
-                        vfw.Open("test.mp4", videoDevice.VideoResolution.FrameSize.Width, videoDevice.VideoResolution.FrameSize.Height, videoDevice.VideoResolution.AverageFrameRate, VideoCodec.Default, 800000);
+                        vfw.Open(filename, videoDevice.VideoResolution.FrameSize.Width, videoDevice.VideoResolution.FrameSize.Height, videoDevice.VideoResolution.AverageFrameRate, VideoCodec.Default, 800000);
                         videoRequested = true;
                         videoState.Visible = true;
                     }
