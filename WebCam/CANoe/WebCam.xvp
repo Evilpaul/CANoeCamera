@@ -1,33 +1,49 @@
 <?xml version="1.0"?>
 <Panel Type="Vector.CANalyzer.Panels.PanelSerializer, Vector.CANalyzer.Panels.Serializer, Version=10.0.96.0, Culture=neutral, PublicKeyToken=null">
   <Object Type="Vector.CANalyzer.Panels.Runtime.Panel, Vector.CANalyzer.Panels.Common, Version=10.0.96.0, Culture=neutral, PublicKeyToken=null" Name="Panel" Children="Controls" ControlName="WebCam">
-    <Object Type="Vector.CANalyzer.Panels.Design.StaticTextControl, Vector.CANalyzer.Panels.CommonControls, Version=10.0.96.0, Culture=neutral, PublicKeyToken=null" Name="StaticTextControl3" Children="Controls" ControlName="Static Text 3">
-      <Property Name="Name">StaticTextControl3</Property>
-      <Property Name="Size">84, 13</Property>
-      <Property Name="Location">294, 62</Property>
-      <Property Name="Text">PreferredHeight:</Property>
+    <Object Type="Vector.CANalyzer.Panels.Design.ButtonControl, Vector.CANalyzer.Panels.CommonControls, Version=10.0.96.0, Culture=neutral, PublicKeyToken=null" Name="ButtonControl1" Children="Controls" ControlName="Button">
+      <Property Name="Name">ButtonControl1</Property>
+      <Property Name="Size">75, 23</Property>
+      <Property Name="Location">208, 82</Property>
+      <Property Name="Text">DX Panel</Property>
+      <Property Name="SymbolConfiguration">5;128;WebCamSysVar;;CameraProperties;DXbutton;1;;;-1;;;</Property>
+      <Property Name="TabIndex">22</Property>
     </Object>
-    <Object Type="Vector.CANalyzer.Panels.Design.StaticTextControl, Vector.CANalyzer.Panels.CommonControls, Version=10.0.96.0, Culture=neutral, PublicKeyToken=null" Name="StaticTextControl2" Children="Controls" ControlName="Static Text 2">
-      <Property Name="Name">StaticTextControl2</Property>
-      <Property Name="Size">81, 13</Property>
-      <Property Name="Location">297, 87</Property>
-      <Property Name="Text">PreferredWidth:</Property>
+    <Object Type="Vector.CANalyzer.Panels.Design.TextBoxControl, Vector.CANalyzer.Panels.CommonControls, Version=10.0.96.0, Culture=neutral, PublicKeyToken=null" Name="TextBoxControl6" Children="Controls" ControlName="Input/Output Box 4">
+      <Property Name="Name">TextBoxControl6</Property>
+      <Property Name="Size">226, 20</Property>
+      <Property Name="Location">332, 80</Property>
+      <Property Name="AlarmUpperTextColor">WindowText</Property>
+      <Property Name="ValueDecimalPlaces">0</Property>
+      <Property Name="AlarmLowerBkgColor">Salmon</Property>
+      <Property Name="ValueDisplay">Decimal</Property>
+      <Property Name="AlarmUpperBkgColor">IndianRed</Property>
+      <Property Name="AlarmLowerTextColor">WindowText</Property>
+      <Property Name="AlarmGeneralSettings">1;2;0;8000</Property>
+      <Property Name="DisplayLabel">Left</Property>
+      <Property Name="DescriptionText">PreferredCamera.Width:</Property>
+      <Property Name="DescriptionSize">127, 20</Property>
+      <Property Name="SymbolConfiguration">5;128;WebCamSysVar;;PreferredCamera;Width;1;;;-1;;;</Property>
+      <Property Name="TabIndex">9</Property>
+      <Property Name="ReadOnlyControl">True</Property>
     </Object>
-    <Object Type="Vector.CANalyzer.Panels.Design.NumericUpDownControl, Vector.CANalyzer.Panels.CommonControls, Version=10.0.96.0, Culture=neutral, PublicKeyToken=null" Name="NumericUpDownControl3" Children="Controls" ControlName="Numeric Up/Down 3">
-      <Property Name="Name">NumericUpDownControl3</Property>
-      <Property Name="Size">47, 20</Property>
-      <Property Name="Location">384, 85</Property>
-      <Property Name="Maximum">8000</Property>
-      <Property Name="SymbolConfiguration">5;16;WebCamSysVar;;;PreferredWidth;1;;;-1;;;</Property>
-      <Property Name="TabIndex">6</Property>
-    </Object>
-    <Object Type="Vector.CANalyzer.Panels.Design.NumericUpDownControl, Vector.CANalyzer.Panels.CommonControls, Version=10.0.96.0, Culture=neutral, PublicKeyToken=null" Name="NumericUpDownControl2" Children="Controls" ControlName="Numeric Up/Down 2">
-      <Property Name="Name">NumericUpDownControl2</Property>
-      <Property Name="Size">47, 20</Property>
-      <Property Name="Location">384, 60</Property>
-      <Property Name="Maximum">4000</Property>
-      <Property Name="SymbolConfiguration">5;16;WebCamSysVar;;;PreferredHeight;1;;;-1;;;</Property>
-      <Property Name="TabIndex">5</Property>
+    <Object Type="Vector.CANalyzer.Panels.Design.TextBoxControl, Vector.CANalyzer.Panels.CommonControls, Version=10.0.96.0, Culture=neutral, PublicKeyToken=null" Name="TextBoxControl3" Children="Controls" ControlName="Input/Output Box 3">
+      <Property Name="Name">TextBoxControl3</Property>
+      <Property Name="Size">230, 20</Property>
+      <Property Name="Location">328, 54</Property>
+      <Property Name="AlarmUpperTextColor">WindowText</Property>
+      <Property Name="ValueDecimalPlaces">0</Property>
+      <Property Name="AlarmLowerBkgColor">Salmon</Property>
+      <Property Name="ValueDisplay">Decimal</Property>
+      <Property Name="AlarmUpperBkgColor">IndianRed</Property>
+      <Property Name="AlarmLowerTextColor">WindowText</Property>
+      <Property Name="AlarmGeneralSettings">1;2;0;4000</Property>
+      <Property Name="DisplayLabel">Left</Property>
+      <Property Name="DescriptionText">PreferredCamera.Height:</Property>
+      <Property Name="DescriptionSize">131, 20</Property>
+      <Property Name="SymbolConfiguration">5;128;WebCamSysVar;;PreferredCamera;Height;1;;;-1;;;</Property>
+      <Property Name="TabIndex">8</Property>
+      <Property Name="ReadOnlyControl">True</Property>
     </Object>
     <Object Type="Vector.CANalyzer.Panels.Design.StaticTextControl, Vector.CANalyzer.Panels.CommonControls, Version=10.0.96.0, Culture=neutral, PublicKeyToken=null" Name="StaticTextControl1" Children="Controls" ControlName="Static Text">
       <Property Name="Name">StaticTextControl1</Property>
@@ -90,8 +106,9 @@
       <Property Name="DisplayLabel">Left</Property>
       <Property Name="DescriptionText">PreferredCamera:</Property>
       <Property Name="DescriptionSize">95, 20</Property>
-      <Property Name="SymbolConfiguration">5;16;WebCamSysVar;;;PreferredCamera;4;;;-1;;;</Property>
+      <Property Name="SymbolConfiguration">5;128;WebCamSysVar;;PreferredCamera;Name;4;;;-1;;;</Property>
       <Property Name="TabIndex">1</Property>
+      <Property Name="ReadOnlyControl">True</Property>
     </Object>
     <Object Type="Vector.CANalyzer.Panels.Design.TextBoxControl, Vector.CANalyzer.Panels.CommonControls, Version=10.0.96.0, Culture=neutral, PublicKeyToken=null" Name="TextBoxControl5" Children="Controls" ControlName="Input/Output Box">
       <Property Name="Name">TextBoxControl5</Property>
@@ -128,7 +145,7 @@
       <Property Name="TabIndex">0</Property>
     </Object>
     <Property Name="Name">Panel</Property>
-    <Property Name="Size">570, 117</Property>
+    <Property Name="Size">570, 114</Property>
     <Property Name="BackColor">White</Property>
   </Object>
 </Panel>
