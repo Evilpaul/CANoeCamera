@@ -21,6 +21,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>1701, 1702</NoWarn>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AForge, Version=2.2.5.0, Culture=neutral, PublicKeyToken=c1db6ff4eaa06aeb, processorArchitecture=MSIL">
@@ -119,6 +120,6 @@
     <PreBuildEvent>"$(CANoe_InstallDir)Scripts\ReleaseDotNetAssemblies.vbs" "$(SolutionPath)"</PreBuildEvent>
     <PostBuildEvent>"$(CANoe_InstallDir)Scripts\ReloadDotNetAssemblies.vbs" "$(SolutionPath)"
 
-xcopy "$(SolutionDir)\AForge.NET Framework-2.2.5\Externals\ffmpeg\ffmpeg-4.0-win32-shared\bin\*.dll" "$(SolutionDir)" /Y /I</PostBuildEvent>
+xcopy "$(SolutionDir)\AForge.NET Framework-2.2.5\Externals\ffmpeg\ffmpeg-4.1.1-win32-shared\bin\*.dll" "$(SolutionDir)" /Y /I</PostBuildEvent>
   </PropertyGroup>
 </Project>
