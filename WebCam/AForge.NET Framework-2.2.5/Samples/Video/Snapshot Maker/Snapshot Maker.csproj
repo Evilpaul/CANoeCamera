@@ -117,7 +117,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(SolutionDir)..\..\..\Externals\ffmpeg\ffmpeg-4.0-win32-shared\bin\*.dll" "$(TargetDir)" /Y /I</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(SolutionDir)..\..\..\Externals\ffmpeg\ffmpeg-4.1.1-win32-shared\bin\*.dll" "$(TargetDir)" /Y /I</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
