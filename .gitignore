@@ -331,3 +331,5 @@ ASALocalRun/
 WebCam/*.dll
 *.cfg_sysvars.*
 *.stcfg
+
+!WebCam/AForge.NET Framework-*/Externals/**
