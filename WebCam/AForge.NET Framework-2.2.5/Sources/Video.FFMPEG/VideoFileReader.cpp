@@ -22,8 +22,10 @@ namespace libffmpeg
 	}
 }
 
-namespace AForge {
-	namespace Video {
+namespace AForge
+{
+	namespace Video
+	{
 		namespace FFMPEG
 		{
 			// A structure to encapsulate all FFMPEG related private variable
@@ -184,10 +186,10 @@ namespace AForge {
 				data = nullptr;
 			}
 
-            int64_t FrameToPTS(libffmpeg::AVStream* stream, int frame)
+			int64_t FrameToPTS(libffmpeg::AVStream* stream, int frame)
 			{
-                return (int64_t(frame) * stream->r_frame_rate.den * stream->time_base.den)
-                    / (int64_t(stream->r_frame_rate.num) * stream->time_base.num);
+				return (int64_t(frame) * stream->r_frame_rate.den * stream->time_base.den)
+					/ (int64_t(stream->r_frame_rate.num) * stream->time_base.num);
 			}
 
 			// Read next video frame of the current video file
@@ -297,7 +299,7 @@ namespace AForge {
 						ImageLockMode::ReadWrite, PixelFormat::Format24bppRgb);
 				}
 
-                uint8_t* srcData[4] = { static_cast<uint8_t*>(static_cast<void*>(bitmapData->Scan0)),
+				uint8_t* srcData[4] = { static_cast<uint8_t*>(static_cast<void*>(bitmapData->Scan0)),
 					nullptr, nullptr, nullptr };
 				int srcLinesize[4] = { bitmapData->Stride, 0, 0, 0 };
 

@@ -16,8 +16,10 @@ using namespace AForge::Math;
 
 #include "VideoCodec.h"
 
-namespace AForge {
-	namespace Video {
+namespace AForge
+{
+	namespace Video
+	{
 		namespace FFMPEG
 		{
 			ref struct WriterPrivateData;
