@@ -36,7 +36,7 @@ namespace AForge.Controls
         private SolidBrush positiveAreaBrush = new SolidBrush( Color.White );
         private SolidBrush negativeAreaBrush = new SolidBrush( Color.LightGray );
         private SolidBrush manipulatorBrush  = new SolidBrush( Color.LightSeaGreen );
-        private SolidBrush disabledBrash     = new SolidBrush( Color.FromArgb( 240, 240, 240 ) );
+        private SolidBrush disabledBrush     = new SolidBrush( Color.FromArgb( 240, 240, 240 ) );
 
         // manipulator's size
         private const int manipulatorWidth = 11;
@@ -247,9 +247,9 @@ namespace AForge.Controls
             if ( isHorizontal )
             {
                 // draw area
-                g.FillRectangle( ( this.Enabled ) ? negativeAreaBrush : disabledBrash, leftMargin, topMargin,
+                g.FillRectangle( ( this.Enabled ) ? negativeAreaBrush : disabledBrush, leftMargin, topMargin,
                    clientWidth / 2 - leftMargin, manipulatorHeight / 2 );
-                g.FillRectangle( ( this.Enabled ) ? positiveAreaBrush : disabledBrash, clientWidth / 2, topMargin,
+                g.FillRectangle( ( this.Enabled ) ? positiveAreaBrush : disabledBrush, clientWidth / 2, topMargin,
                    clientWidth / 2 - leftMargin, manipulatorHeight / 2 );
                 g.DrawRectangle( borderPen, leftMargin, topMargin,
                    clientWidth - 1 - leftMargin * 2, manipulatorHeight / 2 );
@@ -259,7 +259,7 @@ namespace AForge.Controls
                 int ctrlManipulatorX = (int) ( manipulatatorPosition * ( clientWidth / 2 - leftMargin ) + clientWidth / 2 );
 
                 // draw manipulator
-                g.FillRectangle( ( this.Enabled ) ? manipulatorBrush : disabledBrash, ctrlManipulatorX - manipulatorWidth / 2, 0,
+                g.FillRectangle( ( this.Enabled ) ? manipulatorBrush : disabledBrush, ctrlManipulatorX - manipulatorWidth / 2, 0,
                     manipulatorWidth, manipulatorHeight );
                 g.DrawRectangle( borderPen, ctrlManipulatorX - manipulatorWidth / 2, 0,
                     manipulatorWidth, manipulatorHeight );
@@ -267,9 +267,9 @@ namespace AForge.Controls
             else
             {
                 // draw area
-                g.FillRectangle( ( this.Enabled ) ? positiveAreaBrush : disabledBrash, leftMargin, topMargin,
+                g.FillRectangle( ( this.Enabled ) ? positiveAreaBrush : disabledBrush, leftMargin, topMargin,
                     manipulatorHeight / 2, clientHeight / 2 - topMargin );
-                g.FillRectangle( ( this.Enabled ) ? negativeAreaBrush : disabledBrash, leftMargin, clientHeight / 2,
+                g.FillRectangle( ( this.Enabled ) ? negativeAreaBrush : disabledBrush, leftMargin, clientHeight / 2,
                    manipulatorHeight / 2, clientHeight / 2 - topMargin );
                 g.DrawRectangle( borderPen, leftMargin, topMargin,
                    manipulatorHeight / 2, clientHeight - 1 - topMargin * 2 );
@@ -280,7 +280,7 @@ namespace AForge.Controls
                 int ctrlManipulatorY = (int) ( -manipulatatorPosition * ( clientHeight / 2 - topMargin ) + clientHeight / 2 );
 
                 // draw manipulator
-                g.FillRectangle( ( this.Enabled ) ? manipulatorBrush : disabledBrash, 0, ctrlManipulatorY - manipulatorWidth / 2,
+                g.FillRectangle( ( this.Enabled ) ? manipulatorBrush : disabledBrush, 0, ctrlManipulatorY - manipulatorWidth / 2,
                     manipulatorHeight, manipulatorWidth );
                 g.DrawRectangle( borderPen, 0, ctrlManipulatorY - manipulatorWidth / 2,
                     manipulatorHeight, manipulatorWidth );

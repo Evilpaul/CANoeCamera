@@ -30,10 +30,8 @@ namespace AForge.Imaging.Textures
     /// </code>
     /// </remarks>
     /// 
-    public class TextureTools
+    public static class TextureTools
     {
-        // Avoid class instantiation
-        private TextureTools( ) { }
 
         /// <summary>
         /// Convert texture to grayscale bitmap.
@@ -50,7 +48,7 @@ namespace AForge.Imaging.Textures
             int height = texture.GetLength( 0 );
 
             // create new grawscale image
-            Bitmap dstImage = AForge.Imaging.Image.CreateGrayscaleImage( width, height );
+            Bitmap dstImage = Imaging.Image.CreateGrayscaleImage( width, height );
 
             // lock destination bitmap data
             BitmapData dstData = dstImage.LockBits(

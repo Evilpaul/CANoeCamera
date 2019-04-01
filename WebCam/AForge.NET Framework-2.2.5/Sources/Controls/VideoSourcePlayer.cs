@@ -306,7 +306,7 @@ namespace AForge.Controls
         /// Stop video source.
         /// </summary>
         /// 
-        /// <remarks><para>The method stops video source by calling its <see cref="AForge.Video.IVideoSource.Stop"/>
+        /// <remarks><para>The method stops video source by calling its <see cref="AForge.Video.IVideoSource.StopVideo"/>
         /// method, which abourts internal video source's thread. Use <see cref="SignalToStop"/> and
         /// <see cref="WaitForStop"/> for more polite video source stopping, which gives a chance for
         /// video source to perform proper shut down and clean up.
@@ -320,7 +320,7 @@ namespace AForge.Controls
 
             if ( videoSource != null )
             {
-                videoSource.Stop( );
+                videoSource.StopVideo( );
 
                 if ( currentFrame != null )
                 {

@@ -83,7 +83,7 @@ namespace AForge.Math.Random
         /// 
         /// <returns>Returns next random number.</returns>
         /// 
-        public float Next( )
+        public float Regenerate( )
         {
             return (float) rand.NextDouble( );
         }

@@ -57,7 +57,7 @@ namespace AForge.Imaging
         /// 
         /// <remarks>See remarks to <see cref="InternalData"/> property.</remarks>
         /// 
-        protected uint[,] integralImage = null;
+        protected uint[,] integralImage { get; set; } = null;
 
         // image's width and height
         private int width;

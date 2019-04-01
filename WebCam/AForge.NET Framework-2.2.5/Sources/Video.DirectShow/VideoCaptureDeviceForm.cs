@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Globalization;
 using System.Text;
 using System.Windows.Forms;
 
@@ -34,8 +35,6 @@ namespace AForge.Video.DirectShow
     {
         // collection of available video devices
         private FilterInfoCollection videoDevices;
-        // selected video device
-        private VideoCaptureDevice videoDevice;
 
         // supported capabilities of video and snapshots
         private Dictionary<string, VideoCapabilities> videoCapabilitiesDictionary = new Dictionary<string, VideoCapabilities>( );
@@ -85,15 +84,10 @@ namespace AForge.Video.DirectShow
         /// the dialog using "OK" button. If user canceled the dialog, the property is
         /// set to <see langword="null"/>.</para></remarks>
         /// 
-        public VideoCaptureDevice VideoDevice
-        {
-            get { return videoDevice; }
-        }
+        public VideoCaptureDevice VideoDevice { get; private set; }
 
-        private string videoDeviceMoniker = string.Empty;
         private Size captureSize = new Size( 0, 0 );
         private Size snapshotSize = new Size( 0, 0 );
-        private VideoInput videoInput = VideoInput.Default;
 
         /// <summary>
         /// Moniker string of the selected video device.
@@ -103,11 +97,7 @@ namespace AForge.Video.DirectShow
         /// on form completion or set video device which should be selected by default on
         /// form loading.</para></remarks>
         /// 
-        public string VideoDeviceMoniker
-        {
-            get { return videoDeviceMoniker; }
-            set { videoDeviceMoniker = value; }
-        }
+        public string VideoDeviceMoniker { get; set; } = string.Empty;
 
         /// <summary>
         /// Video frame size of the selected device.
@@ -144,11 +134,7 @@ namespace AForge.Video.DirectShow
         /// <remarks><para>The property allows to get video input of the selected device
         /// on form completion or set it to be selected by default on form loading.</para></remarks>
         /// 
-        public VideoInput VideoInput
-        {
-            get { return videoInput; }
-            set { videoInput = value; }
-        }
+        public VideoInput VideoInput { get; set; } = VideoInput.Default;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VideoCaptureDeviceForm"/> class.
@@ -189,7 +175,7 @@ namespace AForge.Video.DirectShow
 
             for ( int i = 0; i < videoDevices.Count; i++ )
             {
-                if ( videoDeviceMoniker == videoDevices[i].MonikerString )
+                if ( VideoDeviceMoniker == videoDevices[i].MonikerString )
                 {
                     selectedCameraIndex = i;
                     break;
@@ -202,14 +188,14 @@ namespace AForge.Video.DirectShow
         // Ok button clicked
         private void okButton_Click( object sender, EventArgs e )
         {
-            videoDeviceMoniker = videoDevice.Source;
+            VideoDeviceMoniker = VideoDevice.Source;
 
             // set video size
             if ( videoCapabilitiesDictionary.Count != 0 )
             {
                 VideoCapabilities caps = videoCapabilitiesDictionary[(string) videoResolutionsCombo.SelectedItem];
 
-                videoDevice.VideoResolution = caps;
+                VideoDevice.VideoResolution = caps;
                 captureSize = caps.FrameSize;
             }
 
@@ -220,8 +206,8 @@ namespace AForge.Video.DirectShow
                 {
                     VideoCapabilities caps = snapshotCapabilitiesDictionary[(string) snapshotResolutionsCombo.SelectedItem];
 
-                    videoDevice.ProvideSnapshots = true;
-                    videoDevice.SnapshotResolution = caps;
+                    VideoDevice.ProvideSnapshots = true;
+                    VideoDevice.SnapshotResolution = caps;
 
                     snapshotSize = caps.FrameSize;
                 }
@@ -229,8 +215,8 @@ namespace AForge.Video.DirectShow
 
             if ( availableVideoInputs.Length != 0 )
             {
-                videoInput = availableVideoInputs[videoInputsCombo.SelectedIndex];
-                videoDevice.CrossbarVideoInput = videoInput;
+                VideoInput = availableVideoInputs[videoInputsCombo.SelectedIndex];
+                VideoDevice.CrossbarVideoInput = VideoInput;
             }
         }
 
@@ -239,8 +225,8 @@ namespace AForge.Video.DirectShow
         {
             if ( videoDevices.Count != 0 )
             {
-                videoDevice = new VideoCaptureDevice( videoDevices[devicesCombo.SelectedIndex].MonikerString );
-                EnumeratedSupportedFrameSizes( videoDevice );
+                VideoDevice = new VideoCaptureDevice( videoDevices[devicesCombo.SelectedIndex].MonikerString );
+                EnumeratedSupportedFrameSizes( VideoDevice );
             }
         }
 
@@ -264,7 +250,7 @@ namespace AForge.Video.DirectShow
 
                 foreach ( VideoCapabilities capabilty in videoCapabilities )
                 {
-                    string item = string.Format(
+                    string item = string.Format(CultureInfo.InvariantCulture,
                         "{0} x {1}", capabilty.FrameSize.Width, capabilty.FrameSize.Height );
 
                     if ( !videoResolutionsCombo.Items.Contains( item ) )
@@ -299,7 +285,7 @@ namespace AForge.Video.DirectShow
 
                     foreach ( VideoCapabilities capabilty in snapshotCapabilities )
                     {
-                        string item = string.Format(
+                        string item = string.Format(CultureInfo.InvariantCulture,
                             "{0} x {1}", capabilty.FrameSize.Width, capabilty.FrameSize.Height );
 
                         if ( !snapshotResolutionsCombo.Items.Contains( item ) )
@@ -328,9 +314,9 @@ namespace AForge.Video.DirectShow
 
                 foreach ( VideoInput input in availableVideoInputs )
                 {
-                    string item = string.Format( "{0}: {1}", input.Index, input.Type );
+                    string item = string.Format(CultureInfo.InvariantCulture, "{0}: {1}", input.Index, input.Type );
 
-                    if ( ( input.Index == videoInput.Index ) && ( input.Type == videoInput.Type ) )
+                    if ( ( input.Index == VideoInput.Index ) && ( input.Type == VideoInput.Type ) )
                     {
                         videoInputIndex = videoInputsCombo.Items.Count;
                     }

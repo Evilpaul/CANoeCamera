@@ -46,7 +46,7 @@ namespace AForge.Imaging.Filters
         /// <summary>
         /// Threshold value.
         /// </summary>
-        protected int threshold = 128;
+        protected int threshold { get; set; } = 128;
 
         // private format translation dictionary
         private Dictionary<PixelFormat, PixelFormat> formatTranslations = new Dictionary<PixelFormat, PixelFormat>( );

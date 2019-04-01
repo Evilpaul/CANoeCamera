@@ -1,66 +1,65 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
 using System.IO;
+using System.Globalization;
 
-namespace Snapshot_Maker
+namespace SnapshotMaker
 {
     public partial class SnapshotForm : Form
     {
-        public SnapshotForm( )
+        private static object _syncRoot = new object();
+
+        public SnapshotForm()
         {
-            InitializeComponent( );
+            InitializeComponent();
         }
 
-        public void SetImage( Bitmap bitmap )
+        public void SetImage(Bitmap bitmap)
         {
-            timeBox.Text = DateTime.Now.ToLongTimeString( );
+            timeBox.Text = DateTime.Now.ToLongTimeString();
 
-            lock ( this )
+            lock (_syncRoot)
             {
-                Bitmap old = (Bitmap) pictureBox.Image;
+                Bitmap old = (Bitmap)pictureBox.Image;
                 pictureBox.Image = bitmap;
 
-                if ( old != null )
+                if (old != null)
                 {
-                    old.Dispose( );
+                    old.Dispose();
                 }
             }
         }
 
-        private void saveButton_Click( object sender, EventArgs e )
+        private void SaveButton_Click(object sender, EventArgs e)
         {
-            if ( saveFileDialog.ShowDialog( ) == DialogResult.OK )
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                string ext = Path.GetExtension( saveFileDialog.FileName ).ToLower( );
+                string ext = Path.GetExtension(saveFileDialog.FileName);
                 ImageFormat format = ImageFormat.Jpeg;
 
-                if ( ext == ".bmp" )
+                if (string.Compare(ext, ".bmp", true, CultureInfo.InvariantCulture) == 0)
                 {
                     format = ImageFormat.Bmp;
                 }
-                else if ( ext == ".png" )
+                else if (string.Compare(ext, ".png", true, CultureInfo.InvariantCulture) == 0)
                 {
                     format = ImageFormat.Png;
                 }
 
                 try
                 {
-                    lock ( this )
+                    lock (_syncRoot)
                     {
-                        Bitmap image = (Bitmap) pictureBox.Image;
+                        Bitmap image = (Bitmap)pictureBox.Image;
 
-                        image.Save( saveFileDialog.FileName, format );
+                        image.Save(saveFileDialog.FileName, format);
                     }
                 }
-                catch ( Exception ex )
+                catch (Exception ex)
                 {
-                    MessageBox.Show( "Failed saving the snapshot.\n" + ex.Message,
-                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                    MessageBox.Show("Failed saving the snapshot.\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

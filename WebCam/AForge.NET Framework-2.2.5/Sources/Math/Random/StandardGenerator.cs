@@ -81,7 +81,7 @@ namespace AForge.Math.Random
         /// 
         /// <returns>Returns next random number.</returns>
         /// 
-        public float Next( )
+        public float Regenerate( )
         {
             // check if we can use second value
             if ( useSecond )
@@ -96,8 +96,8 @@ namespace AForge.Math.Random
             // generate new numbers
             do
             {
-                x1 = (float) rand.Next( ) * 2.0f - 1.0f;
-                x2 = (float) rand.Next( ) * 2.0f - 1.0f;
+                x1 = (float) rand.Regenerate( ) * 2.0f - 1.0f;
+                x2 = (float) rand.Regenerate( ) * 2.0f - 1.0f;
                 w  = x1 * x1 + x2 * x2;
             }
             while ( w >= 1.0f );

@@ -42,7 +42,7 @@ namespace AForge.Imaging.Filters
     public class ResizeNearestNeighbor : BaseResizeFilter
     {
         // format translation dictionary
-        private Dictionary<PixelFormat, PixelFormat> formatTranslations = new Dictionary<PixelFormat, PixelFormat>( );
+        private readonly Dictionary<PixelFormat, PixelFormat> formatTranslations = new Dictionary<PixelFormat, PixelFormat>( );
 
         /// <summary>
         /// Format translations dictionary.
@@ -87,22 +87,22 @@ namespace AForge.Imaging.Filters
             int pixelSize = Image.GetPixelFormatSize( sourceData.PixelFormat ) / 8;
             int srcStride = sourceData.Stride;
             int dstStride = destinationData.Stride;
-            double xFactor = (double) width / newWidth;
-            double yFactor = (double) height / newHeight;
+            double xFactor = (double) width / NewWidth;
+            double yFactor = (double) height / NewHeight;
 
             // do the job
             byte* baseSrc = (byte*) sourceData.ImageData.ToPointer( );
             byte* baseDst = (byte*) destinationData.ImageData.ToPointer( );
 
             // for each line
-            for ( int y = 0; y < newHeight; y++ )
+            for ( int y = 0; y < NewHeight; y++ )
             {
                 byte* dst = baseDst + dstStride * y;
                 byte* src = baseSrc + srcStride * ( (int) ( y * yFactor ) );
                 byte* p;
 
                 // for each pixel
-                for ( int x = 0; x < newWidth; x++ )
+                for ( int x = 0; x < NewWidth; x++ )
                 {
                     p = src + pixelSize * ( (int) ( x * xFactor ) );
 

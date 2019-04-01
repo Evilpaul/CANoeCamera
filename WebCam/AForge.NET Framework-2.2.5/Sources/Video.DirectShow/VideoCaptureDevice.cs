@@ -51,7 +51,7 @@ namespace AForge.Video.DirectShow
     /// </code>
     /// </remarks>
     /// 
-    public class VideoCaptureDevice : IVideoSource
+    public class VideoCaptureDevice : IVideoSource, IDisposable
     {
         // moniker string of video capture device
         private string deviceMoniker;
@@ -339,8 +339,8 @@ namespace AForge.Video.DirectShow
         /// <remarks><para>The property is obsolete. Use <see cref="VideoResolution"/> property instead.
         /// Setting this property does not have any effect.</para></remarks>
         /// 
-        [Obsolete]
-        public Size DesiredFrameSize
+        [Obsolete("The property is obsolete. Use VideoResolution property instead.", false)]
+        public static Size DesiredFrameSize
         {
             get { return Size.Empty; }
             set { }
@@ -353,8 +353,8 @@ namespace AForge.Video.DirectShow
         /// <remarks><para>The property is obsolete. Use <see cref="SnapshotResolution"/> property instead.
         /// Setting this property does not have any effect.</para></remarks>
         /// 
-        [Obsolete]
-        public Size DesiredSnapshotSize
+        [Obsolete("The property is obsolete. Use SnapshotResolution property instead.", false)]
+        public static Size DesiredSnapshotSize
         {
             get { return Size.Empty; }
             set { }
@@ -366,8 +366,8 @@ namespace AForge.Video.DirectShow
         /// 
         /// <remarks><para>The property is obsolete. Setting this property does not have any effect.</para></remarks>
         /// 
-        [Obsolete]
-        public int DesiredFrameRate
+        [Obsolete("The property is obsolete.", false)]
+        public static int DesiredFrameRate
         {
             get { return 0; }
             set { }
@@ -629,7 +629,7 @@ namespace AForge.Video.DirectShow
         /// <see cref="WaitForStop">waiting</see> for background thread's completion.</note></para>
         /// </remarks>
         /// 
-        public void Stop()
+        public void StopVideo()
         {
             if (this.IsRunning)
             {
@@ -670,7 +670,7 @@ namespace AForge.Video.DirectShow
         public void DisplayPropertyPage(IntPtr parentWindow)
         {
             // check source
-            if ((deviceMoniker == null) || (deviceMoniker == string.Empty))
+            if ((deviceMoniker == null) || (string.IsNullOrEmpty(deviceMoniker)))
                 throw new ArgumentException("Video source is not specified.");
 
             lock (sync)
@@ -1197,7 +1197,7 @@ namespace AForge.Video.DirectShow
                 graph = (IFilterGraph2)graphObject;
 
                 // set filter graph to the capture graph builder
-                captureGraph.SetFiltergraph((IGraphBuilder)graph);
+                _ = captureGraph.SetFiltergraph((IGraphBuilder)graph);
 
                 // create source device's object
                 sourceObject = FilterInfo.CreateFilter(deviceMoniker);
@@ -1232,20 +1232,20 @@ namespace AForge.Video.DirectShow
                 snapshotGrabberBase = (IBaseFilter)snapshotGrabberObject;
 
                 // add source and grabber filters to graph
-                graph.AddFilter(sourceBase, "source");
-                graph.AddFilter(videoGrabberBase, "grabber_video");
-                graph.AddFilter(snapshotGrabberBase, "grabber_snapshot");
+                _ = graph.AddFilter(sourceBase, "source");
+                _ = graph.AddFilter(videoGrabberBase, "grabber_video");
+                _ = graph.AddFilter(snapshotGrabberBase, "grabber_snapshot");
 
                 // set media type
                 AMMediaType mediaType = new AMMediaType();
                 mediaType.MajorType = MediaType.Video;
                 mediaType.SubType = MediaSubType.RGB24;
 
-                videoSampleGrabber.SetMediaType(mediaType);
-                snapshotSampleGrabber.SetMediaType(mediaType);
+                _ = videoSampleGrabber.SetMediaType(mediaType);
+                _ = snapshotSampleGrabber.SetMediaType(mediaType);
 
                 // get crossbar object to to allows configuring pins of capture card
-                captureGraph.FindInterface(FindDirection.UpstreamOnly, Guid.Empty, sourceBase, typeof(IAMCrossbar).GUID, out crossbarObject);
+                _ = captureGraph.FindInterface(FindDirection.UpstreamOnly, Guid.Empty, sourceBase, typeof(IAMCrossbar).GUID, out crossbarObject);
                 if (crossbarObject != null)
                 {
                     crossbar = (IAMCrossbar)crossbarObject;
@@ -1256,27 +1256,27 @@ namespace AForge.Video.DirectShow
                 if (videoControl != null)
                 {
                     // find Still Image output pin of the vedio device
-                    captureGraph.FindPin(sourceObject, PinDirection.Output,
+                    _ = captureGraph.FindPin(sourceObject, PinDirection.Output,
                         PinCategory.StillImage, MediaType.Video, false, 0, out pinStillImage);
                     // check if it support trigger mode
                     if (pinStillImage != null)
                     {
                         VideoControlFlags caps;
-                        videoControl.GetCaps(pinStillImage, out caps);
+                        _ = videoControl.GetCaps(pinStillImage, out caps);
                         isSapshotSupported = (((caps & VideoControlFlags.ExternalTriggerEnable) != 0) ||
                                                ((caps & VideoControlFlags.Trigger) != 0));
                     }
                 }
 
                 // configure video sample grabber
-                videoSampleGrabber.SetBufferSamples(false);
-                videoSampleGrabber.SetOneShot(false);
-                videoSampleGrabber.SetCallback(videoGrabber, 1);
+                _ = videoSampleGrabber.SetBufferSamples(false);
+                _ = videoSampleGrabber.SetOneShot(false);
+                _ = videoSampleGrabber.SetCallback(videoGrabber, 1);
 
                 // configure snapshot sample grabber
-                snapshotSampleGrabber.SetBufferSamples(true);
-                snapshotSampleGrabber.SetOneShot(false);
-                snapshotSampleGrabber.SetCallback(snapshotGrabber, 1);
+                _ = snapshotSampleGrabber.SetBufferSamples(true);
+                _ = snapshotSampleGrabber.SetOneShot(false);
+                _ = snapshotSampleGrabber.SetCallback(snapshotGrabber, 1);
 
                 // configure pins
                 GetPinCapabilitiesAndConfigureSizeAndRate(captureGraph, sourceBase,
@@ -1310,7 +1310,7 @@ namespace AForge.Video.DirectShow
                 if (runGraph)
                 {
                     // render capture pin
-                    captureGraph.RenderStream(PinCategory.Capture, MediaType.Video, sourceBase, null, videoGrabberBase);
+                    _ = captureGraph.RenderStream(PinCategory.Capture, MediaType.Video, sourceBase, null, videoGrabberBase);
 
                     if (videoSampleGrabber.GetConnectedMediaType(mediaType) == 0)
                     {
@@ -1325,7 +1325,7 @@ namespace AForge.Video.DirectShow
                     if ((isSapshotSupported) && (provideSnapshots))
                     {
                         // render snapshot pin
-                        captureGraph.RenderStream(PinCategory.StillImage, MediaType.Video, sourceBase, null, snapshotGrabberBase);
+                        _ = captureGraph.RenderStream(PinCategory.StillImage, MediaType.Video, sourceBase, null, snapshotGrabberBase);
 
                         if (snapshotSampleGrabber.GetConnectedMediaType(mediaType) == 0)
                         {
@@ -1347,12 +1347,12 @@ namespace AForge.Video.DirectShow
                     DsEvCode code;
 
                     // run
-                    mediaControl.Run();
+                    _ = mediaControl.Run();
 
                     if ((isSapshotSupported) && (provideSnapshots))
                     {
                         startTime = DateTime.Now;
-                        videoControl.SetMode(pinStillImage, VideoControlFlags.ExternalTriggerEnable);
+                        _ = videoControl.SetMode(pinStillImage, VideoControlFlags.ExternalTriggerEnable);
                     }
 
                     do
@@ -1361,7 +1361,7 @@ namespace AForge.Video.DirectShow
                         {
                             if (mediaEvent.GetEvent(out code, out p1, out p2, 0) >= 0)
                             {
-                                mediaEvent.FreeEventParams(code, p1, p2);
+                                _ = mediaEvent.FreeEventParams(code, p1, p2);
 
                                 if (code == DsEvCode.DeviceLost)
                                 {
@@ -1388,7 +1388,7 @@ namespace AForge.Video.DirectShow
 
                             if ((isSapshotSupported) && (provideSnapshots))
                             {
-                                videoControl.SetMode(pinStillImage, VideoControlFlags.Trigger);
+                                _ = videoControl.SetMode(pinStillImage, VideoControlFlags.Trigger);
                             }
                         }
 
@@ -1416,7 +1416,7 @@ namespace AForge.Video.DirectShow
                     }
                     while (!stopEvent.WaitOne(100, false));
 
-                    mediaControl.Stop();
+                    _ = mediaControl.Stop();
                 }
             }
             catch (Exception exception)
@@ -1483,7 +1483,7 @@ namespace AForge.Video.DirectShow
         }
 
         // Set resolution for the specified stream configuration
-        private void SetResolution(IAMStreamConfig streamConfig, VideoCapabilities resolution)
+        private static void SetResolution(IAMStreamConfig streamConfig, VideoCapabilities resolution)
         {
             if (resolution == null)
             {
@@ -1495,7 +1495,7 @@ namespace AForge.Video.DirectShow
             AMMediaType newMediaType = null;
             VideoStreamConfigCaps caps = new VideoStreamConfigCaps();
 
-            streamConfig.GetNumberOfCapabilities(out capabilitiesCount, out capabilitySize);
+            _ = streamConfig.GetNumberOfCapabilities(out capabilitiesCount, out capabilitySize);
 
             for (int i = 0; i < capabilitiesCount; i++)
             {
@@ -1519,17 +1519,17 @@ namespace AForge.Video.DirectShow
             // set the new format
             if (newMediaType != null)
             {
-                streamConfig.SetFormat(newMediaType);
+                _ = streamConfig.SetFormat(newMediaType);
                 newMediaType.Dispose();
             }
         }
 
         // Configure specified pin and collect its capabilities if required
-        private void GetPinCapabilitiesAndConfigureSizeAndRate(ICaptureGraphBuilder2 graphBuilder, IBaseFilter baseFilter,
+        private static void GetPinCapabilitiesAndConfigureSizeAndRate(ICaptureGraphBuilder2 graphBuilder, IBaseFilter baseFilter,
             Guid pinCategory, VideoCapabilities resolutionToSet, ref VideoCapabilities[] capabilities)
         {
             object streamConfigObject;
-            graphBuilder.FindInterface(pinCategory, MediaType.Video, baseFilter, typeof(IAMStreamConfig).GUID, out streamConfigObject);
+            _ = graphBuilder.FindInterface(pinCategory, MediaType.Video, baseFilter, typeof(IAMStreamConfig).GUID, out streamConfigObject);
 
             if (streamConfigObject != null)
             {
@@ -1585,13 +1585,13 @@ namespace AForge.Video.DirectShow
 
                 // get property pages from the property bag
                 CAUUID caGUID;
-                pPropPages.GetPages(out caGUID);
+                _ = pPropPages.GetPages(out caGUID);
 
                 // get filter info
                 FilterInfo filterInfo = new FilterInfo(deviceMoniker);
 
                 // create and display the OlePropertyFrame
-                Win32.OleCreatePropertyFrame(parentWindow, 0, 0, filterInfo.Name, 1, ref sourceObject, caGUID.cElems, caGUID.pElems, 0, 0, IntPtr.Zero);
+                _ = Win32.OleCreatePropertyFrame(parentWindow, 0, 0, filterInfo.Name, 1, ref sourceObject, caGUID.cElems, caGUID.pElems, 0, 0, IntPtr.Zero);
 
                 // release COM objects
                 Marshal.FreeCoTaskMem(caGUID.pElems);
@@ -1647,7 +1647,7 @@ namespace AForge.Video.DirectShow
         }
 
         // Get type of input connected to video output of the crossbar
-        private VideoInput GetCurrentCrossbarInput(IAMCrossbar crossbar)
+        private static VideoInput GetCurrentCrossbarInput(IAMCrossbar crossbar)
         {
             VideoInput videoInput = VideoInput.Default;
 
@@ -1682,7 +1682,7 @@ namespace AForge.Video.DirectShow
                     {
                         PhysicalConnectorType inputType;
 
-                        crossbar.get_CrossbarPinInfo(true, videoInputPinIndex, out pinIndexRelated, out inputType);
+                        _ = crossbar.get_CrossbarPinInfo(true, videoInputPinIndex, out pinIndexRelated, out inputType);
 
                         videoInput = new VideoInput(videoInputPinIndex, inputType);
                     }
@@ -1693,7 +1693,7 @@ namespace AForge.Video.DirectShow
         }
 
         // Set type of input connected to video output of the crossbar
-        private void SetCurrentCrossbarInput(IAMCrossbar crossbar, VideoInput videoInput)
+        private static void SetCurrentCrossbarInput(IAMCrossbar crossbar, VideoInput videoInput)
         {
             if (videoInput.Type != PhysicalConnectorType.Default)
             {
@@ -1737,7 +1737,7 @@ namespace AForge.Video.DirectShow
                     if ((videoInputPinIndex != -1) && (videoOutputPinIndex != -1) &&
                          (crossbar.CanRoute(videoOutputPinIndex, videoInputPinIndex) == 0))
                     {
-                        crossbar.Route(videoOutputPinIndex, videoInputPinIndex);
+                        _ = crossbar.Route(videoOutputPinIndex, videoInputPinIndex);
                     }
                 }
             }
@@ -1837,7 +1837,7 @@ namespace AForge.Video.DirectShow
 
                         for (int y = 0; y < height; y++)
                         {
-                            Win32.memcpy(dst, src, srcStride);
+                            _ = Win32.memcpy(dst, src, srcStride);
                             dst -= dstStride;
                             src += srcStride;
                         }
@@ -1861,6 +1861,26 @@ namespace AForge.Video.DirectShow
                 }
 
                 return 0;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        // The bulk of the clean-up code is implemented in Dispose(bool)
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // free managed resources
+                if (stopEvent != null)
+                {
+                    stopEvent.Dispose();
+                    stopEvent = null;
+                }
             }
         }
     }

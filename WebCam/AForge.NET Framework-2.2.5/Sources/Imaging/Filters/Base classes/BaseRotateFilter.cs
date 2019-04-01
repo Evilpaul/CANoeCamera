@@ -23,17 +23,17 @@ namespace AForge.Imaging.Filters
         /// <summary>
         /// Rotation angle.
         /// </summary>
-        protected double angle;
+        protected double angle { get; set; }
 
         /// <summary>
         /// Keep image size or not.
         /// </summary>
-        protected bool keepSize = false;
+        protected bool keepSize { get; set; } = false;
 
         /// <summary>
         /// Fill color.
         /// </summary>
-        protected Color fillColor = Color.FromArgb( 0, 0, 0 );
+        protected Color fillColor { get; set; } = Color.FromArgb( 0, 0, 0 );
 
         /// <summary>
         /// Rotation angle, [0, 360].

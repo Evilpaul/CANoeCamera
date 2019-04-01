@@ -45,7 +45,7 @@ namespace AForge.Imaging.Filters
     public class ResizeBicubic : BaseResizeFilter
     {
         // format translation dictionary
-        private Dictionary<PixelFormat, PixelFormat> formatTranslations = new Dictionary<PixelFormat, PixelFormat>( );
+        private readonly Dictionary<PixelFormat, PixelFormat> formatTranslations = new Dictionary<PixelFormat, PixelFormat>( );
 
         /// <summary>
         /// Format translations dictionary.
@@ -84,9 +84,9 @@ namespace AForge.Imaging.Filters
 
             int pixelSize = ( sourceData.PixelFormat == PixelFormat.Format8bppIndexed ) ? 1 : 3;
             int srcStride = sourceData.Stride;
-            int dstOffset = destinationData.Stride - pixelSize * newWidth;
-            double xFactor = (double) width / newWidth;
-            double yFactor = (double) height / newHeight;
+            int dstOffset = destinationData.Stride - pixelSize * NewWidth;
+            double xFactor = (double) width / NewWidth;
+            double yFactor = (double) height / NewHeight;
 
             // do the job
             byte* src = (byte*) sourceData.ImageData.ToPointer( );
@@ -107,14 +107,14 @@ namespace AForge.Imaging.Filters
             if ( destinationData.PixelFormat == PixelFormat.Format8bppIndexed )
             {
                 // grayscale
-                for ( int y = 0; y < newHeight; y++ )
+                for ( int y = 0; y < NewHeight; y++ )
                 {
                     // Y coordinates
                     oy  = (double) y * yFactor - 0.5;
                     oy1 = (int) oy;
                     dy  = oy - (double) oy1;
 
-                    for ( int x = 0; x < newWidth; x++, dst++ )
+                    for ( int x = 0; x < NewWidth; x++, dst++ )
                     {
                         // X coordinates
                         ox  = (double) x * xFactor - 0.5f;
@@ -157,14 +157,14 @@ namespace AForge.Imaging.Filters
             else
             {
                 // RGB
-                for ( int y = 0; y < newHeight; y++ )
+                for ( int y = 0; y < NewHeight; y++ )
                 {
                     // Y coordinates
                     oy  = (double) y * yFactor - 0.5f;
                     oy1 = (int) oy;
                     dy  = oy - (double) oy1;
 
-                    for ( int x = 0; x < newWidth; x++, dst += 3 )
+                    for ( int x = 0; x < NewWidth; x++, dst += 3 )
                     {
                         // X coordinates
                         ox  = (double) x * xFactor - 0.5f;

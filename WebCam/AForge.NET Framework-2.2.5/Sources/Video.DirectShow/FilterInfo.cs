@@ -68,7 +68,7 @@ namespace AForge.Video.DirectShow
             if ( f == null )
                 return 1;
 
-            return ( this.Name.CompareTo( f.Name ) );
+            return string.Compare(Name, f.Name, StringComparison.InvariantCulture);
         }
 
         /// <summary>
@@ -86,24 +86,21 @@ namespace AForge.Video.DirectShow
             // filter's object
             object filterObject = null;
             // bind context and moniker objects
-            IBindCtx bindCtx = null;
-            IMoniker moniker = null;
 
             int n = 0;
-
             // create bind context
-            if ( Win32.CreateBindCtx( 0, out bindCtx ) == 0 )
+            if (Win32.CreateBindCtx(0, out IBindCtx bindCtx) == 0)
             {
                 // convert moniker`s string to a moniker
-                if ( Win32.MkParseDisplayName( bindCtx, filterMoniker, ref n, out moniker ) == 0 )
+                if (Win32.MkParseDisplayName(bindCtx, filterMoniker, ref n, out IMoniker moniker) == 0)
                 {
                     // get device base filter
-                    Guid filterId = typeof( IBaseFilter ).GUID;
-                    moniker.BindToObject( null, null, ref filterId, out filterObject );
+                    Guid filterId = typeof(IBaseFilter).GUID;
+                    moniker.BindToObject(null, null, ref filterId, out filterObject);
 
-                    Marshal.ReleaseComObject( moniker );
+                    Marshal.ReleaseComObject(moniker);
                 }
-                Marshal.ReleaseComObject( bindCtx );
+                Marshal.ReleaseComObject(bindCtx);
             }
             return filterObject;
         }
@@ -113,17 +110,16 @@ namespace AForge.Video.DirectShow
         //
         private string GetMonikerString( IMoniker moniker )
         {
-            string str;
-            moniker.GetDisplayName( null, null, out str );
+            moniker.GetDisplayName(null, null, out string str);
             return str;
         }
 
         //
         // Get filter name represented by the moniker
         //
-        private string GetName( IMoniker moniker )
+        private static string GetName( IMoniker moniker )
         {
-            Object bagObj = null;
+            object bagObj = null;
             IPropertyBag bag = null;
 
             try
@@ -167,27 +163,80 @@ namespace AForge.Video.DirectShow
         //
         private string GetName( string monikerString )
         {
-            IBindCtx bindCtx = null;
-            IMoniker moniker = null;
-            String name = "";
+            string name = "";
             int n = 0;
 
             // create bind context
-            if ( Win32.CreateBindCtx( 0, out bindCtx ) == 0 )
+            if ( Win32.CreateBindCtx( 0, out IBindCtx bindCtx ) == 0 )
             {
                 // convert moniker`s string to a moniker
-                if ( Win32.MkParseDisplayName( bindCtx, monikerString, ref n, out moniker ) == 0 )
+                if (Win32.MkParseDisplayName(bindCtx, monikerString, ref n, out IMoniker moniker) == 0)
                 {
                     // get device name
-                    name = GetName( moniker );
+                    name = GetName(moniker);
 
-                    Marshal.ReleaseComObject( moniker );
+                    Marshal.ReleaseComObject(moniker);
                     moniker = null;
                 }
                 Marshal.ReleaseComObject( bindCtx );
                 bindCtx = null;
             }
             return name;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj is null)
+            {
+                return false;
+            }
+
+            throw new NotImplementedException();
+        }
+
+        public override int GetHashCode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool operator ==(FilterInfo left, FilterInfo right)
+        {
+            if (left is null)
+            {
+                return right is null;
+            }
+
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(FilterInfo left, FilterInfo right)
+        {
+            return !(left == right);
+        }
+
+        public static bool operator <(FilterInfo left, FilterInfo right)
+        {
+            return left is null ? !(right is null) : left.CompareTo(right) < 0;
+        }
+
+        public static bool operator <=(FilterInfo left, FilterInfo right)
+        {
+            return left is null || left.CompareTo(right) <= 0;
+        }
+
+        public static bool operator >(FilterInfo left, FilterInfo right)
+        {
+            return !(left is null) && left.CompareTo(right) > 0;
+        }
+
+        public static bool operator >=(FilterInfo left, FilterInfo right)
+        {
+            return left is null ? right is null : left.CompareTo(right) >= 0;
         }
     }
 }

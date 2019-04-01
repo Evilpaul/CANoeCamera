@@ -42,7 +42,7 @@ namespace AForge.Imaging.Filters
     public class ResizeBilinear : BaseResizeFilter
     {
         // format translation dictionary
-        private Dictionary<PixelFormat, PixelFormat> formatTranslations = new Dictionary<PixelFormat, PixelFormat>( );
+        private readonly Dictionary<PixelFormat, PixelFormat> formatTranslations = new Dictionary<PixelFormat, PixelFormat>( );
 
         /// <summary>
         /// Format translations dictionary.
@@ -83,9 +83,9 @@ namespace AForge.Imaging.Filters
 
             int pixelSize = Image.GetPixelFormatSize( sourceData.PixelFormat ) / 8;
             int srcStride = sourceData.Stride;
-            int dstOffset = destinationData.Stride - pixelSize * newWidth;
-            double xFactor = (double) width / newWidth;
-            double yFactor = (double) height / newHeight;
+            int dstOffset = destinationData.Stride - pixelSize * NewWidth;
+            double xFactor = (double) width / NewWidth;
+            double yFactor = (double) height / NewHeight;
 
             // do the job
             byte* src = (byte*) sourceData.ImageData.ToPointer( );
@@ -102,7 +102,7 @@ namespace AForge.Imaging.Filters
             byte* p1, p2, p3, p4;
 
             // for each line
-            for ( int y = 0; y < newHeight; y++ )
+            for ( int y = 0; y < NewHeight; y++ )
             {
                 // Y coordinates
                 oy  = (double) y * yFactor;
@@ -116,7 +116,7 @@ namespace AForge.Imaging.Filters
                 tp2 = src + oy2 * srcStride;
 
                 // for each pixel
-                for ( int x = 0; x < newWidth; x++ )
+                for ( int x = 0; x < NewWidth; x++ )
                 {
                     // X coordinates
                     ox  = (double) x * xFactor;

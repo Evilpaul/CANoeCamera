@@ -47,7 +47,7 @@ namespace AForge.Video.DirectShow
     /// </code>
     /// </remarks>
     /// 
-    public class FileVideoSource : IVideoSource
+    public class FileVideoSource : IVideoSource, IDisposable
     {
         // video file name
         private string fileName;
@@ -244,7 +244,7 @@ namespace AForge.Video.DirectShow
             if ( !IsRunning )
             {
                 // check source
-                if ( ( fileName == null ) || ( fileName == string.Empty ) )
+                if ( ( fileName == null ) || (string.IsNullOrEmpty(fileName)) )
                     throw new ArgumentException( "Video source is not specified" );
 
                 framesReceived = 0;
@@ -307,7 +307,7 @@ namespace AForge.Video.DirectShow
         /// <see cref="WaitForStop">waiting</see> for background thread's completion.</note></para>
         /// </remarks>
         /// 
-        public void Stop( )
+        public void StopVideo( )
         {
             if ( this.IsRunning )
             {
@@ -365,7 +365,7 @@ namespace AForge.Video.DirectShow
                 graph = (IGraphBuilder) graphObject;
 
                 // create source device's object
-                graph.AddSourceFilter( fileName, "source", out sourceBase );
+                _ = graph.AddSourceFilter(fileName, "source", out sourceBase);
                 if ( sourceBase == null )
                     throw new ApplicationException( "Failed creating source filter" );
 
@@ -380,13 +380,13 @@ namespace AForge.Video.DirectShow
                 grabberBase = (IBaseFilter) grabberObject;
 
                 // add grabber filters to graph
-                graph.AddFilter( grabberBase, "grabber" );
+                _ = graph.AddFilter(grabberBase, "grabber");
 
                 // set media type
                 AMMediaType mediaType = new AMMediaType( );
                 mediaType.MajorType = MediaType.Video;
                 mediaType.SubType = MediaSubType.RGB24;
-                sampleGrabber.SetMediaType( mediaType );
+                _ = sampleGrabber.SetMediaType(mediaType);
 
                 // connect pins
                 int pinToTry = 0;
@@ -434,24 +434,24 @@ namespace AForge.Video.DirectShow
                 if ( !preventFreezing )
                 {
                     // render pin
-                    graph.Render( Tools.GetOutPin( grabberBase, 0 ) );
+                    _ = graph.Render( Tools.GetOutPin( grabberBase, 0 ) );
 
                     // configure video window
                     IVideoWindow window = (IVideoWindow) graphObject;
-                    window.put_AutoShow( false );
+                    _ = window.put_AutoShow( false );
                     window = null;
                 }
 
                 // configure sample grabber
-                sampleGrabber.SetBufferSamples( false );
-                sampleGrabber.SetOneShot( false );
-                sampleGrabber.SetCallback( grabber, 1 );
+                _ = sampleGrabber.SetBufferSamples( false );
+                _ = sampleGrabber.SetOneShot( false );
+                _ = sampleGrabber.SetCallback( grabber, 1 );
 
                 // disable clock, if someone requested it
                 if ( !referenceClockEnabled )
                 {
                     IMediaFilter mediaFilter = (IMediaFilter) graphObject;
-                    mediaFilter.SetSyncSource( null );
+                    _ = mediaFilter.SetSyncSource( null );
                 }
 
                 // get media control
@@ -463,7 +463,7 @@ namespace AForge.Video.DirectShow
                 DsEvCode code;
 
                 // run
-                mediaControl.Run( );
+                _ = mediaControl.Run( );
 
                 do
                 {
@@ -471,7 +471,7 @@ namespace AForge.Video.DirectShow
                     {
                         if ( mediaEvent.GetEvent( out code, out p1, out p2, 0 ) >= 0 )
                         {
-                            mediaEvent.FreeEventParams( code, p1, p2 );
+                            _ = mediaEvent.FreeEventParams( code, p1, p2 );
 
                             if ( code == DsEvCode.Complete )
                             {
@@ -483,7 +483,7 @@ namespace AForge.Video.DirectShow
                 }
                 while ( !stopEvent.WaitOne( 100, false ) );
 
-                mediaControl.Stop( );
+                _ = mediaControl.Stop( );
             }
             catch ( Exception exception )
             {
@@ -598,7 +598,7 @@ namespace AForge.Video.DirectShow
 
                         for ( int y = 0; y < height; y++ )
                         {
-                            Win32.memcpy( dst, src, srcStride );
+                            _ = Win32.memcpy(dst, src, srcStride);
                             dst -= dstStride;
                             src += srcStride;
                         }
@@ -617,5 +617,28 @@ namespace AForge.Video.DirectShow
                 return 0;
             }
         }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // TODO: dispose managed state (managed objects).
+                if (stopEvent != null)
+                {
+                    stopEvent.Dispose();
+                    stopEvent = null;
+                }
+            }
+
+            // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+            // TODO: set large fields to null.
+        }
+
     }
 }

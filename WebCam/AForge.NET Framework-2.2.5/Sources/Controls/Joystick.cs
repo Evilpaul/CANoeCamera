@@ -82,7 +82,7 @@ namespace AForge.Controls
             /// <summary>
             /// Joystick ID, [0..15].
             /// </summary>
-            public readonly int ID;
+            public int ID { get; }
 
             internal readonly JoystickAPI.JOYCAPS capabilities;
 

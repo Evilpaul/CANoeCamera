@@ -121,6 +121,6 @@ namespace AForge.Video
         /// 
         /// <remarks>Stops video source aborting its thread.</remarks>
         /// 
-        void Stop( );
+        void StopVideo( );
     }
 }

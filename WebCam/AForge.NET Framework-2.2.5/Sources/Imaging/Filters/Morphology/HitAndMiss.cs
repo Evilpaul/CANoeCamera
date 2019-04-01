@@ -27,7 +27,7 @@ namespace AForge.Imaging.Filters
     /// </para>
     /// 
     /// <para>Filter's mode is set by <see cref="Mode"/> property. The list of modes and its
-    /// documentation may be found in <see cref="Modes"/> enumeration.</para>
+    /// documentation may be found in <see cref="Mode"/> enumeration.</para>
     /// 
     /// <para>The filter accepts 8 bpp grayscale images for processing. <b>Note</b>: grayscale images are treated
     /// as binary with 0 value equals to black and 255 value equals to white.</para>
@@ -109,7 +109,7 @@ namespace AForge.Imaging.Filters
         /// Operation mode.
         /// </summary>
         /// 
-        /// <remarks><para>Mode to use for the filter. See <see cref="Modes"/> enumeration
+        /// <remarks><para>Mode to use for the filter. See <see cref="Mode"/> enumeration
         /// for the list of available modes and their documentation.</para>
         /// 
         /// <para>Default mode is set to <see cref="Modes.HitAndMiss"/>.</para></remarks>
@@ -136,11 +136,17 @@ namespace AForge.Imaging.Filters
             int s = se.GetLength( 0 );
 
             // check structuring element size
-            if ( ( s != se.GetLength( 1 ) ) || ( s < 3 ) || ( s > 99 ) || ( s % 2 == 0 ) )
-                throw new ArgumentException( );
+            if (s != se.GetLength(1))
+                throw new ArgumentException("Matrix has unequal sides", nameof(se));
+            if (s < 3)
+                throw new ArgumentException("Matrix size < 3", nameof(se));
+            if (s > 99)
+                throw new ArgumentException("Matrix size > 99", nameof(se));
+            if (s % 2 == 0)
+                throw new ArgumentException("Matrix has odd length sides", nameof(se));
 
             this.se = se;
-            this.size = s;
+            size = s;
 
             // initialize format translation dictionary
             formatTranslations[PixelFormat.Format8bppIndexed] = PixelFormat.Format8bppIndexed;

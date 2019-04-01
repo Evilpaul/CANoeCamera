@@ -51,37 +51,37 @@ namespace AForge.Imaging.Filters
         /// <summary>
         /// Current processing X coordinate.
         /// </summary>
-        protected int x;
+        protected int x { get; set; }
 
         /// <summary>
         /// Current processing Y coordinate.
         /// </summary>
-        protected int y;
+        protected int y { get; set; }
 
         /// <summary>
         /// Processing X start position.
         /// </summary>
-        protected int startX;
+        protected int startX { get; set; }
 
         /// <summary>
         /// Processing Y start position.
         /// </summary>
-        protected int startY;
+        protected int startY { get; set; }
 
         /// <summary>
         /// Processing X stop position.
         /// </summary>
-        protected int stopX;
+        protected int stopX { get; set; }
 
         /// <summary>
         /// Processing Y stop position.
         /// </summary>
-        protected int stopY;
+        protected int stopY { get; set; }
 
         /// <summary>
         /// Processing image's stride (line size).
         /// </summary>
-        protected int stride;
+        protected int stride { get; set; }
 
         // private format translation dictionary
         private Dictionary<PixelFormat, PixelFormat> formatTranslations = new Dictionary<PixelFormat, PixelFormat>( );
@@ -108,13 +108,13 @@ namespace AForge.Imaging.Filters
         /// Do error diffusion.
         /// </summary>
         /// 
-        /// <param name="error">Current error value.</param>
+        /// <param name="err">Current error value.</param>
         /// <param name="ptr">Pointer to current processing pixel.</param>
         /// 
         /// <remarks>All parameters of the image and current processing pixel's coordinates
         /// are initialized in protected members.</remarks>
         /// 
-        protected abstract unsafe void Diffuse( int error, byte* ptr );
+        protected abstract unsafe void Diffuse( int err, byte* ptr );
 
         /// <summary>
         /// Process the filter on the specified image.

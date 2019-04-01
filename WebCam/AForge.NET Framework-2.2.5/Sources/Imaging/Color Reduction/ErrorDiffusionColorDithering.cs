@@ -39,32 +39,32 @@ namespace AForge.Imaging.ColorReduction
         /// <summary>
         /// Current processing X coordinate.
         /// </summary>
-        protected int x;
+        protected int x { get; set; }
 
         /// <summary>
         /// Current processing Y coordinate.
         /// </summary>
-        protected int y;
+        protected int y { get; set; }
 
         /// <summary>
         /// Processing image's width.
         /// </summary>
-        protected int width;
+        protected int width { get; set; }
 
         /// <summary>
         /// Processing image's height.
         /// </summary>
-        protected int height;
+        protected int height { get; set; }
 
         /// <summary>
         /// Processing image's stride (line size).
         /// </summary>
-        protected int stride;
+        protected int stride { get; set; }
 
         /// <summary>
         /// Processing image's pixel size in bytes.
         /// </summary>
-        protected int pixelSize;
+        protected int pixelSize { get; set; }
 
         private Color[] colorTable = new Color[16]
         {

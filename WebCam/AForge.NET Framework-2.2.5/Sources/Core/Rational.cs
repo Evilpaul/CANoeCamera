@@ -168,7 +168,7 @@ namespace AForge.Math
         /// <returns>The parsed <see cref="Rational"/> value.</returns>
         public static Rational Parse(string s, IFormatProvider provider)
         {
-            return Parse(s, NumberStyles.Any, null);
+            return Parse(s, NumberStyles.Any, provider);
         }
 
         /// <summary>
@@ -399,7 +399,7 @@ namespace AForge.Math
                 return Indeterminate;
 
             if (maxDenominator < 1)
-                throw new ArgumentOutOfRangeException("Maximum denominator base must be greater than or equal to 1.", "maxDenominator");
+                throw new ArgumentOutOfRangeException(nameof(maxDenominator), "Maximum denominator base must be greater than or equal to 1.");
 
             int denominator = 0;
             // int bestDenominator = 1;
@@ -708,7 +708,7 @@ namespace AForge.Math
         /// <returns>A string representaion of the rational number.</returns>
         public override string ToString()
         {
-            return Numerator.ToString() + (Denominator != 1 ? "/" + Denominator.ToString() : string.Empty);
+            return Numerator.ToString(CultureInfo.InvariantCulture) + (Denominator != 1 ? "/" + Denominator.ToString(CultureInfo.InvariantCulture) : string.Empty);
         }
 
         /// <summary>
@@ -752,16 +752,16 @@ namespace AForge.Math
             bool hasIntegerPart = false;
             if (x.Numerator >= x.Denominator)
             {
-                s += ((int)x).ToString();
+                s += ((int)x).ToString(CultureInfo.InvariantCulture);
                 hasIntegerPart = true;
             }
-            Rational fractionPart = x % Rational.One;
+            Rational fractionPart = x % One;
             bool hasFractionPart = fractionPart.Numerator != 0;
             if (hasFractionPart)
             {
                 if (hasIntegerPart)
                     s += numberSeparator;
-                s += fractionPart.ToString();
+                s += fractionPart.ToString(CultureInfo.InvariantCulture);
             }
             else if (!hasIntegerPart)
             {
@@ -962,7 +962,7 @@ namespace AForge.Math
             int xFactor = denominator / x.Denominator;
             int yFactor = denominator / y.Denominator;
             int numerator = x.Numerator * xFactor - y.Numerator * yFactor;
-            return Rational.Simplify(numerator, denominator);
+            return Simplify(numerator, denominator);
         }
 
         /// <summary>
@@ -973,7 +973,7 @@ namespace AForge.Math
         /// <returns>The simplified product of the <see cref="Rational"/> values.</returns>
         public static Rational operator *(Rational x, Rational y)
         {
-            return Rational.Simplify(x.Numerator * y.Numerator, x.Denominator * y.Denominator);
+            return Simplify(x.Numerator * y.Numerator, x.Denominator * y.Denominator);
         }
 
         /// <summary>
@@ -984,7 +984,7 @@ namespace AForge.Math
         /// <returns>The simplified dividend of the <see cref="Rational"/> values.</returns>
         public static Rational operator /(Rational x, Rational y)
         {
-            return Rational.Simplify(x.Numerator * y.Denominator, x.Denominator * y.Numerator);
+            return Simplify(x.Numerator * y.Denominator, x.Denominator * y.Numerator);
         }
 
         /// <summary>
@@ -1005,7 +1005,7 @@ namespace AForge.Math
             long xNum = SMath.BigMul(x.Numerator, y.Denominator);
             long yNum = SMath.BigMul(y.Numerator, x.Denominator);
             int denominator = x.Denominator * y.Denominator;
-            return Rational.Simplify((int)(xNum % yNum), denominator);
+            return Simplify((int)(xNum % yNum), denominator);
         }
 
         /// <summary>
@@ -1015,7 +1015,7 @@ namespace AForge.Math
         /// <returns>The incremented <see cref="Rational"/>.</returns>
         public static Rational operator ++(Rational x)
         {
-            return x + Rational.One;
+            return x + One;
         }
 
         /// <summary>
@@ -1025,7 +1025,7 @@ namespace AForge.Math
         /// <returns>The idecremented <see cref="Rational"/>.</returns>
         public static Rational operator --(Rational x)
         {
-            return x - Rational.One;
+            return x - One;
         }
 
         #endregion
@@ -1272,7 +1272,7 @@ namespace AForge.Math
             else
             {
                 var d1 = Value;
-                var d2 = Convert.ToDouble(obj);
+                var d2 = Convert.ToDouble(obj, CultureInfo.InvariantCulture);
                 return d1.CompareTo(d2);
             }
         }

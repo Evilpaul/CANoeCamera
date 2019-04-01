@@ -23,12 +23,12 @@ namespace AForge.Video.DirectShow
         /// <summary>
         /// Index of the video input.
         /// </summary>
-        public readonly int Index;
+        public int Index { get; private set; }
 
         /// <summary>
         /// Type of the video input.
         /// </summary>
-        public readonly PhysicalConnectorType Type;
+        public PhysicalConnectorType Type { get; private set; }
 
         internal VideoInput( int index, PhysicalConnectorType type )
         {

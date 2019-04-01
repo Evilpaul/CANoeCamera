@@ -76,12 +76,12 @@ namespace AForge.Imaging.Filters
         /// <summary>
         /// New image width.
         /// </summary>
-        protected int newWidth;
+        protected int newWidth { get; set; }
 
         /// <summary>
         /// New image height.
         /// </summary>
-        protected int newHeight;
+        protected int newHeight { get; set; }
 
         /// <summary>
         /// Automatic calculation of destination image or not.

@@ -38,7 +38,7 @@ namespace AForge.Math.Random
         /// 
         /// <returns>Returns next random number.</returns>
         /// 
-        float Next( );
+        float Regenerate( );
 
         /// <summary>
         /// Set seed of the random numbers generator.

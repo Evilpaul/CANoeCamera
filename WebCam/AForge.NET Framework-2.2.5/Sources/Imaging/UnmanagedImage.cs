@@ -996,12 +996,12 @@ namespace AForge.Imaging
         {
             if ( ( x < 0 ) || ( y < 0 ) )
             {
-                throw new ArgumentOutOfRangeException( "x", "The specified pixel coordinate is out of image's bounds." );
+                throw new ArgumentOutOfRangeException( nameof(x), "The specified pixel coordinate is out of image's bounds." );
             }
 
             if ( ( x >= width ) || ( y >= height ) )
             {
-                throw new ArgumentOutOfRangeException( "y", "The specified pixel coordinate is out of image's bounds." );
+                throw new ArgumentOutOfRangeException( nameof(y), "The specified pixel coordinate is out of image's bounds." );
             }
 
             Color color = new Color( );

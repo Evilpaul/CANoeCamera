@@ -61,7 +61,7 @@ namespace AForge.Video
     /// </code>
     /// </remarks>
     /// 
-    public class AsyncVideoSource : IVideoSource
+    public class AsyncVideoSource : IVideoSource, IDisposable
     {
         private readonly IVideoSource nestedVideoSource = null;
         private Bitmap lastVideoFrame = null;
@@ -323,12 +323,12 @@ namespace AForge.Video
         /// Stop video source.
         /// </summary>
         /// 
-        /// <remarks><para>Stops nested video source by calling its <see cref="IVideoSource.Stop"/> method.
+        /// <remarks><para>Stops nested video source by calling its <see cref="IVideoSource.StopVideo"/> method.
         /// See documentation of the particular video source for additional details.</para></remarks>
         /// 
-        public void Stop( )
+        public void StopVideo( )
         {
-            nestedVideoSource.Stop( );
+            nestedVideoSource.StopVideo( );
             Free( );
         }
 
@@ -469,6 +469,40 @@ namespace AForge.Video
             destination.UnlockBits( destinationData );
 
             return destination;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // TODO: dispose managed state (managed objects).
+                if (isNewFrameAvailable != null)
+                {
+                    isNewFrameAvailable.Dispose();
+                    isNewFrameAvailable = null;
+                }
+
+                if (isProcessingThreadAvailable != null)
+                {
+                    isProcessingThreadAvailable.Dispose();
+                    isProcessingThreadAvailable = null;
+                }
+
+                if (lastVideoFrame != null)
+                {
+                    lastVideoFrame.Dispose();
+                    lastVideoFrame = null;
+                }
+            }
+
+            // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+            // TODO: set large fields to null.
         }
     }
 }

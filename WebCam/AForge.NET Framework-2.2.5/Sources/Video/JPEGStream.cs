@@ -15,9 +15,10 @@ namespace AForge.Video
     using System.Threading;
 	using System.Net;
     using System.Security;
+    using System.Globalization;
 
-	/// <summary>
-	/// JPEG video source.
+    /// <summary>
+    /// JPEG video source.
     /// </summary>
     /// 
     /// <remarks><para>The video source constantly downloads JPEG files from the specified URL.</para>
@@ -58,8 +59,8 @@ namespace AForge.Video
     /// </code>
     /// </remarks>
     /// 
-	public class JPEGStream : IVideoSource
-	{
+    public class JPEGStream : IVideoSource, IDisposable
+    {
         // URL for JPEG files
 		private string source;
         // login and password for HTTP authentication
@@ -338,7 +339,7 @@ namespace AForge.Video
 			if ( !IsRunning )
 			{
                 // check source
-                if ( ( source == null ) || ( source == string.Empty ) )
+                if ( ( source == null ) || (string.IsNullOrEmpty(source)) )
                     throw new ArgumentException( "Video source is not specified." );
 
 				framesReceived = 0;
@@ -401,7 +402,7 @@ namespace AForge.Video
         /// <see cref="WaitForStop">waiting</see> for background thread's completion.</note></para>
         /// </remarks>
         /// 
-        public void Stop( )
+        public void StopVideo( )
 		{
 			if ( this.IsRunning )
 			{
@@ -454,12 +455,12 @@ namespace AForge.Video
 					if ( !preventCaching )
 					{
                         // request without cache prevention
-                        request = (HttpWebRequest) WebRequest.Create( source );
+                        request = (HttpWebRequest) WebRequest.Create( new Uri(source) );
 					}
 					else
 					{
                         // request with cache prevention
-                        request = (HttpWebRequest) WebRequest.Create( source + ( ( source.IndexOf( '?' ) == -1 ) ? '?' : '&' ) + "fake=" + rand.Next( ).ToString( ) );
+                        request = (HttpWebRequest) WebRequest.Create(new Uri(source + ( ( source.IndexOf( '?' ) == -1 ) ? '?' : '&' ) + "fake=" + rand.Next( ).ToString(CultureInfo.InvariantCulture)) );
 					}
 
                     // set proxy
@@ -471,15 +472,15 @@ namespace AForge.Video
                     // set timeout value for the request
                     request.Timeout = requestTimeout;
 					// set login and password
-					if ( ( login != null ) && ( password != null ) && ( login != string.Empty ) )
+					if ( ( login != null ) && ( password != null ) && (!string.IsNullOrEmpty(login)) )
                         request.Credentials = new NetworkCredential( login, password );
 					// set connection group name
 					if ( useSeparateConnectionGroup )
-                        request.ConnectionGroupName = GetHashCode( ).ToString( );
+                        request.ConnectionGroupName = GetHashCode( ).ToString(CultureInfo.InvariantCulture);
                     // force basic authentication through extra headers if required
                     if ( forceBasicAuthentication )
                     {
-                        string authInfo = string.Format( "{0}:{1}", login, password );
+                        string authInfo = string.Format(CultureInfo.InvariantCulture, "{0}:{1}", login, password );
                         authInfo = Convert.ToBase64String( Encoding.Default.GetBytes( authInfo ) );
                         request.Headers["Authorization"] = "Basic " + authInfo;
                     }
@@ -583,5 +584,27 @@ namespace AForge.Video
                 PlayingFinished( this, ReasonToFinishPlaying.StoppedByUser );
             }
 		}
-	}
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // TODO: dispose managed state (managed objects).
+                if (stopEvent != null)
+                {
+                    stopEvent.Dispose();
+                    stopEvent = null;
+                }
+            }
+
+            // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+            // TODO: set large fields to null.
+        }
+    }
 }

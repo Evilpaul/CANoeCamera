@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Snapshot_Maker.Properties {
+namespace SnapshotMaker.Properties {
     using System;
     
     

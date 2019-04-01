@@ -110,22 +110,22 @@ namespace AForge.Imaging
         /// <summary>
         /// Objects count.
         /// </summary>
-        protected int objectsCount;
+        protected int objectsCount { get; set; }
 
         /// <summary>
         /// Objects' labels.
         /// </summary>
-        protected int[] objectLabels;
+        protected int[] objectLabels { get; set; }
 
         /// <summary>
         /// Width of processed image.
         /// </summary>
-        protected int imageWidth;
+        protected int imageWidth { get; set; }
 
         /// <summary>
         /// Height of processed image.
         /// </summary>
-        protected int imageHeight;
+        protected int imageHeight { get; set; }
 
         /// <summary>
         /// Objects count.

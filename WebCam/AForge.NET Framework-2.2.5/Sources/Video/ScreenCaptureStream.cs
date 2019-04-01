@@ -55,7 +55,7 @@ namespace AForge.Video
     /// </code>
     /// </remarks>
     /// 
-    public class ScreenCaptureStream : IVideoSource
+    public class ScreenCaptureStream : IVideoSource, IDisposable
     {
         private Rectangle region;
 
@@ -291,7 +291,7 @@ namespace AForge.Video
         /// <see cref="WaitForStop">waiting</see> for background thread's completion.</note></para>
         /// </remarks>
         /// 
-        public void Stop( )
+        public void StopVideo( )
         {
             if ( this.IsRunning )
             {
@@ -392,5 +392,28 @@ namespace AForge.Video
                 PlayingFinished( this, ReasonToFinishPlaying.StoppedByUser );
             }
         }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // TODO: dispose managed state (managed objects).
+                if (stopEvent != null)
+                {
+                    stopEvent.Dispose();
+                    stopEvent = null;
+                }
+            }
+
+            // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+            // TODO: set large fields to null.
+        }
+
     }
 }

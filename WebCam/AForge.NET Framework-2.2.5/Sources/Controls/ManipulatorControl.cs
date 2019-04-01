@@ -52,7 +52,7 @@ namespace AForge.Controls
         private SolidBrush bottomLeftBackgroundBrush  = new SolidBrush( Color.LightGray );
         private SolidBrush bottomRightBackgroundBrush = new SolidBrush( Color.LightGray );
         private SolidBrush manipulatorBrush           = new SolidBrush( Color.LightSeaGreen );
-        private SolidBrush disabledBrash              = new SolidBrush( Color.FromArgb( 240, 240, 240 ) );
+        private SolidBrush disabledBrush              = new SolidBrush( Color.FromArgb( 240, 240, 240 ) );
 
         // manipulator's position
         private float manipulatatorX = 0;
@@ -94,6 +94,56 @@ namespace AForge.Controls
                 isSquareLook = value;
                 Invalidate( );
             }
+        }
+
+        /// <summary> 
+        /// Clean up any resources being used.
+        /// </summary>
+        /// 
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                components.Dispose();
+            }
+
+            if (borderPen != null)
+            {
+                borderPen.Dispose();
+            }
+
+            if (bottomLeftBackgroundBrush != null)
+            {
+                bottomLeftBackgroundBrush.Dispose();
+            }
+
+            if (bottomRightBackgroundBrush != null)
+            {
+                bottomRightBackgroundBrush.Dispose();
+            }
+
+            if (disabledBrush != null)
+            {
+                disabledBrush.Dispose();
+            }
+
+            if (manipulatorBrush != null)
+            {
+                manipulatorBrush.Dispose();
+            }
+
+            if (topLeftBackgroundBrush != null)
+            {
+                topLeftBackgroundBrush.Dispose();
+            }
+
+            if (topRightBackgroundBrush != null)
+            {
+                topRightBackgroundBrush.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
 
         /// <summary>
@@ -405,13 +455,13 @@ namespace AForge.Controls
         /// <param name="sender">Event sender - object sending the event.</param>
         /// <param name="eventArgs">Event arguments - current manipulator's position.</param>
         /// 
-        public delegate void PositionChangedHandler( object sender, PositionEventArgs eventArgs );
+        public delegate void PositionChangedEventHandler( object sender, PositionEventArgs eventArgs );
 
         /// <summary>
         /// Event used for notification about manipulator's position changes.
         /// </summary>
         [Description( "Occurs when manipulator's position is changed." )]
-        public event PositionChangedHandler PositionChanged;
+        public event PositionChangedEventHandler PositionChanged;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ManipulatorControl"/> class.
@@ -442,10 +492,10 @@ namespace AForge.Controls
                     // square looking control
                     int halfAreaSize = areaSize / 2;
 
-                    g.FillRectangle( ( !this.Enabled ) ? disabledBrash : topLeftBackgroundBrush, areaMargin, areaMargin, halfAreaSize, halfAreaSize );
-                    g.FillRectangle( ( !this.Enabled ) ? disabledBrash : topRightBackgroundBrush, areaMargin + halfAreaSize, areaMargin, areaSize - halfAreaSize, halfAreaSize );
-                    g.FillRectangle( ( !this.Enabled ) ? disabledBrash : bottomLeftBackgroundBrush, areaMargin, areaMargin + halfAreaSize, halfAreaSize, areaSize - halfAreaSize );
-                    g.FillRectangle( ( !this.Enabled ) ? disabledBrash : bottomRightBackgroundBrush, areaMargin + halfAreaSize, areaMargin + halfAreaSize,
+                    g.FillRectangle( ( !this.Enabled ) ? disabledBrush : topLeftBackgroundBrush, areaMargin, areaMargin, halfAreaSize, halfAreaSize );
+                    g.FillRectangle( ( !this.Enabled ) ? disabledBrush : topRightBackgroundBrush, areaMargin + halfAreaSize, areaMargin, areaSize - halfAreaSize, halfAreaSize );
+                    g.FillRectangle( ( !this.Enabled ) ? disabledBrush : bottomLeftBackgroundBrush, areaMargin, areaMargin + halfAreaSize, halfAreaSize, areaSize - halfAreaSize );
+                    g.FillRectangle( ( !this.Enabled ) ? disabledBrush : bottomRightBackgroundBrush, areaMargin + halfAreaSize, areaMargin + halfAreaSize,
                         areaSize - halfAreaSize, areaSize - halfAreaSize );
 
                     g.DrawRectangle( borderPen, areaMargin, areaMargin, areaSize - 1, areaSize - 1 );
@@ -453,10 +503,10 @@ namespace AForge.Controls
                 else
                 {
                     // round looking control
-                    g.FillPie( ( this.Enabled ) ? topRightBackgroundBrush : disabledBrash, areaMargin, areaMargin, areaSize - 1, areaSize - 1, 0, -90 );
-                    g.FillPie( ( this.Enabled ) ? topLeftBackgroundBrush : disabledBrash, areaMargin, areaMargin, areaSize - 1, areaSize - 1, -90, -90 );
-                    g.FillPie( ( this.Enabled ) ? bottomRightBackgroundBrush : disabledBrash, areaMargin, areaMargin, areaSize - 1, areaSize - 1, 0, 90 );
-                    g.FillPie( ( this.Enabled ) ? bottomLeftBackgroundBrush : disabledBrash, areaMargin, areaMargin, areaSize - 1, areaSize - 1, 90, 90 );
+                    g.FillPie( ( this.Enabled ) ? topRightBackgroundBrush : disabledBrush, areaMargin, areaMargin, areaSize - 1, areaSize - 1, 0, -90 );
+                    g.FillPie( ( this.Enabled ) ? topLeftBackgroundBrush : disabledBrush, areaMargin, areaMargin, areaSize - 1, areaSize - 1, -90, -90 );
+                    g.FillPie( ( this.Enabled ) ? bottomRightBackgroundBrush : disabledBrush, areaMargin, areaMargin, areaSize - 1, areaSize - 1, 0, 90 );
+                    g.FillPie( ( this.Enabled ) ? bottomLeftBackgroundBrush : disabledBrush, areaMargin, areaMargin, areaSize - 1, areaSize - 1, 90, 90 );
                     g.DrawEllipse( borderPen, areaMargin, areaMargin, areaSize - 1, areaSize - 1 );
                 }
             }
@@ -476,7 +526,7 @@ namespace AForge.Controls
             int ctrlManipulatorY = (int) ( -manipulatatorY * areaRadius ) + areaMargin + areaRadius;
 
             // draw manipulator
-            g.FillEllipse ( ( this.Enabled ) ? manipulatorBrush : disabledBrash,
+            g.FillEllipse ( ( this.Enabled ) ? manipulatorBrush : disabledBrush,
                 ctrlManipulatorX - manipulatorRadius, ctrlManipulatorY - manipulatorRadius,
                 manipulatorSize, manipulatorSize );
             g.DrawEllipse( borderPen,

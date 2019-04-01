@@ -44,22 +44,22 @@ namespace AForge.Imaging
         /// <summary>
         /// Red component.
         /// </summary>
-        public byte Red;
+        public byte Red { get; set; }
 
         /// <summary>
         /// Green component.
         /// </summary>
-        public byte Green;
+        public byte Green { get; set; }
 
         /// <summary>
         /// Blue component.
         /// </summary>
-        public byte Blue;
+        public byte Blue { get; set; }
 
         /// <summary>
         /// Alpha component.
         /// </summary>
-        public byte Alpha;
+        public byte Alpha { get; set; }
 
         /// <summary>
         /// <see cref="System.Drawing.Color">Color</see> value of the class.
@@ -149,7 +149,7 @@ namespace AForge.Imaging
         /// 
         /// <remarks>Hue is measured in the range of [0, 359].</remarks>
         /// 
-        public int Hue;
+        public int Hue { get; set; }
 
         /// <summary>
         /// Saturation component.
@@ -157,7 +157,7 @@ namespace AForge.Imaging
         /// 
         /// <remarks>Saturation is measured in the range of [0, 1].</remarks>
         /// 
-        public float Saturation;
+        public float Saturation { get; set; }
 
         /// <summary>
         /// Luminance value.
@@ -165,7 +165,7 @@ namespace AForge.Imaging
         /// 
         /// <remarks>Luminance is measured in the range of [0, 1].</remarks>
         /// 
-        public float Luminance;
+        public float Luminance { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HSL"/> class.
@@ -351,17 +351,17 @@ namespace AForge.Imaging
         /// <summary>
         /// <b>Y</b> component.
         /// </summary>
-        public float Y;
+        public float Y { get; set; }
 
         /// <summary>
         /// <b>Cb</b> component.
         /// </summary>
-        public float Cb;
+        public float Cb { get; set; }
 
         /// <summary>
         /// <b>Cr</b> component.
         /// </summary>
-        public float Cr;
+        public float Cr { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="YCbCr"/> class.

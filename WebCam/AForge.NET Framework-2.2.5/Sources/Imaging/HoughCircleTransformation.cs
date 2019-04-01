@@ -26,27 +26,27 @@ namespace AForge.Imaging
         /// <summary>
         /// Circle center's X coordinate.
         /// </summary>
-        public readonly int X;
+        public int X { get; private set; }
 
         /// <summary>
         /// Circle center's Y coordinate.
         /// </summary>
-        public readonly int Y;
+        public int Y { get; private set; }
 
         /// <summary>
         /// Circle's radius.
         /// </summary>
-        public readonly int Radius;
+        public int Radius { get; private set; }
 
         /// <summary>
         /// Line's absolute intensity.
         /// </summary>
-        public readonly short Intensity;
+        public short Intensity { get; private set; }
 
         /// <summary>
         /// Line's relative intensity.
         /// </summary>
-        public readonly double RelativeIntensity;
+        public double RelativeIntensity { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HoughCircle"/> class.
@@ -87,6 +87,61 @@ namespace AForge.Imaging
         {
             return ( -Intensity.CompareTo( ( (HoughCircle) value ).Intensity ) );
         }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj is null)
+            {
+                return false;
+            }
+
+            throw new NotImplementedException();
+        }
+
+        public override int GetHashCode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool operator ==(HoughCircle left, HoughCircle right)
+        {
+            if (left is null)
+            {
+                return right is null;
+            }
+
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(HoughCircle left, HoughCircle right)
+        {
+            return !(left == right);
+        }
+
+        public static bool operator <(HoughCircle left, HoughCircle right)
+        {
+            return left is null ? !(right is null) : left.CompareTo(right) < 0;
+        }
+
+        public static bool operator <=(HoughCircle left, HoughCircle right)
+        {
+            return left is null || left.CompareTo(right) <= 0;
+        }
+
+        public static bool operator >(HoughCircle left, HoughCircle right)
+        {
+            return !(left is null) && left.CompareTo(right) > 0;
+        }
+
+        public static bool operator >=(HoughCircle left, HoughCircle right)
+        {
+            return left is null ? right is null : left.CompareTo(right) >= 0;
+        }
     }
 
     /// <summary>
@@ -126,7 +181,7 @@ namespace AForge.Imaging
     public class HoughCircleTransformation
     {
         // circle radius to detect
-        private int radiusToDetect;
+        private readonly int radiusToDetect;
 
         // Hough map
         private short[,] houghMap;
@@ -138,7 +193,7 @@ namespace AForge.Imaging
 
         private int localPeakRadius = 4;
         private short minCircleIntensity = 10;
-        private ArrayList circles = new ArrayList( );
+        private readonly ArrayList circles = new ArrayList( );
 
         /// <summary>
         /// Minimum circle's intensity in Hough map to recognize a circle.

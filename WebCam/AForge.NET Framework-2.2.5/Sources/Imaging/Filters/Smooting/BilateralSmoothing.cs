@@ -14,6 +14,7 @@ namespace AForge.Imaging.Filters
     using System.Collections.Generic;
     using System.Drawing;
     using System.Drawing.Imaging;
+    using System.Globalization;
     using M = System.Math;
 
     /// <summary>
@@ -58,7 +59,7 @@ namespace AForge.Imaging.Filters
     /// 
     public class BilateralSmoothing : BaseUsingCopyPartialFilter
     {
-        private Dictionary<PixelFormat, PixelFormat> formatTranslations = new Dictionary<PixelFormat, PixelFormat>( );
+        private readonly Dictionary<PixelFormat, PixelFormat> formatTranslations = new Dictionary<PixelFormat, PixelFormat>( );
 
         private const int maxKernelSize = 255;
         private const int colorsCount = 256;
@@ -137,19 +138,19 @@ namespace AForge.Imaging.Filters
             {
                 if ( value > maxKernelSize )
                 {
-                    throw new ArgumentOutOfRangeException( "Maximum allowed value of KernelSize property is " + maxKernelSize.ToString( ) );
+                    throw new ArgumentOutOfRangeException(nameof(maxKernelSize), "Maximum allowed value of KernelSize property is " + maxKernelSize.ToString(CultureInfo.InvariantCulture ) );
                 }
                 if ( ( limitKernelSize ) && ( value > 25 ) )
                 {
-                    throw new ArgumentOutOfRangeException( "KernerlSize is larger then 25. Time for applying is significant and may lead to application freezing. In order to use any KernelSize value set property 'LimitKernelSize' to false." );
+                    throw new ArgumentOutOfRangeException(nameof(maxKernelSize), "KernerlSize is larger then 25. Time for applying is significant and may lead to application freezing. In order to use any KernelSize value set property 'LimitKernelSize' to false." );
                 }
                 if ( value < 3 )
                 {
-                    throw new ArgumentOutOfRangeException( "KernelSize must be greater than 3" );
+                    throw new ArgumentOutOfRangeException(nameof(maxKernelSize), "KernelSize must be greater than 3" );
                 }
                 if ( value % 2 == 0 )
                 {
-                    throw new ArgumentException( "KernerlSize must be an odd integer." );
+                    throw new ArgumentException(nameof(maxKernelSize), "KernelSize must be an odd integer." );
                 }
 
                 kernelSize = value;

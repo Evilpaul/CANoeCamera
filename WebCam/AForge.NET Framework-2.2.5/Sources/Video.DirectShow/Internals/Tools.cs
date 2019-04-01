@@ -43,7 +43,7 @@ namespace AForge.Video.DirectShow.Internals
                     while ( pinsEnum.Next( 1, pin, out n ) == 0 )
                     {
                         // query pin`s direction
-                        pin[0].QueryDirection( out pinDir );
+                        _ = pin[0].QueryDirection(out pinDir);
 
                         if ( pinDir == dir )
                         {

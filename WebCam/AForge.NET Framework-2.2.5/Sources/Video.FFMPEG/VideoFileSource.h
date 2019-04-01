@@ -279,7 +279,7 @@ namespace AForge
 				/// <see cref="WaitForStop">waiting</see> for background thread's completion.</note></para>
 				/// </remarks>
 				/// 
-				virtual void Stop();
+				virtual void StopVideo();
 			};
 		}
 	}

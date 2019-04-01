@@ -44,9 +44,8 @@ namespace AForge
     /// </remarks>
     /// 
     [Serializable]
-    public struct DoubleRange
+    public struct DoubleRange : IEquatable<DoubleRange>
     {
-        private double min, max;
 
         /// <summary>
         /// Minimum value of the range.
@@ -55,11 +54,7 @@ namespace AForge
         /// <remarks><para>The property represents minimum value (left side limit) or the range -
         /// [<b>min</b>, max].</para></remarks>
         /// 
-        public double Min
-        {
-            get { return min; }
-            set { min = value; }
-        }
+        public double Min { get; set; }
 
         /// <summary>
         /// Maximum value of the range.
@@ -68,18 +63,14 @@ namespace AForge
         /// <remarks><para>The property represents maximum value (right side limit) or the range -
         /// [min, <b>max</b>].</para></remarks>
         /// 
-        public double Max
-        {
-            get { return max; }
-            set { max = value; }
-        }
+        public double Max { get; set; }
 
         /// <summary>
-        /// Length of the range (deffirence between maximum and minimum values).
+        /// Length of the range (difference between maximum and minimum values).
         /// </summary>
         public double Length
         {
-            get { return max - min; }
+            get { return Max - Min; }
         }
 
 
@@ -92,8 +83,8 @@ namespace AForge
         /// 
         public DoubleRange( double min, double max )
         {
-            this.min = min;
-            this.max = max;
+            Min = min;
+            Max = max;
         }
 
         /// <summary>
@@ -107,7 +98,7 @@ namespace AForge
         /// 
         public bool IsInside( double x )
         {
-            return ( ( x >= min ) && ( x <= max ) );
+            return ( ( x >= Min ) && ( x <= Max ) );
         }
 
         /// <summary>
@@ -121,7 +112,7 @@ namespace AForge
         /// 
         public bool IsInside( DoubleRange range )
         {
-            return ( ( IsInside( range.min ) ) && ( IsInside( range.max ) ) );
+            return ( ( IsInside( range.Min ) ) && ( IsInside( range.Max ) ) );
         }
 
         /// <summary>
@@ -135,8 +126,8 @@ namespace AForge
         /// 
         public bool IsOverlapping( DoubleRange range )
         {
-            return ( ( IsInside( range.min ) ) || ( IsInside( range.max ) ) ||
-                     ( range.IsInside( min ) ) || ( range.IsInside( max ) ) );
+            return ( ( IsInside( range.Min ) ) || ( IsInside( range.Max ) ) ||
+                     ( range.IsInside( Min ) ) || ( range.IsInside( Max ) ) );
         }
 
         /// <summary>
@@ -158,13 +149,13 @@ namespace AForge
 
             if ( provideInnerRange )
             {
-                iMin = (int)System.Math.Ceiling( min );
-                iMax = (int)System.Math.Floor( max );
+                iMin = (int)System.Math.Ceiling( Min );
+                iMax = (int)System.Math.Floor( Max );
             }
             else
             {
-                iMin = (int)System.Math.Floor( min );
-                iMax = (int)System.Math.Ceiling( max );
+                iMin = (int)System.Math.Floor( Min );
+                iMax = (int)System.Math.Ceiling( Max );
             }
 
             return new IntRange( iMin, iMax );
@@ -182,7 +173,7 @@ namespace AForge
         ///
         public static bool operator ==( DoubleRange range1, DoubleRange range2 )
         {
-            return ( ( range1.min == range2.min ) && ( range1.max == range2.max ) );
+            return ( ( range1.Min == range2.Min ) && ( range1.Max == range2.Max ) );
         }
 
         /// <summary>
@@ -197,7 +188,7 @@ namespace AForge
         ///
         public static bool operator !=( DoubleRange range1, DoubleRange range2 )
         {
-            return ( ( range1.min != range2.min ) || ( range1.max != range2.max ) );
+            return ( range1.Min != range2.Min ) || ( range1.Max != range2.Max );
 
         }
 
@@ -222,7 +213,7 @@ namespace AForge
         /// 
         public override int GetHashCode( )
         {
-            return min.GetHashCode( ) + max.GetHashCode( );
+            return Min.GetHashCode( ) + Max.GetHashCode( );
         }
 
         /// <summary>
@@ -233,7 +224,12 @@ namespace AForge
         ///
         public override string ToString( )
         {
-            return string.Format( System.Globalization.CultureInfo.InvariantCulture, "{0}, {1}", min, max );
+            return string.Format( System.Globalization.CultureInfo.InvariantCulture, "{0}, {1}", Min, Max );
+        }
+
+        public bool Equals(DoubleRange other)
+        {
+            return (Min == other.Min) && (Max == other.Max);
         }
     }
 }

@@ -24,6 +24,22 @@ namespace AForge.Controls
             {
                 components.Dispose( );
             }
+
+            if (currentFrame != null)
+            {
+                currentFrame.Dispose();
+            }
+
+            if (convertedFrame != null)
+            {
+                convertedFrame.Dispose();
+            }
+
+            if (parent != null)
+            {
+                parent.Dispose();
+            }
+
             base.Dispose( disposing );
         }
 

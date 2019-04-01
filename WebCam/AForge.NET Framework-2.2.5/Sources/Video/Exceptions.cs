@@ -17,6 +17,7 @@ namespace AForge.Video
     /// <remarks><para>The exception is thrown in the case of some video related issues, like
     /// failure of initializing codec, compression, etc.</para></remarks>
     /// 
+    [Serializable]
     public class VideoException : Exception
     {
         /// <summary>
@@ -25,7 +26,20 @@ namespace AForge.Video
         /// 
         /// <param name="message">Exception's message.</param>
         /// 
-        public VideoException( string message ) :
-            base( message ) { }
+        public VideoException( string message ) : base( message )
+        {
+        }
+
+        protected VideoException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext)
+        {
+        }
+
+        public VideoException()
+        {
+        }
+
+        public VideoException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
     }
 }

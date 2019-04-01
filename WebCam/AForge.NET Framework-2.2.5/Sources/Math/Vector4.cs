@@ -18,24 +18,24 @@ namespace AForge.Math
     /// provides some operations with it.</para></remarks>
     /// 
     [Serializable]
-    public struct Vector4
+    public struct Vector4 : IEquatable<Vector4>
     {
         /// <summary>
         /// X coordinate of the vector.
         /// </summary>
-        public float X;
+        public float X { get; set; }
         /// <summary>
         /// Y coordinate of the vector.
         /// </summary>
-        public float Y;
+        public float Y { get; set; }
         /// <summary>
         /// Z coordinate of the vector.
         /// </summary>
-        public float Z;
+        public float Z { get; set; }
         /// <summary>
         /// W coordinate of the vector.
         /// </summary>
-        public float W;
+        public float W { get; set; }
 
         /// <summary>
         /// Returns maximum value of the vector.

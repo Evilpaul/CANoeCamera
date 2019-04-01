@@ -35,6 +35,24 @@ namespace AForge.Controls
         private Image sourceImage = null;
         private Image convertedImage = null;
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (sourceImage != null)
+                {
+                    sourceImage.Dispose();
+                }
+
+                if (convertedImage != null)
+                {
+                    convertedImage.Dispose();
+                }
+            }
+
+            base.Dispose(disposing);
+        }
+
         /// <summary>
         /// Gets or sets the image that the PictureBox displays.
         /// </summary>

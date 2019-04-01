@@ -5,12 +5,13 @@ using Properties;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Threading;
 using Vector.CANoe.Runtime;
 using Vector.Tools;
 
-public class WebCam : MeasurementScript
+public class WebCam : MeasurementScript, IDisposable
 {
     private VideoCaptureDevice videoSource;
     private VideoFileWriter vfw;
@@ -49,7 +50,7 @@ public class WebCam : MeasurementScript
             for (int i = 0; i < videoDevices.Count; i++)
             {
                 Output.WriteLine("{0:00}: {1}", i, videoDevices[i].Name);
-                if (videoDevices[i].Name.Equals(WebCamSysVar.PreferredCamera.Name.Value))
+                if (videoDevices[i].Name.Equals(WebCamSysVar.PreferredCamera.Name.Value, StringComparison.InvariantCulture))
                 {
                     // camera name matches name of preferred camera
                     preferredIdx = i;
@@ -193,6 +194,7 @@ public class WebCam : MeasurementScript
                 {
                     vfw.Close();
                     vfw.Dispose();
+                    vfw = null;
                 }
                 finally
                 {
@@ -231,7 +233,7 @@ public class WebCam : MeasurementScript
 
             try
             {
-                switch (Path.GetExtension(SnapShotName).ToUpper())
+                switch (Path.GetExtension(SnapShotName).ToUpper(CultureInfo.InvariantCulture))
                 {
                     case ".JPG":
                     case ".JPEG":
@@ -318,7 +320,7 @@ public class WebCam : MeasurementScript
             // the time between trigger and current, and then add on the
             // measurement time at the trigger point
             TimeSpan diff = (DateTime.Now - triggerTime) + offset;
-            g.DrawString(diff.TotalSeconds.ToString("00000.000"), drawFont, sb_white, timePoint, sf);
+            g.DrawString(diff.TotalSeconds.ToString("00000.000", CultureInfo.InvariantCulture), drawFont, sb_white, timePoint, sf);
         }
 
         return b;
@@ -1020,5 +1022,69 @@ public class WebCam : MeasurementScript
         }
     }
     #endregion
+    #endregion
+
+    #region IDisposable Support
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            // TODO: dispose managed state (managed objects).
+            if (drawFont != null)
+            {
+                drawFont.Dispose();
+            }
+
+            if (sb_black != null)
+            {
+                sb_black.Dispose();
+            }
+
+            if (sb_white != null)
+            {
+                sb_white.Dispose();
+            }
+
+            if (vfw != null)
+            {
+                vfw.Close();
+                vfw.Dispose();
+                vfw = null;
+            }
+
+            if (logo != null)
+            {
+                logo.Dispose();
+            }
+
+            if (sf != null)
+            {
+                sf.Dispose();
+            }
+
+            if (videoSource != null)
+            {
+                videoSource.Dispose();
+            }
+        }
+
+        // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+        // TODO: set large fields to null.
+    }
+
+    // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+    // ~WebCam() {
+    //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+    //   Dispose(false);
+    // }
+
+    // This code added to correctly implement the disposable pattern.
+    public void Dispose()
+    {
+        // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        Dispose(true);
+        // TODO: uncomment the following line if the finalizer is overridden above.
+        GC.SuppressFinalize(this);
+    }
     #endregion
 }

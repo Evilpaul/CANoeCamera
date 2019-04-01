@@ -18,6 +18,7 @@ namespace AForge
     /// has failed.</para>
     /// </remarks>
     /// 
+    [Serializable]
     public class ConnectionFailedException : Exception
     {
         /// <summary>
@@ -26,8 +27,21 @@ namespace AForge
         /// 
         /// <param name="message">Exception's message.</param>
         /// 
-        public ConnectionFailedException( string message ) :
-            base( message ) { }
+        public ConnectionFailedException(string message) : base(message)
+        {
+        }
+
+        public ConnectionFailedException()
+        {
+        }
+
+        public ConnectionFailedException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected ConnectionFailedException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext)
+        {
+        }
     }
 
     /// <summary>
@@ -38,6 +52,7 @@ namespace AForge
     /// is lost. When the exception is caught, user may need to reconnect to the device.</para>
     /// </remarks>
     /// 
+    [Serializable]
     public class ConnectionLostException : Exception
     {
         /// <summary>
@@ -46,8 +61,21 @@ namespace AForge
         /// 
         /// <param name="message">Exception's message.</param>
         /// 
-        public ConnectionLostException( string message ) :
-            base( message ) { }
+        public ConnectionLostException(string message) : base(message)
+        {
+        }
+
+        public ConnectionLostException()
+        {
+        }
+
+        public ConnectionLostException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected ConnectionLostException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext)
+        {
+        }
     }
 
     /// <summary>
@@ -58,6 +86,7 @@ namespace AForge
     /// is not established, but user requests for its services.</para>
     /// </remarks>
     /// 
+    [Serializable]
     public class NotConnectedException : Exception
     {
         /// <summary>
@@ -66,8 +95,21 @@ namespace AForge
         /// 
         /// <param name="message">Exception's message.</param>
         /// 
-        public NotConnectedException( string message ) :
-            base( message ) { }
+        public NotConnectedException(string message) : base(message)
+        {
+        }
+
+        public NotConnectedException()
+        {
+        }
+
+        public NotConnectedException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected NotConnectedException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext)
+        {
+        }
     }
 
     /// <summary>
@@ -78,6 +120,7 @@ namespace AForge
     /// is not available due to the fact that it is currently busy handling other request/connection.</para>
     /// </remarks>
     /// 
+    [Serializable]
     public class DeviceBusyException : Exception
     {
         /// <summary>
@@ -86,8 +129,21 @@ namespace AForge
         /// 
         /// <param name="message">Exception's message.</param>
         /// 
-        public DeviceBusyException( string message ) :
-            base( message ) { }
+        public DeviceBusyException(string message) : base(message)
+        {
+        }
+
+        public DeviceBusyException()
+        {
+        }
+
+        public DeviceBusyException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected DeviceBusyException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext)
+        {
+        }
     }
 
     /// <summary>
@@ -97,6 +153,7 @@ namespace AForge
     /// <remarks><para>The exception is thrown in the case if some error happens with a device, which
     /// may need to be reported to user.</para></remarks>
     ///
+    [Serializable]
     public class DeviceErrorException : Exception
     {
         /// <summary>
@@ -105,7 +162,20 @@ namespace AForge
         /// 
         /// <param name="message">Exception's message.</param>
         /// 
-        public DeviceErrorException( string message ) :
-            base( message ) { }
+        public DeviceErrorException(string message) : base(message)
+        {
+        }
+
+        public DeviceErrorException()
+        {
+        }
+
+        public DeviceErrorException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected DeviceErrorException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext)
+        {
+        }
     }
 }

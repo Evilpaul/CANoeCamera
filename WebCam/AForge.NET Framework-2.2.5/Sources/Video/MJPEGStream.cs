@@ -15,6 +15,7 @@ namespace AForge.Video
 	using System.Threading;
 	using System.Net;
     using System.Security;
+    using System.Globalization;
 
     /// <summary>
     /// MJPEG video source.
@@ -49,8 +50,8 @@ namespace AForge.Video
     /// </code>
     /// </remarks>
     /// 
-    public class MJPEGStream : IVideoSource
-	{
+    public class MJPEGStream : IVideoSource, IDisposable
+    {
         // URL for MJPEG stream
         private string source;
         // login and password for HTTP authentication
@@ -325,7 +326,7 @@ namespace AForge.Video
 			if ( !IsRunning )
 			{
                 // check source
-                if ( ( source == null ) || ( source == string.Empty ) )
+                if ( ( source == null ) || (string.IsNullOrEmpty(source)) )
                     throw new ArgumentException( "Video source is not specified." );
                 
                 framesReceived = 0;
@@ -389,7 +390,7 @@ namespace AForge.Video
         /// <see cref="WaitForStop">waiting</see> for background thread's completion.</note></para>
         /// </remarks>
         /// 
-        public void Stop( )
+        public void StopVideo( )
 		{
 			if ( this.IsRunning )
 			{
@@ -454,7 +455,7 @@ namespace AForge.Video
 				try
 				{
 					// create request
-                    request = (HttpWebRequest) WebRequest.Create( source );
+                    request = (HttpWebRequest) WebRequest.Create( new Uri( source) );
                     // set user agent
                     if ( userAgent != null )
                     {
@@ -470,15 +471,15 @@ namespace AForge.Video
                     // set timeout value for the request
                     request.Timeout = requestTimeout;
                     // set login and password
-					if ( ( login != null ) && ( password != null ) && ( login != string.Empty ) )
+					if ( ( login != null ) && ( password != null ) && (!string.IsNullOrEmpty(login)) )
                         request.Credentials = new NetworkCredential( login, password );
 					// set connection group name
 					if ( useSeparateConnectionGroup )
-                        request.ConnectionGroupName = GetHashCode( ).ToString( );
+                        request.ConnectionGroupName = GetHashCode( ).ToString(CultureInfo.InvariantCulture);
                     // force basic authentication through extra headers if required
                     if ( forceBasicAuthentication )
                     {
-                        string authInfo = string.Format( "{0}:{1}", login, password );
+                        string authInfo = string.Format(CultureInfo.InvariantCulture, "{0}:{1}", login, password );
                         authInfo = Convert.ToBase64String( Encoding.Default.GetBytes( authInfo ) );
                         request.Headers["Authorization"] = "Basic " + authInfo;
                     }
@@ -498,10 +499,10 @@ namespace AForge.Video
                     else if ( ( contentTypeArray[0] == "multipart" ) && ( contentType.Contains( "mixed" ) ) )
                     {
                         // get boundary
-                        int boundaryIndex = contentType.IndexOf( "boundary", 0 );
+                        int boundaryIndex = contentType.IndexOf( "boundary", 0, StringComparison.InvariantCulture);
                         if ( boundaryIndex != -1 )
                         {
-                            boundaryIndex = contentType.IndexOf( "=", boundaryIndex + 8 );
+                            boundaryIndex = contentType.IndexOf( "=", boundaryIndex + 8, StringComparison.InvariantCulture);
                         }
 
                         if ( boundaryIndex == -1 )
@@ -700,5 +701,33 @@ namespace AForge.Video
                 PlayingFinished( this, ReasonToFinishPlaying.StoppedByUser );
             }
 		}
-	}
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // TODO: dispose managed state (managed objects).
+                if (stopEvent != null)
+                {
+                    stopEvent.Dispose();
+                    stopEvent = null;
+                }
+
+                if (reloadEvent != null)
+                {
+                    reloadEvent.Dispose();
+                    reloadEvent = null;
+                }
+            }
+
+            // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+            // TODO: set large fields to null.
+        }
+    }
 }

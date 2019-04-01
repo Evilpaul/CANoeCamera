@@ -153,7 +153,6 @@ namespace AForge
 				}
 				finally
 				{
-
 					if (!success)
 						Close();
 				}

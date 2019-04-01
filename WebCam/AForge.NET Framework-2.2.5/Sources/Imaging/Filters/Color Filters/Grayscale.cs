@@ -70,7 +70,7 @@ namespace AForge.Imaging.Filters
             /// </code>
             /// </remarks>
             /// 
-            public static readonly Grayscale BT709 = new Grayscale( 0.2125, 0.7154, 0.0721 );
+            public static readonly Grayscale BT709 = new Grayscale(0.2125, 0.7154, 0.0721);
 
             /// <summary>
             /// Grayscale image using R-Y algorithm.
@@ -91,7 +91,7 @@ namespace AForge.Imaging.Filters
             /// </code>
             /// </remarks>
             /// 
-            public static readonly Grayscale RMY = new Grayscale( 0.5000, 0.4190, 0.0810 );
+            public static readonly Grayscale RMY = new Grayscale(0.5000, 0.4190, 0.0810);
 
             /// <summary>
             /// Grayscale image using Y algorithm.
@@ -112,7 +112,7 @@ namespace AForge.Imaging.Filters
             /// </code>
             /// </remarks>
             /// 
-            public static readonly Grayscale Y = new Grayscale( 0.2990, 0.5870, 0.1140 );
+            public static readonly Grayscale Y = new Grayscale(0.2990, 0.5870, 0.1140);
         }
 
         // RGB coefficients for grayscale transformation
@@ -120,18 +120,18 @@ namespace AForge.Imaging.Filters
         /// <summary>
         /// Portion of red channel's value to use during conversion from RGB to grayscale.
         /// </summary>
-        public readonly double RedCoefficient;
+        public double RedCoefficient { get; private set; }
         /// <summary>
         /// Portion of green channel's value to use during conversion from RGB to grayscale.
         /// </summary>
-        public readonly double GreenCoefficient;
+        public double GreenCoefficient { get; private set; }
         /// <summary>
         /// Portion of blue channel's value to use during conversion from RGB to grayscale.
         /// </summary>
-        public readonly double BlueCoefficient;
+        public double BlueCoefficient { get; private set; }
 
         // private format translation dictionary
-        private Dictionary<PixelFormat, PixelFormat> formatTranslations = new Dictionary<PixelFormat, PixelFormat>( );
+        private Dictionary<PixelFormat, PixelFormat> formatTranslations = new Dictionary<PixelFormat, PixelFormat>();
 
         /// <summary>
         /// Format translations dictionary.
@@ -149,17 +149,17 @@ namespace AForge.Imaging.Filters
         /// <param name="cg">Green coefficient.</param>
         /// <param name="cb">Blue coefficient.</param>
         /// 
-        public Grayscale( double cr, double cg, double cb )
+        public Grayscale(double cr, double cg, double cb)
         {
-            RedCoefficient   = cr;
+            RedCoefficient = cr;
             GreenCoefficient = cg;
-            BlueCoefficient  = cb;
+            BlueCoefficient = cb;
 
             // initialize format translation dictionary
-            formatTranslations[PixelFormat.Format24bppRgb]  = PixelFormat.Format8bppIndexed;
-            formatTranslations[PixelFormat.Format32bppRgb]  = PixelFormat.Format8bppIndexed;
+            formatTranslations[PixelFormat.Format24bppRgb] = PixelFormat.Format8bppIndexed;
+            formatTranslations[PixelFormat.Format32bppRgb] = PixelFormat.Format8bppIndexed;
             formatTranslations[PixelFormat.Format32bppArgb] = PixelFormat.Format8bppIndexed;
-            formatTranslations[PixelFormat.Format48bppRgb]  = PixelFormat.Format16bppGrayScale;
+            formatTranslations[PixelFormat.Format48bppRgb] = PixelFormat.Format16bppGrayScale;
             formatTranslations[PixelFormat.Format64bppArgb] = PixelFormat.Format16bppGrayScale;
         }
 
@@ -170,43 +170,43 @@ namespace AForge.Imaging.Filters
         /// <param name="sourceData">Source image data.</param>
         /// <param name="destinationData">Destination image data.</param>
         /// 
-        protected override unsafe void ProcessFilter( UnmanagedImage sourceData, UnmanagedImage destinationData )
+        protected override unsafe void ProcessFilter(UnmanagedImage sourceData, UnmanagedImage destinationData)
         {
             // get width and height
-            int width  = sourceData.Width;
+            int width = sourceData.Width;
             int height = sourceData.Height;
             PixelFormat srcPixelFormat = sourceData.PixelFormat;
 
             if (
-                ( srcPixelFormat == PixelFormat.Format24bppRgb ) ||
-                ( srcPixelFormat == PixelFormat.Format32bppRgb ) ||
-                ( srcPixelFormat == PixelFormat.Format32bppArgb ) )
+                (srcPixelFormat == PixelFormat.Format24bppRgb) ||
+                (srcPixelFormat == PixelFormat.Format32bppRgb) ||
+                (srcPixelFormat == PixelFormat.Format32bppArgb))
             {
-                int pixelSize = ( srcPixelFormat == PixelFormat.Format24bppRgb ) ? 3 : 4;
+                int pixelSize = (srcPixelFormat == PixelFormat.Format24bppRgb) ? 3 : 4;
                 int srcOffset = sourceData.Stride - width * pixelSize;
                 int dstOffset = destinationData.Stride - width;
 
-                int rc = (int) ( 0x10000 * RedCoefficient );
-                int gc = (int) ( 0x10000 * GreenCoefficient );
-                int bc = (int) ( 0x10000 * BlueCoefficient );
+                int rc = (int)(0x10000 * RedCoefficient);
+                int gc = (int)(0x10000 * GreenCoefficient);
+                int bc = (int)(0x10000 * BlueCoefficient);
 
                 // make sure sum of coefficients equals to 0x10000
-                while ( rc + gc + bc < 0x10000 )
+                while (rc + gc + bc < 0x10000)
                 {
                     bc++;
                 }
 
                 // do the job
-                byte* src = (byte*) sourceData.ImageData.ToPointer( );
-                byte* dst = (byte*) destinationData.ImageData.ToPointer( );
+                byte* src = (byte*)sourceData.ImageData.ToPointer();
+                byte* dst = (byte*)destinationData.ImageData.ToPointer();
 
                 // for each line
-                for ( int y = 0; y < height; y++ )
+                for (int y = 0; y < height; y++)
                 {
                     // for each pixel
-                    for ( int x = 0; x < width; x++, src += pixelSize, dst++ )
+                    for (int x = 0; x < width; x++, src += pixelSize, dst++)
                     {
-                        *dst = (byte) ( ( rc * src[RGB.R] + gc * src[RGB.G] + bc * src[RGB.B] ) >> 16 );
+                        *dst = (byte)((rc * src[RGB.R] + gc * src[RGB.G] + bc * src[RGB.B]) >> 16);
                     }
                     src += srcOffset;
                     dst += dstOffset;
@@ -214,22 +214,22 @@ namespace AForge.Imaging.Filters
             }
             else
             {
-                int pixelSize = ( srcPixelFormat == PixelFormat.Format48bppRgb ) ? 3 : 4;
-                byte* srcBase = (byte*) sourceData.ImageData.ToPointer( );
-                byte* dstBase = (byte*) destinationData.ImageData.ToPointer( );
+                int pixelSize = (srcPixelFormat == PixelFormat.Format48bppRgb) ? 3 : 4;
+                byte* srcBase = (byte*)sourceData.ImageData.ToPointer();
+                byte* dstBase = (byte*)destinationData.ImageData.ToPointer();
                 int srcStride = sourceData.Stride;
                 int dstStride = destinationData.Stride;
 
                 // for each line
-                for ( int y = 0; y < height; y++ )
+                for (int y = 0; y < height; y++)
                 {
-                    ushort* src = (ushort*) ( srcBase + y * srcStride );
-                    ushort* dst = (ushort*) ( dstBase + y * dstStride );
+                    ushort* src = (ushort*)(srcBase + y * srcStride);
+                    ushort* dst = (ushort*)(dstBase + y * dstStride);
 
                     // for each pixel
-                    for ( int x = 0; x < width; x++, src += pixelSize, dst++ )
+                    for (int x = 0; x < width; x++, src += pixelSize, dst++)
                     {
-                        *dst = (ushort) ( RedCoefficient * src[RGB.R] + GreenCoefficient * src[RGB.G] + BlueCoefficient * src[RGB.B] );
+                        *dst = (ushort)(RedCoefficient * src[RGB.R] + GreenCoefficient * src[RGB.G] + BlueCoefficient * src[RGB.B]);
                     }
                 }
             }

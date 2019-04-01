@@ -17,6 +17,32 @@
             {
                 components.Dispose( );
             }
+
+            if (borderPen != null)
+            {
+                borderPen.Dispose();
+            }
+
+            if (disabledBrush != null)
+            {
+                disabledBrush.Dispose();
+            }
+
+            if (manipulatorBrush != null)
+            {
+                manipulatorBrush.Dispose();
+            }
+
+            if (negativeAreaBrush != null)
+            {
+                negativeAreaBrush.Dispose();
+            }
+
+            if (positiveAreaBrush != null)
+            {
+                positiveAreaBrush.Dispose();
+            }
+
             base.Dispose( disposing );
         }
 

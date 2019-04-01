@@ -37,21 +37,21 @@ namespace AForge.Imaging.Filters
     /// </code>
     /// </remarks>
     /// 
-	public class FiltersSequence : CollectionBase, IFilter
+	public class FiltersSequenceCollection : CollectionBase, IFilter
 	{
         /// <summary>
-        /// Initializes a new instance of the <see cref="FiltersSequence"/> class.
+        /// Initializes a new instance of the <see cref="FiltersSequenceCollection"/> class.
         /// </summary>
         /// 
-		public FiltersSequence( ) { }
+		public FiltersSequenceCollection( ) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FiltersSequence"/> class.
+        /// Initializes a new instance of the <see cref="FiltersSequenceCollection"/> class.
         /// </summary>
         /// 
         /// <param name="filters">Sequence of filters to apply.</param>
         /// 
-        public FiltersSequence( params IFilter[] filters )
+        public FiltersSequenceCollection( params IFilter[] filters )
 		{
 			InnerList.AddRange( filters );
 		}

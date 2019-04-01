@@ -124,7 +124,7 @@ namespace AForge.Math.Converters
             if (value is bool)
                 return (bool)value ? Rational.One : Rational.Zero;
 
-            throw new ArgumentException("Inavlid value type: " + value.GetType().FullName, "value");
+            throw new ArgumentException("Inavlid value type: " + value.GetType().FullName, nameof(value));
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace AForge.Math.Converters
                 throw new InvalidCastException("Cannot convert null to type " + destinationType.FullName);
             }
             if (!(value is Rational))
-                throw new ArgumentException("value must be a rational.", "value");
+                throw new ArgumentException("value must be a rational.", nameof(value));
 
             var r = (Rational)value;
             if (destinationType == typeof(Rational))
@@ -206,7 +206,7 @@ namespace AForge.Math.Converters
             if (destinationType == typeof(bool))
                 return !Rational.IsZero(r);
 
-            throw new ArgumentException("Inavlid destinationType: " + destinationType.FullName, "destinationType");
+            throw new ArgumentException("Invalid destinationType: " + destinationType.FullName, nameof(destinationType));
         }
 
         private static bool IsNullableType(Type t)

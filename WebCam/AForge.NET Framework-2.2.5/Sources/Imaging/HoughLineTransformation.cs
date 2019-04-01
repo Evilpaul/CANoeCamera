@@ -118,7 +118,7 @@ namespace AForge.Imaging
         /// Line's slope - angle between polar axis and line's radius (normal going
         /// from pole to the line). Measured in degrees, [0, 180).
         /// </summary>
-        public readonly double  Theta;
+        public double Theta { get; private set; }
 
         /// <summary>
         /// Line's distance from image center, (−∞, +∞).
@@ -129,7 +129,7 @@ namespace AForge.Imaging
         /// should be increased by 180 degrees and radius should be made positive.
         /// </note></remarks>
         /// 
-        public readonly short	Radius;
+        public short Radius { get; private set; }
 
         /// <summary>
         /// Line's absolute intensity, (0, +∞).
@@ -144,7 +144,7 @@ namespace AForge.Imaging
         /// in most cases), the intensity value may slightly vary.</note></para>
         /// </remarks>
         /// 
-        public readonly short	Intensity;
+        public short Intensity { get; private set; }
 
         /// <summary>
         /// Line's relative intensity, (0, 1].
@@ -156,7 +156,7 @@ namespace AForge.Imaging
         /// its intensity is half of maximum found intensity.</para>
         /// </remarks>
         /// 
-        public readonly double  RelativeIntensity;
+        public double RelativeIntensity { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HoughLine"/> class.
@@ -194,6 +194,61 @@ namespace AForge.Imaging
         public int CompareTo( object value )
         {
             return ( -Intensity.CompareTo( ( (HoughLine) value ).Intensity ) );
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj is null)
+            {
+                return false;
+            }
+
+            throw new NotImplementedException();
+        }
+
+        public override int GetHashCode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool operator ==(HoughLine left, HoughLine right)
+        {
+            if (left is null)
+            {
+                return right is null;
+            }
+
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(HoughLine left, HoughLine right)
+        {
+            return !(left == right);
+        }
+
+        public static bool operator <(HoughLine left, HoughLine right)
+        {
+            return left is null ? !(right is null) : left.CompareTo(right) < 0;
+        }
+
+        public static bool operator <=(HoughLine left, HoughLine right)
+        {
+            return left is null || left.CompareTo(right) <= 0;
+        }
+
+        public static bool operator >(HoughLine left, HoughLine right)
+        {
+            return !(left is null) && left.CompareTo(right) > 0;
+        }
+
+        public static bool operator >=(HoughLine left, HoughLine right)
+        {
+            return left is null ? right is null : left.CompareTo(right) >= 0;
         }
     }
 
@@ -263,7 +318,7 @@ namespace AForge.Imaging
 
         private int 		localPeakRadius = 4;
         private short       minLineIntensity = 10;
-        private ArrayList   lines = new ArrayList( );
+        private readonly ArrayList   lines = new ArrayList( );
 
         /// <summary>
         /// Steps per degree.

@@ -8,6 +8,7 @@
 
 using System;
 using System.Drawing;
+using System.Globalization;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -15,7 +16,7 @@ using AForge.Video;
 using AForge.Video.DirectShow;
 using AForge.Video.FFMPEG;
 
-namespace Snapshot_Maker
+namespace SnapshotMaker
 {
     public partial class MainForm : Form
     {
@@ -105,13 +106,13 @@ namespace Snapshot_Maker
 
                 foreach ( VideoCapabilities capabilty in videoCapabilities )
                 {
-                    videoResolutionsCombo.Items.Add( string.Format( "{0} x {1}",
+                    videoResolutionsCombo.Items.Add( string.Format(CultureInfo.InvariantCulture, "{0} x {1}",
                         capabilty.FrameSize.Width, capabilty.FrameSize.Height ) );
                 }
 
                 foreach ( VideoCapabilities capabilty in snapshotCapabilities )
                 {
-                    snapshotResolutionsCombo.Items.Add( string.Format( "{0} x {1}",
+                    snapshotResolutionsCombo.Items.Add( string.Format(CultureInfo.InvariantCulture, "{0} x {1}",
                         capabilty.FrameSize.Width, capabilty.FrameSize.Height ) );
                 }
 

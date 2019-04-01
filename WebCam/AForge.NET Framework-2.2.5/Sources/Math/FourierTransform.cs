@@ -101,7 +101,7 @@ namespace AForge.Math
 			int			n = data.GetLength( 0 );	// rows
 			int			m = data.GetLength( 1 );	// columns
 			double		arg, cos, sin;
-			Complex[]	dst = new Complex[System.Math.Max( n, m )];
+			Complex[]	dst = new Complex[Math.Max( n, m )];
 
 			// process rows
 			for ( int i = 0; i < n; i++ )
@@ -110,13 +110,13 @@ namespace AForge.Math
 				{
 					dst[j] = Complex.Zero;
 
-					arg = - (int) direction * 2.0 * System.Math.PI * (double) j / (double) m;
+					arg = - (int) direction * 2.0 * Math.PI * (double) j / (double) m;
 
 					// sum source elements
 					for ( int k = 0; k < m; k++ )
 					{
-						cos = System.Math.Cos( k * arg );
-						sin = System.Math.Sin( k * arg );
+						cos = Math.Cos( k * arg );
+						sin = Math.Sin( k * arg );
 
 						dst[j].Re += ( data[i, k].Re * cos - data[i, k].Im * sin );
 						dst[j].Im += ( data[i, k].Re * sin + data[i, k].Im * cos );
@@ -319,11 +319,14 @@ namespace AForge.Math
 		// Get array, indicating which data members should be swapped before FFT
 		private static int[] GetReversedBits( int numberOfBits )
 		{
-			if ( ( numberOfBits < minBits ) || ( numberOfBits > maxBits ) )
-				throw new ArgumentOutOfRangeException( );
+			if ( numberOfBits < minBits )
+				throw new ArgumentOutOfRangeException(nameof(numberOfBits));
 
-			// check if the array is already calculated
-			if ( reversedBits[numberOfBits - 1] == null )
+            if (numberOfBits > maxBits)
+                throw new ArgumentOutOfRangeException(nameof(numberOfBits));
+
+            // check if the array is already calculated
+            if ( reversedBits[numberOfBits - 1] == null )
 			{
 				int		n = Tools.Pow2( numberOfBits );
 				int[]	rBits = new int[n];

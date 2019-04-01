@@ -68,7 +68,7 @@ namespace AForge
 				}
 			}
 
-			void VideoFileSource::Stop()
+			void VideoFileSource::StopVideo()
 			{
 				if (IsRunning)
 				{

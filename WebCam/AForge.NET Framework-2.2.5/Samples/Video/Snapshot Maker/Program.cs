@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace Snapshot_Maker
+namespace SnapshotMaker
 {
     static class Program
     {

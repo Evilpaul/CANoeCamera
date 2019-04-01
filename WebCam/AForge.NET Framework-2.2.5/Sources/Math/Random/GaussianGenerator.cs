@@ -99,9 +99,9 @@ namespace AForge.Math.Random
         /// 
         /// <returns>Returns next random number.</returns>
         /// 
-        public float Next( )
+        public float Regenerate( )
         {
-            return (float) rand.Next( ) * stdDev + mean;
+            return (float) rand.Regenerate( ) * stdDev + mean;
         }
 
         /// <summary>

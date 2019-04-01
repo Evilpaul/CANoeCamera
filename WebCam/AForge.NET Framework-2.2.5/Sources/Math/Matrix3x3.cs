@@ -18,46 +18,46 @@ namespace AForge.Math
     /// provides some operations with it.</para></remarks>
     /// 
     [Serializable]
-    public struct Matrix3x3
+    public struct Matrix3x3 : IEquatable<Matrix3x3>
     {
         /// <summary>
         /// Row 0 column 0 element of the matrix.
         /// </summary>
-        public float V00;
+        public float V00 { get; set; }
         /// <summary>
         /// Row 0 column 1 element of the matrix.
         /// </summary>
-        public float V01;
+        public float V01 { get; set; }
         /// <summary>
         /// Row 0 column 2 element of the matrix.
         /// </summary>
-        public float V02;
+        public float V02 { get; set; }
 
         /// <summary>
         /// Row 1 column 0 element of the matrix.
         /// </summary>
-        public float V10;
+        public float V10 { get; set; }
         /// <summary>
         /// Row 1 column 1 element of the matrix.
         /// </summary>
-        public float V11;
+        public float V11 { get; set; }
         /// <summary>
         /// Row 1 column 2 element of the matrix.
         /// </summary>
-        public float V12;
+        public float V12 { get; set; }
 
         /// <summary>
         /// Row 2 column 0 element of the matrix.
         /// </summary>
-        public float V20;
+        public float V20 { get; set; }
         /// <summary>
         /// Row 2 column 1 element of the matrix.
         /// </summary>
-        public float V21;
+        public float V21 { get; set; }
         /// <summary>
         /// Row 2 column 2 element of the matrix.
         /// </summary>
-        public float V22;
+        public float V22 { get; set; }
 
         /// <summary>
         /// Provides an identity matrix with all diagonal elements set to 1.
@@ -320,7 +320,7 @@ namespace AForge.Math
         public Vector3 GetRow( int index )
         {
             if ( ( index < 0 ) || ( index > 2 ) )
-                throw new ArgumentException( "Invalid row index was specified.", "index" );
+                throw new ArgumentException( "Invalid row index was specified.", nameof(index));
 
             return ( index == 0 ) ? new Vector3( V00, V01, V02 ) :
                    ( index == 1 ) ? new Vector3( V10, V11, V12 ) : new Vector3( V20, V21, V22 );
@@ -339,7 +339,7 @@ namespace AForge.Math
         public Vector3 GetColumn( int index )
         {
             if ( ( index < 0 ) || ( index > 2 ) )
-                throw new ArgumentException( "Invalid column index was specified.", "index" );
+                throw new ArgumentException( "Invalid column index was specified.", nameof(index));
 
             return ( index == 0 ) ? new Vector3( V00, V10, V20 ) :
                    ( index == 1 ) ? new Vector3( V01, V11, V21 ) : new Vector3( V02, V12, V22 );
@@ -656,9 +656,11 @@ namespace AForge.Math
         /// 
         /// <returns>Returns <see langword="true"/> if the two matrices are equal or <see langword="false"/> otherwise.</returns>
         /// 
-        public bool Equals( Matrix3x3 matrix )
+        public bool Equals(Matrix3x3 other)
         {
-            return ( this == matrix );
+            return (V00 == other.V00) && (V01 == other.V01) && (V02 == other.V02) &&
+                (V10 == other.V10) && (V11 == other.V11) && (V12 == other.V12) &&
+                (V20 == other.V20) && (V21 == other.V21) && (V22 == other.V22);
         }
 
         /// <summary>

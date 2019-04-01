@@ -1,4 +1,4 @@
-﻿namespace Snapshot_Maker
+﻿namespace SnapshotMaker
 {
     partial class MainForm
     {
@@ -17,6 +17,22 @@
             {
                 components.Dispose( );
             }
+
+            if (videoDevice != null)
+            {
+                videoDevice.Dispose();
+            }
+
+            if (snapshotForm != null)
+            {
+                snapshotForm.Dispose();
+            }
+
+            if (vfw != null)
+            {
+                vfw.Dispose();
+            }
+
             base.Dispose( disposing );
         }
 

@@ -213,13 +213,13 @@ namespace AForge.Math
         /// <summary>
         /// Ordinary noise function
         /// </summary>
-        private double Noise( int x )
+        private static double Noise( int x )
         {
             int n = ( x << 13 ) ^ x;
 
             return ( 1.0 - ( ( n * ( n * n * 15731 + 789221 ) + 1376312589 ) & 0x7fffffff ) / 1073741824.0 );
         }
-        private double Noise( int x, int y )
+        private static double Noise( int x, int y )
         {
             int n = x + y * 57;
             n = ( n << 13 ) ^ n;
@@ -231,14 +231,14 @@ namespace AForge.Math
         /// <summary>
         /// Smoothed noise.
         /// </summary>
-        private double SmoothedNoise( double x )
+        private static double SmoothedNoise( double x )
         {
             int		xInt = (int) x;
             double	xFrac = x - xInt;
 
             return CosineInterpolate( Noise( xInt ), Noise( xInt + 1 ), xFrac );
         }
-        private double SmoothedNoise( double x, double y )
+        private static double SmoothedNoise( double x, double y )
         {
             int		xInt = (int) x;
             int		yInt = (int) y;
@@ -261,7 +261,7 @@ namespace AForge.Math
         /// <summary>
         /// Cosine interpolation.
         /// </summary>
-        private double CosineInterpolate( double x1, double x2, double a )
+        private static double CosineInterpolate( double x1, double x2, double a )
         {
             double f = ( 1 - Math.Cos( a * Math.PI ) ) * 0.5;
 

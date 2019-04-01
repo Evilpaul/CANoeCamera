@@ -24,12 +24,12 @@ namespace AForge.Imaging.Filters
         /// <summary>
         /// New image width.
         /// </summary>
-        protected int newWidth;
+        private int newWidth;
 
         /// <summary>
         /// New image height.
         /// </summary>
-        protected int newHeight;
+        private int newHeight;
 
         /// <summary>
         /// Width of the new resized image.

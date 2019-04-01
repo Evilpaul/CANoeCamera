@@ -102,8 +102,8 @@ namespace AForge.Math.Geometry
                     pointsInOptimizedHull++;
 
                     // get angle between 2 vectors, which start from the next to last point
-                    angle = GeometryTools.GetAngleBetweenVectors( optimizedShape[pointsInOptimizedHull - 2],
-                        optimizedShape[pointsInOptimizedHull - 3], optimizedShape[pointsInOptimizedHull - 1] );
+                    angle = GeometryTools.GetAngleBetweenVectors( IntPoint.ToPoint(optimizedShape[pointsInOptimizedHull - 2]),
+                        IntPoint.ToPoint(optimizedShape[pointsInOptimizedHull - 3]), IntPoint.ToPoint(optimizedShape[pointsInOptimizedHull - 1]) );
 
                     if ( ( angle > maxAngleToKeep ) &&
                          ( ( pointsInOptimizedHull > 3 ) || ( i < n - 1 ) ) )
@@ -117,8 +117,8 @@ namespace AForge.Math.Geometry
                 if ( pointsInOptimizedHull > 3 )
                 {
                     // check the last point
-                    angle = GeometryTools.GetAngleBetweenVectors( optimizedShape[pointsInOptimizedHull - 1],
-                        optimizedShape[pointsInOptimizedHull - 2], optimizedShape[0] );
+                    angle = GeometryTools.GetAngleBetweenVectors(IntPoint.ToPoint(optimizedShape[pointsInOptimizedHull - 1]),
+                        IntPoint.ToPoint(optimizedShape[pointsInOptimizedHull - 2]), IntPoint.ToPoint(optimizedShape[0]) );
 
                     if ( angle > maxAngleToKeep )
                     {
@@ -129,8 +129,8 @@ namespace AForge.Math.Geometry
                     if ( pointsInOptimizedHull > 3 )
                     {
                         // check the first point
-                        angle = GeometryTools.GetAngleBetweenVectors( optimizedShape[0],
-                            optimizedShape[pointsInOptimizedHull - 1], optimizedShape[1] );
+                        angle = GeometryTools.GetAngleBetweenVectors(IntPoint.ToPoint(optimizedShape[0]),
+                            IntPoint.ToPoint(optimizedShape[pointsInOptimizedHull - 1]), IntPoint.ToPoint(optimizedShape[1]) );
 
                         if ( angle > maxAngleToKeep )
                         {

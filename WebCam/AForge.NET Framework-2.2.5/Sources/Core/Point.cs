@@ -31,19 +31,19 @@ namespace AForge
     /// </remarks>
     /// 
     [Serializable]
-    public struct Point
+    public struct Point : IEquatable<Point>
     {
         /// <summary> 
         /// X coordinate.
         /// </summary> 
         /// 
-        public float X;
+        public float X { get; set; }
 
         /// <summary> 
         /// Y coordinate.
         /// </summary> 
         /// 
-        public float Y;
+        public float Y { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Point"/> structure.
@@ -54,8 +54,8 @@ namespace AForge
         /// 
         public Point( float x, float y )
         {
-            this.X = x;
-            this.Y = y;
+            X = x;
+            Y = y;
         }
 
         /// <summary>
@@ -336,7 +336,7 @@ namespace AForge
         /// to integers from coordinates of the specified single precision point by
         /// casting float values to integers value.</returns>
         /// 
-        public static explicit operator IntPoint( Point point )
+        public static IntPoint ToIntPoint( Point point )
         {
             return new IntPoint( (int) point.X, (int) point.Y );
         }
@@ -350,7 +350,7 @@ namespace AForge
         /// <returns>Returns new double precision point which coordinates are implicitly converted
         /// to doubles from coordinates of the specified single precision point.</returns>
         /// 
-        public static implicit operator DoublePoint( Point point )
+        public static DoublePoint ToDoublePoint( Point point )
         {
             return new DoublePoint( point.X, point.Y );
         } 
@@ -388,6 +388,11 @@ namespace AForge
         public float EuclideanNorm( )
         {
             return (float) System.Math.Sqrt( X * X + Y * Y );
+        }
+
+        public bool Equals(Point other)
+        {
+            return (X == other.X) && (Y == other.Y);
         }
     }
 }

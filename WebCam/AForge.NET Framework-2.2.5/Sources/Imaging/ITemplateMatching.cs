@@ -27,12 +27,12 @@ namespace AForge.Imaging
         /// </summary>
         /// 
         /// <param name="image">Source image to process.</param>
-        /// <param name="template">Template image to search for.</param>
+        /// <param name="tmplt">Template image to search for.</param>
         /// <param name="searchZone">Rectangle in source image to search template for.</param>
         /// 
         /// <returns>Returns array of found matchings.</returns>
         /// 
-        TemplateMatch[] ProcessImage( Bitmap image, Bitmap template, Rectangle searchZone );
+        TemplateMatch[] ProcessImage( Bitmap image, Bitmap tmplt, Rectangle searchZone );
 
         /// <summary>
         /// Process image looking for matchings with specified template.
@@ -51,11 +51,11 @@ namespace AForge.Imaging
         /// </summary>
         /// 
         /// <param name="image">Unmanaged source image to process.</param>
-        /// <param name="template">Unmanaged template image to search for.</param>
+        /// <param name="tmplt">Unmanaged template image to search for.</param>
         /// <param name="searchZone">Rectangle in source image to search template for.</param>
         /// 
         /// <returns>Returns array of found matchings.</returns>
         /// 
-        TemplateMatch[] ProcessImage( UnmanagedImage image, UnmanagedImage template, Rectangle searchZone );
+        TemplateMatch[] ProcessImage( UnmanagedImage image, UnmanagedImage tmplt, Rectangle searchZone );
     }
 }

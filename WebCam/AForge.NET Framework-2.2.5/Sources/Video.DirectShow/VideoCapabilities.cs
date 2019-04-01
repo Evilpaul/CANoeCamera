@@ -24,7 +24,7 @@ namespace AForge.Video.DirectShow
         /// <summary>
         /// Frame size supported by video device.
         /// </summary>
-        public readonly Size FrameSize;
+        public Size FrameSize { get; private set; }
 
         /// <summary>
         /// Frame rate supported by video device for corresponding <see cref="FrameSize">frame size</see>.
@@ -43,17 +43,17 @@ namespace AForge.Video.DirectShow
         /// <summary>
         /// Average frame rate of video device for corresponding <see cref="FrameSize">frame size</see>.
         /// </summary>
-        public readonly int AverageFrameRate;
+        public int AverageFrameRate { get; private set; }
 
         /// <summary>
         /// Maximum frame rate of video device for corresponding <see cref="FrameSize">frame size</see>.
         /// </summary>
-        public readonly int MaximumFrameRate;
+        public int MaximumFrameRate { get; private set; }
 
         /// <summary>
         /// Number of bits per pixel provided by the camera.
         /// </summary>
-        public readonly int BitCount;
+        public int BitCount { get; private set; }
 
         internal VideoCapabilities( ) { }
 
@@ -61,7 +61,7 @@ namespace AForge.Video.DirectShow
         static internal VideoCapabilities[] FromStreamConfig( IAMStreamConfig videoStreamConfig )
         {
             if ( videoStreamConfig == null )
-                throw new ArgumentNullException( "videoStreamConfig" );
+                throw new ArgumentNullException(nameof(videoStreamConfig));
 
             // ensure this device reports capabilities
             int count, size;

@@ -59,7 +59,7 @@ namespace AForge.Imaging
     /// <img src="img/imaging/quadrilateral_finder.png" width="320" height="240" />
     /// </remarks>
     ///
-    public class QuadrilateralFinder
+    public static class QuadrilateralFinder
     {
         /// <summary>
         /// Find corners of quadrilateral/triangular area in the specified image.
@@ -74,7 +74,7 @@ namespace AForge.Imaging
         ///
         /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         /// 
-        public List<IntPoint> ProcessImage( Bitmap image )
+        public static List<IntPoint> ProcessImage( Bitmap image )
         {
             CheckPixelFormat( image.PixelFormat );
 
@@ -112,7 +112,7 @@ namespace AForge.Imaging
         ///
         /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         /// 
-        public List<IntPoint> ProcessImage( BitmapData imageData )
+        public static List<IntPoint> ProcessImage( BitmapData imageData )
         {
             return ProcessImage( new UnmanagedImage( imageData ) );
         }
@@ -130,7 +130,7 @@ namespace AForge.Imaging
         ///
         /// <exception cref="UnsupportedImageFormatException">Unsupported pixel format of the source image.</exception>
         /// 
-        public List<IntPoint> ProcessImage( UnmanagedImage image )
+        public static List<IntPoint> ProcessImage( UnmanagedImage image )
         {
             CheckPixelFormat( image.PixelFormat );
 
@@ -224,7 +224,7 @@ namespace AForge.Imaging
             return PointsCloud.FindQuadrilateralCorners( points );
        }
 
-        private void CheckPixelFormat( PixelFormat format )
+        private static void CheckPixelFormat( PixelFormat format )
         {
             // check image format
             if (
