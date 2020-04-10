@@ -34,11 +34,11 @@ namespace AForge.Video.DirectShow
     public partial class VideoCaptureDeviceForm : Form
     {
         // collection of available video devices
-        private FilterInfoCollection videoDevices;
+        private readonly FilterInfoCollection videoDevices;
 
         // supported capabilities of video and snapshots
-        private Dictionary<string, VideoCapabilities> videoCapabilitiesDictionary = new Dictionary<string, VideoCapabilities>( );
-        private Dictionary<string, VideoCapabilities> snapshotCapabilitiesDictionary = new Dictionary<string, VideoCapabilities>( );
+        private readonly Dictionary<string, VideoCapabilities> videoCapabilitiesDictionary = new Dictionary<string, VideoCapabilities>( );
+        private readonly Dictionary<string, VideoCapabilities> snapshotCapabilitiesDictionary = new Dictionary<string, VideoCapabilities>( );
 
         // available video inputs
         private VideoInput[] availableVideoInputs = null;
@@ -186,7 +186,7 @@ namespace AForge.Video.DirectShow
         }
 
         // Ok button clicked
-        private void okButton_Click( object sender, EventArgs e )
+        private void OkButton_Click( object sender, EventArgs e )
         {
             VideoDeviceMoniker = VideoDevice.Source;
 
@@ -221,7 +221,7 @@ namespace AForge.Video.DirectShow
         }
 
         // New video device is selected
-        private void devicesCombo_SelectedIndexChanged( object sender, EventArgs e )
+        private void DevicesCombo_SelectedIndexChanged( object sender, EventArgs e )
         {
             if ( videoDevices.Count != 0 )
             {
@@ -245,7 +245,7 @@ namespace AForge.Video.DirectShow
             try
             {
                 // collect video capabilities
-                VideoCapabilities[] videoCapabilities = videoDevice.VideoCapabilities;
+                VideoCapabilities[] videoCapabilities = videoDevice.GetVideoCapabilities();
                 int videoResolutionIndex = 0;
 
                 foreach ( VideoCapabilities capabilty in videoCapabilities )
@@ -280,7 +280,7 @@ namespace AForge.Video.DirectShow
                 if ( configureSnapshots )
                 {
                     // collect snapshot capabilities
-                    VideoCapabilities[] snapshotCapabilities = videoDevice.SnapshotCapabilities;
+                    VideoCapabilities[] snapshotCapabilities = videoDevice.GetSnapshotCapabilities();
                     int snapshotResolutionIndex = 0;
 
                     foreach ( VideoCapabilities capabilty in snapshotCapabilities )
@@ -309,7 +309,7 @@ namespace AForge.Video.DirectShow
                 }
 
                 // get video inputs
-                availableVideoInputs = videoDevice.AvailableCrossbarVideoInputs;
+                availableVideoInputs = videoDevice.GetAvailableCrossbarVideoInputs();
                 int videoInputIndex = 0;
 
                 foreach ( VideoInput input in availableVideoInputs )

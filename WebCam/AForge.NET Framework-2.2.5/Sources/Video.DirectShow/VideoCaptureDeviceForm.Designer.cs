@@ -63,7 +63,7 @@
             this.okButton.Size = new System.Drawing.Size( 75, 23 );
             this.okButton.TabIndex = 10;
             this.okButton.Text = "OK";
-            this.okButton.Click += new System.EventHandler( this.okButton_Click );
+            this.okButton.Click += new System.EventHandler( this.OkButton_Click );
             // 
             // devicesCombo
             // 
@@ -73,7 +73,7 @@
             this.devicesCombo.Name = "devicesCombo";
             this.devicesCombo.Size = new System.Drawing.Size( 325, 21 );
             this.devicesCombo.TabIndex = 9;
-            this.devicesCombo.SelectedIndexChanged += new System.EventHandler( this.devicesCombo_SelectedIndexChanged );
+            this.devicesCombo.SelectedIndexChanged += new System.EventHandler( this.DevicesCombo_SelectedIndexChanged );
             // 
             // groupBox1
             // 

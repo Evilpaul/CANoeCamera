@@ -73,16 +73,17 @@ public class WebCam : MeasurementScript, IDisposable
             Output.WriteLine("----------------------");
             int maxIdx = 0;
             int matchIdx = -1;
-            for (int i = 0; i < videoSource.VideoCapabilities.Length; i++)
+            VideoCapabilities[] vc = videoSource.GetVideoCapabilities();
+            for (int i = 0; i < vc.Length; i++)
             {
-                Output.WriteLine("{0:00}: {1} x {2}", i, videoSource.VideoCapabilities[i].FrameSize.Width, videoSource.VideoCapabilities[i].FrameSize.Height);
-                if ((videoSource.VideoCapabilities[i].FrameSize.Height * videoSource.VideoCapabilities[i].FrameSize.Width) > (videoSource.VideoCapabilities[maxIdx].FrameSize.Height * videoSource.VideoCapabilities[maxIdx].FrameSize.Width))
+                Output.WriteLine("{0:00}: {1} x {2}", i, vc[i].FrameSize.Width, vc[i].FrameSize.Height);
+                if ((vc[i].FrameSize.Height * vc[i].FrameSize.Width) > (vc[maxIdx].FrameSize.Height * vc[maxIdx].FrameSize.Width))
                 {
                     maxIdx = i;
                 }
 
                 // check is resoultion matches preferred
-                if ((videoSource.VideoCapabilities[i].FrameSize.Height == WebCamSysVar.PreferredCamera.Height.Value) && (videoSource.VideoCapabilities[i].FrameSize.Width == WebCamSysVar.PreferredCamera.Width.Value))
+                if ((vc[i].FrameSize.Height == WebCamSysVar.PreferredCamera.Height.Value) && (vc[i].FrameSize.Width == WebCamSysVar.PreferredCamera.Width.Value))
                 {
                     matchIdx = i;
                 }
@@ -94,13 +95,13 @@ public class WebCam : MeasurementScript, IDisposable
                 maxIdx = matchIdx;
             }
 
-            Output.WriteLine("Selecting resolution : {0} x {1}", videoSource.VideoCapabilities[maxIdx].FrameSize.Width, videoSource.VideoCapabilities[maxIdx].FrameSize.Height);
-            videoSource.VideoResolution = videoSource.VideoCapabilities[maxIdx];
+            Output.WriteLine("Selecting resolution : {0} x {1}", vc[maxIdx].FrameSize.Width, vc[maxIdx].FrameSize.Height);
+            videoSource.VideoResolution = vc[maxIdx];
             videoSource.NewFrame += new NewFrameEventHandler(Video_NewFrame);
 
-            height = videoSource.VideoCapabilities[maxIdx].FrameSize.Height;
-            width = videoSource.VideoCapabilities[maxIdx].FrameSize.Width;
-            fr = videoSource.VideoCapabilities[maxIdx].AverageFrameRate;
+            height = vc[maxIdx].FrameSize.Height;
+            width = vc[maxIdx].FrameSize.Width;
+            fr = vc[maxIdx].AverageFrameRate;
 
             logoPoint = new PointF(width - logo.Width, 0);
 
