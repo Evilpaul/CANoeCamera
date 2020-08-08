@@ -122,7 +122,7 @@
     <PreBuildEvent>"$(CANoe_InstallDir)Scripts\ReleaseDotNetAssemblies.vbs" "$(SolutionPath)"</PreBuildEvent>
     <PostBuildEvent>"$(CANoe_InstallDir)Scripts\ReloadDotNetAssemblies.vbs" "$(SolutionPath)"
 
-xcopy "$(SolutionDir)\AForge.NET Framework-2.2.5\Externals\ffmpeg\ffmpeg-4.2.2-win32-shared\bin\*.dll" "$(SolutionDir)" /Y /I</PostBuildEvent>
+xcopy "$(SolutionDir)\AForge.NET Framework-2.2.5\Externals\ffmpeg\ffmpeg-4.3.1-win32-shared\bin\*.dll" "$(SolutionDir)" /Y /I</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
