@@ -12,6 +12,7 @@ namespace AForge.Video.DirectShow
     using System.Collections.Generic;
     using System.Drawing;
     using System.Drawing.Imaging;
+    using System.IO;
     using System.Runtime.InteropServices;
     using System.Threading;
     using AForge.Video;
@@ -66,6 +67,11 @@ namespace AForge.Video.DirectShow
 
         // provide snapshots or not
         private bool provideSnapshots = false;
+
+        // JPEG encoding preference
+        private bool preferJpegEncoding = true;
+        // check if JPEG encoding is enabled
+        private bool jpegEncodingEnabled = false;
 
         private Thread thread = null;
         private ManualResetEvent stopEvent = null;
@@ -199,6 +205,45 @@ namespace AForge.Video.DirectShow
         {
             get { return provideSnapshots; }
             set { provideSnapshots = value; }
+        }
+
+        /// <summary>
+        /// Specifies preference for JPEG encoding mode for video acquisition.
+        /// </summary>
+        /// 
+        /// <remarks><para>Many video devices can provide video frames encoded as JPEG image,
+        /// which increases frame rate (as transferring uncompressed RGB data over USB interface
+        /// is much slower). If device supports it, then we can instruct it to provide JPEG images.
+        /// If not, it is configured to provide RGB data.</para>
+        /// 
+        /// <para>The property must be set before starting video device to take an effect.</para>
+        /// 
+        /// <para><note>The <see cref="NewFrame"/> event provides uncompressed image anyway.
+        /// This property is only affects internal mode of video acquisition.</note></para>
+        /// 
+        /// <para>Default value of the property is set to <see langword="true"/>, which should
+        /// be kept this way unless there is some strong reason otherwise.</para>
+        /// </remarks>
+        /// 
+        public bool PreferJpegEncoding
+        {
+            get { return preferJpegEncoding; }
+            set { preferJpegEncoding = value;  }
+        }
+
+        /// <summary>
+        /// Check if JPEG encoding is enabled for running device.
+        /// </summary>
+        /// 
+        /// <remarks><para>Specifies if video acquisition is configured to provide
+        /// JPEG encoded images.</para>
+        /// </remarks>
+        /// 
+        /// <seealso cref="PreferJpegEncoding"/>
+        /// 
+        public bool JpegEncodingEnabled
+        {
+            get { return JpegEncodingEnabled; }
         }
 
         /// <summary>
@@ -1228,15 +1273,27 @@ namespace AForge.Video.DirectShow
                 _ = graph.AddFilter(videoGrabberBase, "grabber_video");
                 _ = graph.AddFilter(snapshotGrabberBase, "grabber_snapshot");
 
-                // set media type
-                AMMediaType mediaType = new AMMediaType
+                // check if we need and can do JPEG encoding
+                if ( preferJpegEncoding )
+                {
+                    jpegEncodingEnabled = IsJpegEncodingAvailable( sourceBase );
+                }
+
+                // set media types
+                AMMediaType videoMediaType = new AMMediaType
+                {
+                    MajorType = MediaType.Video,
+                    SubType = ( jpegEncodingEnabled ) ? MediaSubType.MJpeg : MediaSubType.RGB24
+                };
+
+                AMMediaType snapshotMediaType = new AMMediaType
                 {
                     MajorType = MediaType.Video,
                     SubType = MediaSubType.RGB24
                 };
 
-                _ = videoSampleGrabber.SetMediaType(mediaType);
-                _ = snapshotSampleGrabber.SetMediaType(mediaType);
+                _ = videoSampleGrabber.SetMediaType(videoMediaType);
+                _ = snapshotSampleGrabber.SetMediaType(snapshotMediaType);
 
                 // get crossbar object to to allows configuring pins of capture card
                 _ = captureGraph.FindInterface(FindDirection.UpstreamOnly, Guid.Empty, sourceBase, typeof(IAMCrossbar).GUID, out crossbarObject);
@@ -1302,6 +1359,8 @@ namespace AForge.Video.DirectShow
 
                 if (runGraph)
                 {
+                    AMMediaType mediaType = new AMMediaType();
+
                     // render capture pin
                     _ = captureGraph.RenderStream(PinCategory.Capture, MediaType.Video, sourceBase, null, videoGrabberBase);
 
@@ -1465,6 +1524,62 @@ namespace AForge.Video.DirectShow
             }
 
             PlayingFinished?.Invoke(this, reasonToStop);
+
+            jpegEncodingEnabled = false;
+        }
+
+        // Check if the filter can provide JPEG encoded images
+        private bool IsJpegEncodingAvailable( IBaseFilter baseFilter )
+        {
+            bool      ret     = false;
+            IEnumPins pinEnum = null;
+            IPin[]    pins    = new IPin[1];
+            int       pinsFetched;
+
+            if ( ( baseFilter.EnumPins( out pinEnum ) == 0 ) && ( pinEnum  != null ) )
+            {
+                try
+                {
+                    while ( ( pinEnum.Next( 1, pins, out pinsFetched ) == 0 ) && ( !ret ) )
+                    {
+                        PinDirection pinDir;
+
+                        if ( ( pins[0].QueryDirection( out pinDir ) == 0 ) && ( pinDir == PinDirection.Output ) )
+                        {
+                            // enum preferred media types of the pin
+                            IEnumMediaTypes mediaEnum  = null;
+                            AMMediaType[]   mediaTypes = new AMMediaType[1];
+                            int             typesFetched;
+
+                            if ( pins[0].EnumMediaTypes( out mediaEnum ) == 0 )
+                            {
+                                try
+                                {
+                                    while ( ( mediaEnum.Next( 1, mediaTypes, out typesFetched ) == 0 ) && ( !ret ) )
+                                    {
+                                        if ( ( mediaTypes[0].MajorType == MediaType.Video ) && ( mediaTypes[0].SubType == MediaSubType.MJpeg ))
+                                        {
+                                            ret = true;
+                                        }
+
+                                        mediaTypes[0].Dispose( );
+                                    }
+                                }
+                                finally
+                                {
+                                    Marshal.ReleaseComObject( mediaEnum );
+                                }
+                            }
+                        }
+                    }
+                }
+                finally
+                {
+                    Marshal.ReleaseComObject( pinEnum );
+                }
+            }
+
+            return ret;
         }
 
         // Set resolution for the specified stream configuration
@@ -1783,46 +1898,62 @@ namespace AForge.Video.DirectShow
                 if (parent.NewFrame != null)
                 {
                     // create new image
-                    System.Drawing.Bitmap image = new Bitmap(width, height, PixelFormat.Format24bppRgb);
+                    System.Drawing.Bitmap image = null;
 
-                    // lock bitmap data
-                    BitmapData imageData = image.LockBits(
-                        new Rectangle(0, 0, width, height),
-                        ImageLockMode.ReadWrite,
-                        PixelFormat.Format24bppRgb);
-
-                    // copy image data
-                    int srcStride = imageData.Stride;
-                    int dstStride = imageData.Stride;
-
-                    unsafe
+                    if ( !parent.jpegEncodingEnabled )
                     {
-                        byte* dst = (byte*)imageData.Scan0.ToPointer() + dstStride * (height - 1);
-                        byte* src = (byte*)buffer.ToPointer();
+                        // create new image
+                        image = new Bitmap( width, height, PixelFormat.Format24bppRgb );
 
-                        for (int y = 0; y < height; y++)
+                        // lock bitmap data
+                        BitmapData imageData = image.LockBits(
+                            new Rectangle( 0, 0, width, height ),
+                            ImageLockMode.ReadWrite,
+                            PixelFormat.Format24bppRgb );
+
+                        // copy image data
+                        int srcStride = imageData.Stride;
+                        int dstStride = imageData.Stride;
+
+                        unsafe
                         {
-                            _ = Win32.memcpy(dst, src, srcStride);
-                            dst -= dstStride;
-                            src += srcStride;
+                            byte* dst = (byte*) imageData.Scan0.ToPointer( ) + dstStride * ( height - 1 );
+                            byte* src = (byte*) buffer.ToPointer( );
+
+                            for ( int y = 0; y < height; y++ )
+                            {
+                                Win32.memcpy( dst, src, srcStride );
+                                dst -= dstStride;
+                                src += srcStride;
+                            }
                         }
-                    }
 
-                    // unlock bitmap data
-                    image.UnlockBits(imageData);
-
-                    // notify parent
-                    if (snapshotMode)
-                    {
-                        parent.OnSnapshotFrame(image);
+                        // unlock bitmap data
+                        image.UnlockBits( imageData );
                     }
                     else
                     {
-                        parent.OnNewFrame(image);
+                        unsafe
+                        {
+                            image = (Bitmap)Bitmap.FromStream( new UnmanagedMemoryStream( (byte*)buffer.ToPointer( ), bufferLen ) );
+                        }
                     }
 
-                    // release the image
-                    image.Dispose();
+                    if ( image != null )
+                    {
+                        // notify parent
+                        if (snapshotMode)
+                        {
+                            parent.OnSnapshotFrame( image );
+                        }
+                        else
+                        {
+                            parent.OnNewFrame( image );
+                        }
+
+                        // release the image
+                        image.Dispose( );
+                    }
                 }
 
                 return 0;
