@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 14 for Windows Desktop
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{631AC093-430F-45F4-BA0C-AF0F0405918A}"
 EndProject
@@ -40,23 +40,23 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Video.FFMPEG", "Video.FFMPE
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		net40|Any CPU = net40|Any CPU
+		net40|x64 = net40|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{631AC093-430F-45F4-BA0C-AF0F0405918A}.net40|Any CPU.ActiveCfg = Release|Any CPU
-		{631AC093-430F-45F4-BA0C-AF0F0405918A}.net40|Any CPU.Build.0 = Release|Any CPU
-		{4CCA6844-9102-4A3B-8148-EA3D359B2586}.net40|Any CPU.ActiveCfg = Release|Any CPU
-		{4CCA6844-9102-4A3B-8148-EA3D359B2586}.net40|Any CPU.Build.0 = Release|Any CPU
-		{C6A8B9AE-0749-41C7-8FF9-02C156696F45}.net40|Any CPU.ActiveCfg = Release|Any CPU
-		{C6A8B9AE-0749-41C7-8FF9-02C156696F45}.net40|Any CPU.Build.0 = Release|Any CPU
-		{C0FAF524-72E4-46F7-8C1B-A6B74DEC5EBE}.net40|Any CPU.ActiveCfg = Release|Any CPU
-		{C0FAF524-72E4-46F7-8C1B-A6B74DEC5EBE}.net40|Any CPU.Build.0 = Release|Any CPU
-		{809725DC-6502-4732-A51C-DEB7FEA12975}.net40|Any CPU.ActiveCfg = Release|Any CPU
-		{809725DC-6502-4732-A51C-DEB7FEA12975}.net40|Any CPU.Build.0 = Release|Any CPU
-		{26CD2CE7-FF63-4669-83B0-7D9C8F3408EE}.net40|Any CPU.ActiveCfg = Release|Any CPU
-		{26CD2CE7-FF63-4669-83B0-7D9C8F3408EE}.net40|Any CPU.Build.0 = Release|Any CPU
-		{FF31DD24-127D-4EB1-929C-F5738147E886}.net40|Any CPU.ActiveCfg = Release|Win32
-		{FF31DD24-127D-4EB1-929C-F5738147E886}.net40|Any CPU.Build.0 = Release|Win32
+		{631AC093-430F-45F4-BA0C-AF0F0405918A}.net40|x64.ActiveCfg = Release|Any CPU
+		{631AC093-430F-45F4-BA0C-AF0F0405918A}.net40|x64.Build.0 = Release|Any CPU
+		{4CCA6844-9102-4A3B-8148-EA3D359B2586}.net40|x64.ActiveCfg = Release|Any CPU
+		{4CCA6844-9102-4A3B-8148-EA3D359B2586}.net40|x64.Build.0 = Release|Any CPU
+		{C6A8B9AE-0749-41C7-8FF9-02C156696F45}.net40|x64.ActiveCfg = Release|Any CPU
+		{C6A8B9AE-0749-41C7-8FF9-02C156696F45}.net40|x64.Build.0 = Release|Any CPU
+		{C0FAF524-72E4-46F7-8C1B-A6B74DEC5EBE}.net40|x64.ActiveCfg = Release|Any CPU
+		{C0FAF524-72E4-46F7-8C1B-A6B74DEC5EBE}.net40|x64.Build.0 = Release|Any CPU
+		{809725DC-6502-4732-A51C-DEB7FEA12975}.net40|x64.ActiveCfg = Release|Any CPU
+		{809725DC-6502-4732-A51C-DEB7FEA12975}.net40|x64.Build.0 = Release|Any CPU
+		{26CD2CE7-FF63-4669-83B0-7D9C8F3408EE}.net40|x64.ActiveCfg = Release|Any CPU
+		{26CD2CE7-FF63-4669-83B0-7D9C8F3408EE}.net40|x64.Build.0 = Release|Any CPU
+		{FF31DD24-127D-4EB1-929C-F5738147E886}.net40|x64.ActiveCfg = Release|x64
+		{FF31DD24-127D-4EB1-929C-F5738147E886}.net40|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

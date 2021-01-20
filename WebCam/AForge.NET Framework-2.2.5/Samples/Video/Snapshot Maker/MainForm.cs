@@ -101,8 +101,8 @@ namespace SnapshotMaker
 
             try
             {
-                videoCapabilities = videoDevice.VideoCapabilities;
-                snapshotCapabilities = videoDevice.SnapshotCapabilities;
+                videoCapabilities = videoDevice.GetVideoCapabilities();
+                snapshotCapabilities = videoDevice.GetSnapshotCapabilities();
 
                 foreach ( VideoCapabilities capabilty in videoCapabilities )
                 {

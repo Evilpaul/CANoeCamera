@@ -13,17 +13,6 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>.\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>1701, 1702</NoWarn>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>5</LangVersion>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AForge, Version=2.2.5.0, Culture=neutral, PublicKeyToken=c1db6ff4eaa06aeb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -116,13 +105,24 @@
   <PropertyGroup>
     <PostCompileAdditionalParams>-R:"$(CANoe_InstallDir)NETDev\v40" -R:"$(CANoe_InstallDir)NETDev"</PostCompileAdditionalParams>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+	<OutputPath>.\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+	<WarningLevel>4</WarningLevel>
+    <NoWarn>1701, 1702</NoWarn>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>5</LangVersion>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(CANoe_InstallDir)PostCompiler\Vector.PostCompiler.targets" />
   <PropertyGroup>
     <PreBuildEvent>"$(CANoe_InstallDir)Scripts\ReleaseDotNetAssemblies.vbs" "$(SolutionPath)"</PreBuildEvent>
     <PostBuildEvent>"$(CANoe_InstallDir)Scripts\ReloadDotNetAssemblies.vbs" "$(SolutionPath)"
 
-xcopy "$(SolutionDir)\AForge.NET Framework-2.2.5\Externals\ffmpeg\ffmpeg-4.3.1-win32-shared\bin\*.dll" "$(SolutionDir)" /Y /I</PostBuildEvent>
+xcopy "$(SolutionDir)\AForge.NET Framework-2.2.5\Externals\ffmpeg\ffmpeg-4.3.1-2021-01-01-full_build-shared\bin\*.dll" "$(SolutionDir)" /Y /I</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>

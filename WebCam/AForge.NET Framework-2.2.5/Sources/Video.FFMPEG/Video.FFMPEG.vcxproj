@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
@@ -39,27 +35,19 @@
   <PropertyGroup Condition="'$(Configuration)'!='Debug'" Label="Configuration">
     <OutDir>$(SolutionDir)..\Release\</OutDir>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Platform)'=='Win32'" Label="Configuration">
-    <FFmpegPlatform>Win32</FFmpegPlatform>
-    <PlatformPostfix>
-    </PlatformPostfix>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Platform)'=='x64'" Label="Configuration">
-    <FFmpegPlatform>Win64</FFmpegPlatform>
-    <PlatformPostfix>.x64</PlatformPostfix>
+    <FFmpegPlatform>ffmpeg-4.3.1-2021-01-01-full_build-shared</FFmpegPlatform>
+    <PlatformPostfix></PlatformPostfix>
   </PropertyGroup>
   <PropertyGroup>
     <TargetName>AForge.Video.FFMPEG$(PlatformPostfix)</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\Externals\ffmpeg\ffmpeg-4.3.1-$(FFmpegPlatform)-dev\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\Externals\ffmpeg\$(FFmpegPlatform)\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;__STDC_CONSTANT_MACROS;$(DefineConstants);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
@@ -69,7 +57,7 @@
     <Link>
       <AdditionalDependencies>avcodec.lib;avdevice.lib;avfilter.lib;avformat.lib;avutil.lib;postproc.lib;swresample.lib;swscale.lib</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName).dll</OutputFile>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\..\Externals\ffmpeg\ffmpeg-4.3.1-$(FFmpegPlatform)-dev\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\..\Externals\ffmpeg\$(FFmpegPlatform)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <WarningLevel>Level3</WarningLevel>
       <ImageHasSafeExceptionHandlers />
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -79,18 +67,6 @@
     <Xdcmake>
       <DocumentLibraryDependencies>false</DocumentLibraryDependencies>
     </Xdcmake>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Platform)'=='Win32'">
-    <Link>
-      <TargetMachine>MachineX86</TargetMachine>
-      <ProgramDatabaseFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-      <GenerateDebugInformation Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</GenerateDebugInformation>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">/ignore:4248 %(AdditionalOptions)</AdditionalOptions>
-    </Link>
-    <ClCompile>
-      <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">None</DebugInformationFormat>
-      <ProgramDataBaseFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-    </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Platform)'=='x64'">
     <Link>
