@@ -7,7 +7,7 @@ Based upon the latest AForge.NET [code](https://github.com/andrewkirillov/AForge
 
  - Update projects to target .NET Framework 4 Client Profile
  - Integrated IAMVideoProcAmp change ([details](https://code.google.com/archive/p/aforge/issues/357))
- - Updated FFMPEG to release 4.3.1 ([build](https://www.gyan.dev/ffmpeg/builds/))
+ - Updated FFMPEG to release 4.3.2 ([build](https://www.gyan.dev/ffmpeg/builds/))
  - Backported code from [Accord.NET](http://accord-framework.net/index.html) to allow AForge.Video.FFMPEG to integrate with newer versions of FFMPEG
  - Removed parts of AForge.NET that are not required for just Image/Video capture
 
