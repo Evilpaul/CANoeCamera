@@ -36,7 +36,7 @@
     <OutDir>$(SolutionDir)..\Release\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Platform)'=='x64'" Label="Configuration">
-    <FFmpegPlatform>ffmpeg-4.3.2-2021-02-27-full_build-shared</FFmpegPlatform>
+    <FFmpegPlatform>ffmpeg-4.4-full_build-shared</FFmpegPlatform>
     <PlatformPostfix></PlatformPostfix>
   </PropertyGroup>
   <PropertyGroup>

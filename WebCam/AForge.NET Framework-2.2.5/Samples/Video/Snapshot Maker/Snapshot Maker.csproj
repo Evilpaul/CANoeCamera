@@ -115,7 +115,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(SolutionDir)..\..\..\Externals\ffmpeg\ffmpeg-4.3.2-2021-02-27-full_build-shared\bin\*.dll" "$(TargetDir)" /Y /I</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(SolutionDir)..\..\..\Externals\ffmpeg\ffmpeg-4.4-full_build-shared\bin\*.dll" "$(TargetDir)" /Y /I</PostBuildEvent>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <ProjectGuid>{779A59F0-BF3B-4AE5-B323-97D37CD67233}</ProjectGuid>
