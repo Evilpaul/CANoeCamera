@@ -61,28 +61,28 @@ namespace AForge
 			{
 				libffmpeg::AVCodecContext* codecContext = data->VideoStream->codec;
 
-				libffmpeg::AVPacket packet;
-				libffmpeg::av_init_packet(&packet);
-				packet.data = nullptr;
-				packet.size = 0;
+				libffmpeg::AVPacket* packet = libffmpeg::av_packet_alloc();
+				packet->data = nullptr;
+				packet->size = 0;
+				libffmpeg::av_new_packet(packet, packet->size);
 
 				// encode the image
 				if (libffmpeg::avcodec_send_frame(codecContext, data->VideoFrame) < 0)
 					throw gcnew VideoException("Error sending a frame for encoding");
 
-				if (libffmpeg::avcodec_receive_packet(codecContext, &packet) < 0)
+				if (libffmpeg::avcodec_receive_packet(codecContext, packet) < 0)
 					return;
 
-				if (packet.pts != AV_NOPTS_VALUE)
-					packet.pts = libffmpeg::av_rescale_q(packet.pts, codecContext->time_base, data->VideoStream->time_base);
-				if (packet.dts != AV_NOPTS_VALUE)
-					packet.dts = libffmpeg::av_rescale_q(packet.dts, codecContext->time_base, data->VideoStream->time_base);
+				if (packet->pts != AV_NOPTS_VALUE)
+					packet->pts = libffmpeg::av_rescale_q(packet->pts, codecContext->time_base, data->VideoStream->time_base);
+				if (packet->dts != AV_NOPTS_VALUE)
+					packet->dts = libffmpeg::av_rescale_q(packet->dts, codecContext->time_base, data->VideoStream->time_base);
 
-				packet.stream_index = data->VideoStream->index;
-				Console::WriteLine("Stream: {0} PTS: {1} -> {1} bytes", packet.stream_index, packet.pts, packet.size);
+				packet->stream_index = data->VideoStream->index;
+				Console::WriteLine("Stream: {0} PTS: {1} -> {1} bytes", packet->stream_index, packet->pts, packet->size);
 
 				// write the compressed frame to the media file
-				if (libffmpeg::av_interleaved_write_frame(data->FormatContext, &packet) != 0)
+				if (libffmpeg::av_interleaved_write_frame(data->FormatContext, packet) != 0)
 					throw gcnew VideoException("Error while writing video frame.");
 			}
 
@@ -396,29 +396,29 @@ namespace AForge
 
 				while (true) // while there are still delayed frames
 				{
-					libffmpeg::AVPacket packet;
-					libffmpeg::av_init_packet(&packet);
-					packet.data = nullptr;
-					packet.size = 0;
+					libffmpeg::AVPacket* packet = libffmpeg::av_packet_alloc();
+					packet->data = nullptr;
+					packet->size = 0;
+					libffmpeg::av_new_packet(packet, packet->size);
 
 					// encode the image
 					int ret = libffmpeg::avcodec_send_frame(codecContext, nullptr);
 					if ((ret < 0) && (ret != AVERROR_EOF))
 						throw gcnew VideoException("Error sending a (flush)frame for encoding");
 
-					if (libffmpeg::avcodec_receive_packet(codecContext, &packet) < 0)
+					if (libffmpeg::avcodec_receive_packet(codecContext, packet) < 0)
 						break;
 
 					// TODO: consider refactoring with write_video_frame?
-					if (packet.pts != AV_NOPTS_VALUE)
-						packet.pts = libffmpeg::av_rescale_q(packet.pts, codecContext->time_base, data->VideoStream->time_base);
-					if (packet.dts != AV_NOPTS_VALUE)
-						packet.dts = libffmpeg::av_rescale_q(packet.dts, codecContext->time_base, data->VideoStream->time_base);
+					if (packet->pts != AV_NOPTS_VALUE)
+						packet->pts = libffmpeg::av_rescale_q(packet->pts, codecContext->time_base, data->VideoStream->time_base);
+					if (packet->dts != AV_NOPTS_VALUE)
+						packet->dts = libffmpeg::av_rescale_q(packet->dts, codecContext->time_base, data->VideoStream->time_base);
 
-					packet.stream_index = data->VideoStream->index;
+					packet->stream_index = data->VideoStream->index;
 
 					// write the compressed frame to the media file
-					if (libffmpeg::av_interleaved_write_frame(data->FormatContext, &packet) != 0)
+					if (libffmpeg::av_interleaved_write_frame(data->FormatContext, packet) != 0)
 						throw gcnew VideoException("Error while writing video frame.");
 				}
 
